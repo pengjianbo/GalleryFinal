@@ -20,10 +20,10 @@
     <attr name="colorThemeDark" format="reference|color"/>
 
     <declare-styleable name="GFFloatingActionButton">
-        <attr name="fab_colorPressed" format="color"/>
-        <attr name="fab_colorNormal" format="color"/>
-        <attr name="fab_icon" format="reference"/>
-        <attr name="fab_title" format="string"/>
+        <attr name="fabColorPressed" format="color"/>
+        <attr name="fabColorNormal" format="color"/>
+        <attr name="fabIcon" format="reference"/>
+        <attr name="fabTitle" format="string"/>
     </declare-styleable>
 
 </resources>

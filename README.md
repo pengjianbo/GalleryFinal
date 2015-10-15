@@ -16,7 +16,7 @@ Android相册自定义，包括拍照、图片选择（单选/多选）和裁剪
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.0.0'
+compile 'cn.finalteam:galleryfinal:1.0.1'
 ```
 ##截图展示
 Demo apk二维码地址：![DEMO APK](images/gallery_final_qrcode.png)

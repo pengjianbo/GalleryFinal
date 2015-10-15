@@ -73,10 +73,10 @@ public class FloatingActionButton extends ImageButton {
 
     void init(Context context, AttributeSet attributeSet) {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.GFFloatingActionButton, 0, 0);
-        mColorNormal = attr.getColor(R.styleable.GFFloatingActionButton_fab_colorNormal, Color.BLACK);
-        mColorPressed = attr.getColor(R.styleable.GFFloatingActionButton_fab_colorPressed, Color.BLACK);
-        mIcon = attr.getResourceId(R.styleable.GFFloatingActionButton_fab_icon, 0);
-        mTitle = attr.getString(R.styleable.GFFloatingActionButton_fab_title);
+        mColorNormal = attr.getColor(R.styleable.GFFloatingActionButton_fabColorNormal, Color.BLACK);
+        mColorPressed = attr.getColor(R.styleable.GFFloatingActionButton_fabColorPressed, Color.BLACK);
+        mIcon = attr.getResourceId(R.styleable.GFFloatingActionButton_fabIcon, 0);
+        mTitle = attr.getString(R.styleable.GFFloatingActionButton_fabTitle);
         attr.recycle();
 
         updateCircleSize();
