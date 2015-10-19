@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
+import cn.finalteam.toolsfinal.ActivityManager;
 import cn.finalteam.toolsfinal.BitmapUtils;
 import cn.finalteam.toolsfinal.DateUtils;
 import cn.finalteam.toolsfinal.FileUtils;
@@ -56,6 +57,7 @@ public class PhotoCropActivity extends PhotoBaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gf_activity_photo_crop);
+        ActivityManager.getActivityManager().addActivity(this);
 
         mPhotoInfo = getIntent().getParcelableExtra(PHOTO_INFO);
 
@@ -94,7 +96,10 @@ public class PhotoCropActivity extends PhotoBaseActivity implements View.OnClick
     @Override
     protected void takeResult(PhotoInfo info) {
         mPhotoInfo = info;
-
+        PhotoChooseActivity activity = (PhotoChooseActivity) ActivityManager.getActivityManager().getActivity(PhotoChooseActivity.class.getName());
+        if ( activity != null ) {
+            activity.takeRefreshGallery(info);
+        }
         loadImage();
     }
 
