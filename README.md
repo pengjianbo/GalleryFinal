@@ -16,7 +16,7 @@ Android相册自定义，包括拍照、图片选择（单选/多选）和裁剪
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.0.1'
+compile 'cn.finalteam:galleryfinal:1.0.2'
 ```
 ##截图展示
 Demo apk二维码地址：![DEMO APK](images/gallery_final_qrcode.png)
@@ -71,6 +71,14 @@ GalleryHelper.openGalleryMuti(context, limit, new GalleryImageLoader());
 colorTheme为主题色，colorThemeDark为主题加深色
 
 5、如果你还想更深度的定制页面效果可以把资源文件名字定义成Gallery资源名已达到覆盖效果。如有不理解可以联系我。
+
+#混淆配置
+
+```properties
+-keep class cn.finalteam.galleryfinal.widget.*{*;}
+-keep class cn.finalteam.galleryfinal.model.*{*;}
+```
+
 
 License
 -------
