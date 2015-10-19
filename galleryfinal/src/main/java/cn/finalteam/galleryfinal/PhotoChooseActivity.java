@@ -76,16 +76,21 @@ public class PhotoChooseActivity extends PhotoBaseActivity implements View.OnCli
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mPhotoListAdapter.notifyDataSetChanged();
-            mFolderListAdapter.notifyDataSetChanged();
-            if ( mAllPhotoFolderList.get(0).getPhotoList() == null ||
-                    mAllPhotoFolderList.get(0).getPhotoList().size() == 0 ) {
-                mTvEmptyView.setText("暂无图片");
-            }
+            if ( msg.what == 1000 ) {
+                PhotoInfo photoInfo = (PhotoInfo) msg.obj;
+                takeRefreshGallery(photoInfo);
+            } else {
+                mPhotoListAdapter.notifyDataSetChanged();
+                mFolderListAdapter.notifyDataSetChanged();
+                if (mAllPhotoFolderList.get(0).getPhotoList() == null ||
+                        mAllPhotoFolderList.get(0).getPhotoList().size() == 0) {
+                    mTvEmptyView.setText("暂无图片");
+                }
 
-            mGvPhotoList.setEnabled(true);
-            mTvChooseFolderName.setEnabled(true);
-            mIvTakePhoto.setEnabled(true);
+                mGvPhotoList.setEnabled(true);
+                mTvChooseFolderName.setEnabled(true);
+                mIvTakePhoto.setEnabled(true);
+            }
         }
     };
 
@@ -151,20 +156,14 @@ public class PhotoChooseActivity extends PhotoBaseActivity implements View.OnCli
         mFabOk.setOnClickListener(this);
     }
 
-    @Override
-    protected void takeResult(PhotoInfo photoInfo) {
-
-        if ( mPickMode == GalleryHelper.SINGLE_IMAGE ) { //单选
-            if ( mCrop ) {//裁剪
-                mHasRefreshGallery = true;
-                toPhotoCrop(photoInfo);
-            } else {
-                resultSingle(photoInfo);
-            }
-        } else {//多选
-            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
-            refreshSelectCount();
-        }
+    /**
+     * 解决在5.0手机上刷新Gallery问题，从startActivityForResult回到Activity把数据添加到集合中然后理解跳转到下一个页面，
+     * adapter的getCount与list.size不一致，所以我这里用了延迟刷新数据
+     * @param photoInfo
+     */
+    protected void takeRefreshGallery(PhotoInfo photoInfo) {
+        mCurPhotoList.add(photoInfo);
+        mPhotoListAdapter.notifyDataSetChanged();
 
         //添加到集合中
         List<PhotoInfo> photoInfoList = mAllPhotoFolderList.get(0).getPhotoList();
@@ -173,13 +172,17 @@ public class PhotoChooseActivity extends PhotoBaseActivity implements View.OnCli
         }
         photoInfoList.add(photoInfo);
         mAllPhotoFolderList.get(0).setPhotoList(photoInfoList);
-        mCurPhotoList.add(photoInfo);
+
         if ( mFolderListAdapter.getSelectFolder() != null ) {
-            List<PhotoInfo> list = mFolderListAdapter.getSelectFolder().getPhotoList();
+            PhotoFolderInfo photoFolderInfo = mFolderListAdapter.getSelectFolder();
+            List<PhotoInfo> list = photoFolderInfo.getPhotoList();
             if ( list == null ) {
                 list = new ArrayList<>();
             }
             list.add(photoInfo);
+            if ( list.size() == 1 ) {
+                photoFolderInfo.setCoverPhoto(photoInfo);
+            }
             mFolderListAdapter.getSelectFolder().setPhotoList(list);
         } else {
             String folderA = new File(photoInfo.getPhotoPath()).getParent();
@@ -196,12 +199,37 @@ public class PhotoChooseActivity extends PhotoBaseActivity implements View.OnCli
                     }
                     list.add(photoInfo);
                     folderInfo.setPhotoList(list);
+                    if ( list.size() == 1 ) {
+                        folderInfo.setCoverPhoto(photoInfo);
+                    }
                 }
             }
         }
 
-        mPhotoListAdapter.notifyDataSetChanged();
         mFolderListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void takeResult(PhotoInfo photoInfo) {
+
+        Message message = mHanlder.obtainMessage();
+        message.obj = photoInfo;
+        message.what = 1000;
+
+        if ( mPickMode == GalleryHelper.SINGLE_IMAGE ) { //单选
+            if ( mCrop ) {//裁剪
+                mHasRefreshGallery = true;
+                toPhotoCrop(photoInfo);
+            } else {
+                resultSingle(photoInfo);
+            }
+            mHanlder.sendMessageDelayed(message, 100);
+        } else {//多选
+            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
+            refreshSelectCount();
+            mHanlder.sendMessageDelayed(message, 1);
+        }
+
     }
 
     @Override
