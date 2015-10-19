@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+#GalleryFinal
+
+-keep class cn.finalteam.galleryfinal.widget.*{*;}
+-keep class cn.finalteam.galleryfinal.model.*{*;}
