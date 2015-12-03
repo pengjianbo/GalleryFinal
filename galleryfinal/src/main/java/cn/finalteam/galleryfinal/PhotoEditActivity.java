@@ -295,19 +295,22 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 finish();
             }
         } else if (id == R.id.iv_crop) {
-            if (mCropState) {
-                setCropEnabled(false);
 
-                corpPageState(false);
+            if ( mPhotoList.size() > 0 ) {
+                if (mCropState) {
+                    setCropEnabled(false);
 
-                mTvTitle.setText(R.string.photo_edit);
-            } else {
-                corpPageState(true);
-                setCropEnabled(true);
+                    corpPageState(false);
 
-                mTvTitle.setText(R.string.photo_crop);
+                    mTvTitle.setText(R.string.photo_edit);
+                } else {
+                    corpPageState(true);
+                    setCropEnabled(true);
+
+                    mTvTitle.setText(R.string.photo_crop);
+                }
+                mCropState = !mCropState;
             }
-            mCropState = !mCropState;
         } else if (id == R.id.iv_rotation) {
             rotationPhoto();
         } else if (id == R.id.iv_take_photo) {
