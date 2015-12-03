@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
         versionName project_version
@@ -20,7 +20,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.isseiaoki:simplecropview:1.0.9'
     compile 'cn.finalteam:toolsfinal:1.0.7'
     compile 'com.android.support:support-v4:23.0.1'
 }

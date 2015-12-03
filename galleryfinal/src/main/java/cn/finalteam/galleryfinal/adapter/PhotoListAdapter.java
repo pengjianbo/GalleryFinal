@@ -16,14 +16,14 @@
 
 package cn.finalteam.galleryfinal.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-import cn.finalteam.galleryfinal.GalleryHelper;
+import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.toolsfinal.StringUtils;
@@ -39,13 +39,13 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
 
     private Map<String, PhotoInfo> mSelectList;
     private int mScreenWidth;
-    private int mPickMode;
+    private GalleryConfig mGalleryConfig;
 
-    public PhotoListAdapter(Context context, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth, int pickMode) {
-        super(context, list);
+    public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth, GalleryConfig galleryConfig) {
+        super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
-        this.mPickMode = pickMode;
+        this.mGalleryConfig = galleryConfig;
     }
 
     @Override
@@ -66,21 +66,20 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
                 path = photoInfo.getPhotoPath();
             }
         }
-        path = "file:/" + path;
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
-        GalleryHelper.mImageLoader.displayImage(holder.mIvThumb, path);
+        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, 100, 100);
 
-        if ( mPickMode == GalleryHelper.MULTIPLE_IMAGE ) {
+        if ( mGalleryConfig.isMutiSelect() ) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
             holder.mIvCheck.setImageDrawable(createCheckIcon(Color.WHITE, R.drawable.ic_gf_done));
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
                 TypedValue typedValue = new TypedValue();
-                mContext.getTheme().resolveAttribute(R.attr.colorTheme, typedValue, true);
+                mActivity.getTheme().resolveAttribute(R.attr.colorTheme, typedValue, true);
                 int colorTheme = typedValue.data;
                 holder.mIvCheck.setBackgroundColor(colorTheme);
             } else {
-                holder.mIvCheck.setBackgroundColor(mContext.getResources().getColor(R.color.gf_gray));
+                holder.mIvCheck.setBackgroundColor(Color.rgb(0xd2, 0xd2, 0xd7));
             }
         } else {
             holder.mIvCheck.setVisibility(View.GONE);

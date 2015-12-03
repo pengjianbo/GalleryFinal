@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (C) 2014 pengjianbo(pengjianbosoft@gmail.com), Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+    <string name="gallery">手机相册</string>
+    <string name="all_photo">全部图片</string>
+    <string name="selected">已选(%1$s/%2$s)</string>
+    <string name="folder_photo_size">共%1$d张</string>
+    <string name="photo_edit">图片编辑</string>
+    <string name="photo_crop">图片裁剪</string>
+    <string name="crop_suc">裁剪成功</string>
+    <string name="crop_fail">裁剪失败</string>
+    <string name="no_photo">无图片</string>
+    <string name="waiting">请稍等…</string>
+    <string name="select_max_tips">已达到最大选择数量</string>
+    <string name="empty_sdcard">没有SD卡</string>
+    <string name="open_gallery_fail">相册初始化失败!</string>
+
+    <string name="saving">正在保存照片…</string>
+
+</resources>

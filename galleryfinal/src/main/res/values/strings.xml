@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Library</string>
+    <string name="gallery">Gallery</string>
+    <string name="all_photo">All Photo</string>
+    <string name="selected">selected(%1$d/%2$d)</string>
+    <string name="folder_photo_size">%1$d Piece</string>
+    <string name="photo_edit">Photo Edit</string>
+    <string name="photo_crop">Photo Crop</string>
+    <string name="crop_suc">Photo crop success</string>
+    <string name="crop_fail">Photo crop failure</string>
+    <string name="no_photo">Photo empty</string>
+    <string name="waiting">Please wait…</string>
+    <string name="select_max_tips">Has reached the maximum number selection!</string>
+    <string name="empty_sdcard">No SD card</string>
+    <string name="open_gallery_fail">Gallery init failure!</string>
+
+    <string name="saving">Saving picture…</string>
 </resources>

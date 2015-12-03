@@ -19,6 +19,7 @@ package cn.finalteam.galleryfinal.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.toolsfinal.Logger;
@@ -56,7 +57,7 @@ public class PhotoTools {
         //所有图片
         PhotoFolderInfo allPhotoFolderInfo = new PhotoFolderInfo();
         allPhotoFolderInfo.setFolderId(0);
-        allPhotoFolderInfo.setFolderName("所有图片");
+        allPhotoFolderInfo.setFolderName(context.getResources().getString(R.string.all_photo));
         allPhotoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
         allPhotoFolderList.add(0, allPhotoFolderInfo);
         try {

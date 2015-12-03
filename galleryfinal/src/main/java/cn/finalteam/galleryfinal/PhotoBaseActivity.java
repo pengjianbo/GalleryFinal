@@ -24,7 +24,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,6 +33,7 @@ import android.view.Window;
 import android.widget.Toast;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.MediaScanner;
+import cn.finalteam.toolsfinal.ActivityManager;
 import cn.finalteam.toolsfinal.BitmapUtils;
 import cn.finalteam.toolsfinal.DateUtils;
 import cn.finalteam.toolsfinal.DeviceUtils;
@@ -51,7 +51,7 @@ import java.util.Map;
  * Author:pengjianbo
  * Date:15/10/10 下午5:46
  */
-abstract class PhotoBaseActivity extends Activity {
+public abstract class PhotoBaseActivity extends Activity {
 
     protected static Map<String, PhotoInfo> mSelectPhotoMap = new HashMap<>();
     protected static String mPhotoTargetFolder;
@@ -66,6 +66,7 @@ abstract class PhotoBaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        ActivityManager.getActivityManager().addActivity(this);
         mMediaScanner = new MediaScanner(this);
         DisplayMetrics dm = DeviceUtils.getScreenPix(this);
         mScreenWidth = dm.widthPixels;
@@ -77,6 +78,7 @@ abstract class PhotoBaseActivity extends Activity {
         System.gc();
         super.onDestroy();
         mMediaScanner.unScanFile();
+        ActivityManager.getActivityManager().finishActivity(this);
     }
 
     public int getColorByTheme(int attr) {
@@ -103,7 +105,7 @@ abstract class PhotoBaseActivity extends Activity {
         File takePhotoFolder = null;
         if (StringUtils.isEmpty(mPhotoTargetFolder)) {
             takePhotoFolder = new File(Environment.getExternalStorageDirectory(),
-                    "/DCIM/" + GalleryHelper.TAKE_PHOTO_FOLDER);
+                    "/DCIM/" + Consts.TAKE_PHOTO_FOLDER);
         } else {
             takePhotoFolder = new File(mPhotoTargetFolder);
         }
@@ -115,57 +117,26 @@ abstract class PhotoBaseActivity extends Activity {
             mTakePhotoUri = Uri.fromFile(toFile);
             Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakePhotoUri);
-            startActivityForResult(captureIntent, GalleryHelper.TAKE_REQUEST_CODE);
+            startActivityForResult(captureIntent, GalleryFinal.TAKE_REQUEST_CODE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ( requestCode == GalleryHelper.TAKE_REQUEST_CODE ) {
+        if ( requestCode == GalleryFinal.TAKE_REQUEST_CODE ) {
             if (resultCode == RESULT_OK && mTakePhotoUri != null) {
                 final String path = mTakePhotoUri.getPath();
                 final PhotoInfo info = new PhotoInfo();
                 info.setPhotoPath(path);
                 updateGallery(path);
-
-                final int degress = BitmapUtils.getDegress(path);
-                if (degress != 0) {
-                    new AsyncTask<Void, Void, Void>() {
-
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            toast("请稍等…");
-                        }
-
-                        @Override
-                        protected Void doInBackground(Void... params) {
-                            try {
-                                Bitmap bitmap = rotateBitmap(path, degress);
-                                saveRotateBitmap(bitmap, path);
-                                bitmap.recycle();
-                            } catch (Exception e) {
-                                Logger.e(e);
-                            }
-                            return null;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Void voids) {
-                            super.onPostExecute(voids);
-                            takeResult(info);
-                        }
-                    }.execute();
-                } else {
-                    takeResult(info);
-                }
+                takeResult(info);
             } else {
                 toast("拍照失败");
             }
-        } else if ( requestCode == GalleryHelper.CROP_REQUEST_CODE) {
-            if ( resultCode == GalleryHelper.CROP_SUCCESS ) {
-                PhotoInfo photoInfo = data.getParcelableExtra(GalleryHelper.RESULT_DATA);
-                resultSingle(photoInfo);
+        } else if ( requestCode == GalleryFinal.EDIT_REQUEST_CODE) {
+            if ( resultCode == GalleryFinal.EDIT_OK ) {
+                ArrayList<PhotoInfo> photoInfoList = (ArrayList<PhotoInfo>) data.getSerializableExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA);
+                resultMuti(photoInfoList);
             }
         }
     }
@@ -177,14 +148,6 @@ abstract class PhotoBaseActivity extends Activity {
         mMediaScanner.scanFile(filePath, "image/jpeg");
     }
 
-    /**
-     * 执行裁剪
-     */
-    protected void toPhotoCrop(PhotoInfo info) {
-        Intent intent = new Intent(this, PhotoCropActivity.class);
-        intent.putExtra(PhotoCropActivity.PHOTO_INFO, info);
-        startActivityForResult(intent, GalleryHelper.CROP_REQUEST_CODE);
-    }
 
     protected Bitmap rotateBitmap(String path, int degress) {
         try {
@@ -214,18 +177,8 @@ abstract class PhotoBaseActivity extends Activity {
         if (intent == null) {
             intent = new Intent();
         }
-        intent.putExtra(GalleryHelper.RESULT_LIST_DATA, resultList);
-        setResult(GalleryHelper.GALLERY_RESULT_SUCCESS, intent);
-        finish();
-    }
-
-    protected void resultSingle(PhotoInfo photoInfo) {
-        Intent intent = getIntent();
-        if (intent == null) {
-            intent = new Intent();
-        }
-        intent.putExtra(GalleryHelper.RESULT_DATA, photoInfo);
-        setResult(GalleryHelper.GALLERY_RESULT_SUCCESS, intent);
+        intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, resultList);
+        setResult(GalleryFinal.GALLERY_RESULT_SUCCESS, intent);
         finish();
     }
 

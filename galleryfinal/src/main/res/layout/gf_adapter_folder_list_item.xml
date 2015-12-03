@@ -42,7 +42,7 @@
             android:id="@+id/tv_folder_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="全部图片"
+            android:text="@string/all_photo"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             />
@@ -52,8 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="共1张"
-            android:textColor="@color/gf_gray"
+            android:textColor="#d2d2d7"
             android:textSize="14sp"
             />
     </LinearLayout>

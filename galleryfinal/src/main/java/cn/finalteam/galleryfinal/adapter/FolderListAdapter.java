@@ -16,13 +16,13 @@
 
 package cn.finalteam.galleryfinal.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import cn.finalteam.galleryfinal.GalleryHelper;
+import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -37,9 +37,11 @@ import java.util.List;
 public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.FolderViewHolder, PhotoFolderInfo> {
 
     private PhotoFolderInfo mSelectFolder;
+    private GalleryConfig mGalleryConfig;
 
-    public FolderListAdapter(Context context, List<PhotoFolderInfo> list) {
-        super(context, list);
+    public FolderListAdapter(Activity activity, List<PhotoFolderInfo> list, GalleryConfig galleryConfig) {
+        super(activity, list);
+        this.mGalleryConfig = galleryConfig;
     }
 
     @Override
@@ -60,20 +62,19 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
                 path = photoInfo.getPhotoPath();
             }
         }
-        path = "file:/" + path;
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
-        GalleryHelper.mImageLoader.displayImage(holder.mIvCover, path);
+        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, 100, 100);
 
         holder.mTvFolderName.setText(photoFolderInfo.getFolderName());
+        int size = 0;
         if ( photoFolderInfo.getPhotoList() != null ) {
-            holder.mTvPhotoCount.setText("共" + photoFolderInfo.getPhotoList().size() + "张");
-        } else {
-            holder.mTvPhotoCount.setText("共0张");
+            size = photoFolderInfo.getPhotoList().size();
         }
+        holder.mTvPhotoCount.setText(mActivity.getString(R.string.folder_photo_size, size));
 
         if (mSelectFolder == photoFolderInfo || (mSelectFolder == null && position == 0)) {
             TypedValue typedValue = new TypedValue();
-            mContext.getTheme().resolveAttribute(R.attr.colorTheme, typedValue, true);
+            mActivity.getTheme().resolveAttribute(R.attr.colorTheme, typedValue, true);
             int colorTheme = typedValue.data;
             holder.mIvFolderCheck.setImageDrawable(createCheckIcon(colorTheme, R.drawable.ic_folder_check));
             holder.mIvFolderCheck.setVisibility(View.VISIBLE);

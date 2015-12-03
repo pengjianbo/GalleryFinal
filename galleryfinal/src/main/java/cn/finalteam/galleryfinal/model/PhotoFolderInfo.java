@@ -16,8 +16,7 @@
 
 package cn.finalteam.galleryfinal.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ import java.util.List;
  * Author:pengjianbo
  * Date:15/7/30 上午11:28
  */
-public class PhotoFolderInfo implements Parcelable {
+public class PhotoFolderInfo implements Serializable {
     private int folderId;
     private String folderName;
     private PhotoInfo coverPhoto;
@@ -62,30 +61,4 @@ public class PhotoFolderInfo implements Parcelable {
     public void setPhotoList(List<PhotoInfo> photoList) {
         this.photoList = photoList;
     }
-
-    @Override
-    public int describeContents() { return 0; }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.folderId);
-        dest.writeString(this.folderName);
-        dest.writeParcelable(this.coverPhoto, 0);
-        dest.writeTypedList(photoList);
-    }
-
-    public PhotoFolderInfo() {}
-
-    protected PhotoFolderInfo(Parcel in) {
-        this.folderId = in.readInt();
-        this.folderName = in.readString();
-        this.coverPhoto = in.readParcelable(PhotoInfo.class.getClassLoader());
-        this.photoList = in.createTypedArrayList(PhotoInfo.CREATOR);
-    }
-
-    public static final Creator<PhotoFolderInfo> CREATOR = new Creator<PhotoFolderInfo>() {
-        public PhotoFolderInfo createFromParcel(Parcel source) {return new PhotoFolderInfo(source);}
-
-        public PhotoFolderInfo[] newArray(int size) {return new PhotoFolderInfo[size];}
-    };
 }

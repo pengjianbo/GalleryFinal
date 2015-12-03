@@ -18,4 +18,5 @@
 #GalleryFinal
 
 -keep class cn.finalteam.galleryfinal.widget.*{*;}
--keep class cn.finalteam.galleryfinal.model.*{*;}
+-keep class cn.finalteam.galleryfinal.widget.crop.*{*;}
+

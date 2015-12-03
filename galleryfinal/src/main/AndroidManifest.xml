@@ -2,14 +2,15 @@
     package="cn.finalteam.galleryfinal">
 
     <application android:allowBackup="true"
-        android:label="@string/app_name"
         android:supportsRtl="true"
         >
 
-        <activity android:name=".PhotoChooseActivity"
-            android:theme="@style/PhotoActivityTheme"/>
-        <activity android:name=".PhotoCropActivity"
-            android:theme="@style/PhotoActivityTheme"/>
+        <activity android:name=".PhotoSelectActivity"
+            android:theme="@style/PhotoActivityTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PhotoEditActivity"
+            android:theme="@style/PhotoActivityTheme"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

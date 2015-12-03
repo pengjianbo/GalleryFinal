@@ -16,7 +16,7 @@
 
 package cn.finalteam.galleryfinal.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -33,14 +33,14 @@ import java.util.List;
  */
 abstract class CommonBaseAdapter<VH extends CommonBaseAdapter.ViewHolder, T> extends BaseAdapter {
 
-    protected Context mContext;
+    protected Activity mActivity;
     protected List<T> mList;
     public LayoutInflater mInflater;
 
-    public CommonBaseAdapter(Context context, List<T> list) {
-        this.mContext = context;
+    public CommonBaseAdapter(Activity activity, List<T> list) {
+        this.mActivity = activity;
         this.mList = list;
-        this.mInflater = LayoutInflater.from(mContext);
+        this.mInflater = LayoutInflater.from(mActivity);
     }
 
     @Override
@@ -59,7 +59,7 @@ abstract class CommonBaseAdapter<VH extends CommonBaseAdapter.ViewHolder, T> ext
     }
 
     protected Drawable createCheckIcon(int color, int resId) {
-        Drawable checkIcon = ContextCompat.getDrawable(mContext, resId);
+        Drawable checkIcon = ContextCompat.getDrawable(mActivity, resId);
         checkIcon = DrawableCompat.wrap(checkIcon);
         DrawableCompat.setTint(checkIcon, color);
         return checkIcon;
