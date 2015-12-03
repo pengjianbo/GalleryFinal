@@ -1,12 +1,18 @@
 ![](images/gallery_final_effect.png)
 # GalleryFinal简介
-Android自定义相册，实现了拍照、图片选择（单选/多选）、裁剪（单/多裁剪）、ImageLoader无绑定任由开发者选择
+Android自定义相册，实现了拍照、图片选择（单选/多选）、裁剪（单/多裁剪）、旋转、ImageLoader无绑定任由开发者选择
 
 #GalleryFinal intro
-GalleryFinal is an Android custom gallery.It can take photo,choose and clip pictures(single/multiple),ImageLoader unbinding
+GalleryFinal is an Android custom gallery.It can take photo,choose and clip pictures(single/multiple),rotate,ImageLoader unbinding
 
 ##为什么要使用GalleryFinal？
-* 拍照/选择图片倒立问题* 市场上各种相机和图片浏览器泛滥导致各种异常问题* 各种手机兼容性问题引起crash* 系统Gallery App不能进行多选* 系统拍照/选择图片/裁剪视乎不太好用* 系统Gallery App不美观* ……
+* 拍照/选择图片倒立问题
+* 市场上各种相机和图片浏览器泛滥导致各种异常问题
+* 各种手机兼容性问题引起crash
+* 系统Gallery App不能进行多选
+* 系统拍照/选择图片/裁剪视乎不太好用
+* 系统Gallery App不美观
+* ……
 
 # Why GalleryFinal?
 * GalleryFinal solved the "photos are upside down" problem
@@ -23,6 +29,7 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 优化图片裁剪
 * 解决OOM情况
 * 图片手动选择
+* 支持汉语和英语
 
 ##update
 * UI upgrade
@@ -31,6 +38,7 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * Optimize slip
 * Solve OOM problem
 * Images manual chosen
+* Support Chinese and English
 
 ##截图展示
 Demo apk二维码地址：
