@@ -361,12 +361,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private void photoItemClick(View view, int position) {
         PhotoInfo info = mCurPhotoList.get(position);
         if (!mGalleryConfig.isMutiSelect()) {
-            if (mSelectPhotoMap.get(info.getPhotoPath()) == null) {
-                mSelectPhotoMap.clear();
-                mSelectPhotoMap.put(info.getPhotoPath(), info);
-            } else {
-                mSelectPhotoMap.remove(info.getPhotoPath());
-            }
+            mSelectPhotoMap.clear();
+            mSelectPhotoMap.put(info.getPhotoPath(), info);
             if (mGalleryConfig.isEditPhoto()) {
                 toPhotoEdit();
             } else {

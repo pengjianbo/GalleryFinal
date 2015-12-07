@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.widget.Toast;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
+import java.io.File;
 
 /**
  * Desction:
@@ -64,6 +65,8 @@ public class GalleryFinal {
         config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
 
         //定时清理文件
+        cleanTempFile();
+
     }
 
     /**
@@ -72,6 +75,24 @@ public class GalleryFinal {
     public static void clearCacheFile() {
         //清楚裁剪冗余图片
         FileUtils.deleteFile(Consts.PHOTO_EDIT_TEMP_DIR);
+    }
+
+    private static void cleanTempFile() {
+        File file = new File(Consts.PHOTO_EDIT_TEMP_DIR);
+        if ( file.exists() ) {
+            File []files = file.listFiles();
+            if ( files != null && files.length > 0 ) {
+                for (File f : files) {
+                    long t = f.lastModified();
+                    long curTime = System.currentTimeMillis();
+                    if (t == 0l && (curTime - t) > 86400000) {
+                        try {
+                            f.delete();
+                        } catch (Exception e){}
+                    }
+                }
+            }
+        }
     }
 
 }
