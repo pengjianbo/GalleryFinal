@@ -18,6 +18,7 @@ package cn.finalteam.galleryfinal.sample.loader;
 
 import android.app.Activity;
 import android.widget.ImageView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 
@@ -35,7 +36,8 @@ public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader
                 .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .resize(width, height)
-
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .centerCrop()
                 .into(imageView);
     }
 

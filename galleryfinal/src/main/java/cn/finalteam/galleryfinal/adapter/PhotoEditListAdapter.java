@@ -23,7 +23,6 @@ import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.PhotoEditActivity;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.toolsfinal.StringUtils;
 import java.util.List;
 
 /**
@@ -53,10 +52,7 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
         String path = "";
         PhotoInfo photoInfo = mList.get(position);
         if (photoInfo != null) {
-            path = photoInfo.getThumbPath();
-            if (StringUtils.isEmpty(path)) {
-                path = photoInfo.getPhotoPath();
-            }
+            path = photoInfo.getPhotoPath();
         }
         holder.mIvPhoto.setImageResource(R.drawable.ic_gf_default_photo);
         mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, 100, 100);

@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
                 GalleryFinal.open(config);
             }
         });
-
         initImageLoader(this);
     }
 

@@ -19,6 +19,7 @@ package cn.finalteam.galleryfinal;
 import android.content.Intent;
 import android.widget.Toast;
 import cn.finalteam.toolsfinal.DeviceUtils;
+import cn.finalteam.toolsfinal.FileUtils;
 
 /**
  * Desction:
@@ -57,11 +58,20 @@ public class GalleryFinal {
 
         //清理裁剪文件夹
 
-
         mGalleryConfig = config;
 
         Intent intent = new Intent(config.getActivity(), PhotoSelectActivity.class);
         config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
+
+        //定时清理文件
+    }
+
+    /**
+     * 清楚缓存文件
+     */
+    public static void clearCacheFile() {
+        //清楚裁剪冗余图片
+        FileUtils.deleteFile(Consts.PHOTO_EDIT_TEMP_DIR);
     }
 
 }

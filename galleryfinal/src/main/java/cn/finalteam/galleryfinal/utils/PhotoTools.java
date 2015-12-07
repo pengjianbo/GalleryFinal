@@ -71,14 +71,14 @@ public class PhotoTools {
                     String bucketName = cursor.getString(bucketNameColumn);
                     final int dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
                     final int imageIdColumn = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                    int thumbImageColumn = cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+                    //int thumbImageColumn = cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
                     final int imageId = cursor.getInt(imageIdColumn);
                     final String path = cursor.getString(dataColumn);
-                    final String thumb = cursor.getString(thumbImageColumn);
+                    //final String thumb = cursor.getString(thumbImageColumn);
                     final PhotoInfo photoInfo = new PhotoInfo();
                     photoInfo.setPhotoId(imageId);
                     photoInfo.setPhotoPath(path);
-                    photoInfo.setThumbPath(thumb);
+                    //photoInfo.setThumbPath(thumb);
                     if (StringUtils.isEmpty(photoInfo.getPhotoPath())) {
                         continue;
                     }

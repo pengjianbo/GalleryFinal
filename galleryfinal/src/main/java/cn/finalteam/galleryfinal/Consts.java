@@ -26,5 +26,5 @@ import java.io.File;
  */
 class Consts {
     public static final String TAKE_PHOTO_FOLDER = "GalleryFinal" + File.separator;
-    public static final String PHOTO_CROP_DIR = Environment.getExternalStorageDirectory() + "/GalleryFinal/crop/";
+    public static final String PHOTO_EDIT_TEMP_DIR = Environment.getExternalStorageDirectory() + "/GalleryFinal/edittemp/";
 }

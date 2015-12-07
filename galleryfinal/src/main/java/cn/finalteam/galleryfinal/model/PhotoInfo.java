@@ -27,7 +27,7 @@ public class PhotoInfo implements Serializable {
 
     private int photoId;
     private String photoPath;
-    private String thumbPath;
+    //private String thumbPath;
     private int width;
     private int height;
 
@@ -64,12 +64,12 @@ public class PhotoInfo implements Serializable {
     public void setPhotoId(int photoId) {
         this.photoId = photoId;
     }
-
-    public String getThumbPath() {
-        return thumbPath;
-    }
-
-    public void setThumbPath(String thumbPath) {
-        this.thumbPath = thumbPath;
-    }
+    //
+    //public String getThumbPath() {
+    //    return thumbPath;
+    //}
+    //
+    //public void setThumbPath(String thumbPath) {
+    //    this.thumbPath = thumbPath;
+    //}
 }

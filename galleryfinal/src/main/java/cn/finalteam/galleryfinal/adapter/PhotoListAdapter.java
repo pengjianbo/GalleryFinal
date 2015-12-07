@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.toolsfinal.StringUtils;
 import java.util.List;
 import java.util.Map;
 
@@ -61,10 +60,7 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
 
         String path = "";
         if (photoInfo != null) {
-            path = photoInfo.getThumbPath();
-            if (StringUtils.isEmpty(path)) {
-                path = photoInfo.getPhotoPath();
-            }
+            path = photoInfo.getPhotoPath();
         }
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);

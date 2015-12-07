@@ -17,10 +17,7 @@
 package cn.finalteam.galleryfinal;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
@@ -34,7 +31,6 @@ import android.widget.Toast;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.MediaScanner;
 import cn.finalteam.toolsfinal.ActivityManager;
-import cn.finalteam.toolsfinal.BitmapUtils;
 import cn.finalteam.toolsfinal.DateUtils;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
@@ -43,8 +39,7 @@ import cn.finalteam.toolsfinal.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 /**
  * Desction:
@@ -53,7 +48,7 @@ import java.util.Map;
  */
 public abstract class PhotoBaseActivity extends Activity {
 
-    protected static Map<String, PhotoInfo> mSelectPhotoMap = new HashMap<>();
+    //protected static Map<String, PhotoInfo> mSelectPhotoMap = new HashMap<>();
     protected static String mPhotoTargetFolder;
 
     private Uri mTakePhotoUri;
@@ -127,6 +122,7 @@ public abstract class PhotoBaseActivity extends Activity {
             if (resultCode == RESULT_OK && mTakePhotoUri != null) {
                 final String path = mTakePhotoUri.getPath();
                 final PhotoInfo info = new PhotoInfo();
+                info.setPhotoId(getRandom(10000, 99999));
                 info.setPhotoPath(path);
                 updateGallery(path);
                 takeResult(info);
@@ -142,34 +138,22 @@ public abstract class PhotoBaseActivity extends Activity {
     }
 
     /**
+     * 取某个范围的任意数
+     * @param min
+     * @param max
+     * @return
+     */
+    private int getRandom(int min, int max){
+        Random random = new Random();
+        int s = random.nextInt(max) % (max - min + 1) + min;
+        return s;
+    }
+
+    /**
      * 更新相册
      */
     private void updateGallery(String filePath) {
         mMediaScanner.scanFile(filePath, "image/jpeg");
-    }
-
-
-    protected Bitmap rotateBitmap(String path, int degress) {
-        try {
-            Bitmap bitmap = BitmapUtils.compressBitmap(path, mScreenWidth / 4, mScreenHeight / 4);
-            bitmap = BitmapUtils.rotateBitmap(bitmap, degress);
-            return bitmap;
-        } catch (Exception e) {
-            Logger.e(e);
-        }
-
-        return null;
-    }
-
-    protected void saveRotateBitmap(Bitmap bitmap, String path) {
-        //保存
-        BitmapUtils.saveBitmap(bitmap, new File(path));
-        //修改数据库
-        ContentValues cv = new ContentValues();
-        cv.put("orientation", 0);
-        ContentResolver cr = getContentResolver();
-        String where = new String(MediaStore.Images.Media.DATA + "='" + StringUtils.sqliteEscape(path) +"'");
-        cr.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv, where, null);
     }
 
     protected void resultMuti(ArrayList<PhotoInfo> resultList) {
@@ -187,7 +171,7 @@ public abstract class PhotoBaseActivity extends Activity {
     public StateListDrawable getTitleStateListDrawable() {
         StateListDrawable bg = new StateListDrawable();
         bg.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(getColorByTheme(R.attr.colorThemeDark)));
-        bg.addState(new int[]{}, new ColorDrawable(getColorByTheme(R.attr.colorTheme)));
+        bg.addState(new int[] {}, new ColorDrawable(getColorByTheme(R.attr.colorTheme)));
         return bg;
     }
 }

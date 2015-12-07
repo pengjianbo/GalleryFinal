@@ -26,7 +26,6 @@ import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.toolsfinal.StringUtils;
 import java.util.List;
 
 /**
@@ -57,10 +56,7 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
         String path = "";
         PhotoInfo photoInfo = photoFolderInfo.getCoverPhoto();
         if (photoInfo != null) {
-            path = photoInfo.getThumbPath();
-            if (StringUtils.isEmpty(path)) {
-                path = photoInfo.getPhotoPath();
-            }
+            path = photoInfo.getPhotoPath();
         }
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
         mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, 100, 100);

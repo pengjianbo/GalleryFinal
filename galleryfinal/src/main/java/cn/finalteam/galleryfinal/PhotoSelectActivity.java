@@ -40,7 +40,10 @@ import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Desction:图片选择器
@@ -74,6 +77,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     //是否需要刷新相册
     private boolean mHasRefreshGallery = false;
+    private HashMap<String, PhotoInfo> mSelectPhotoMap = new HashMap<>();
 
     private Handler mHanlder = new Handler() {
         @Override
@@ -164,7 +168,21 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mIvClear.setOnClickListener(this);
     }
 
-    protected void refreshAdapter() {
+    protected void deleteSelect(int photoId) {
+        try {
+            Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry<String, PhotoInfo> entry = entries.next();
+                if (entry.getValue() != null && entry.getValue().getPhotoId() == photoId) {
+                    entries.remove();
+                }
+            }
+        } catch (Exception e){}
+
+        refreshAdapter();
+    }
+
+    private void refreshAdapter() {
         mHanlder.sendEmptyMessageDelayed(HANDLER_REFRESH_LIST_EVENT, 100);
     }
 
@@ -261,6 +279,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
      */
     protected void toPhotoEdit() {
         Intent intent = new Intent(this, PhotoEditActivity.class);
+        intent.putExtra(PhotoEditActivity.SELECT_MAP, mSelectPhotoMap);
         startActivityForResult(intent, GalleryFinal.EDIT_REQUEST_CODE);
     }
 
