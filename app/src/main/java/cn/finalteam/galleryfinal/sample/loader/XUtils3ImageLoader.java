@@ -36,6 +36,7 @@ public class XUtils3ImageLoader implements cn.finalteam.galleryfinal.ImageLoader
                 .setConfig(Bitmap.Config.RGB_565)
                 .setSize(width, height)
                 .setCrop(true)
+                .setUseMemCache(false)
                 .build();
         x.image().bind(imageView, "file://" + path, options);
     }

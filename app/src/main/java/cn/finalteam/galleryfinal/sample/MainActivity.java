@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 //        .cropSquare()
                 //        .cropWidth(50)
                 //        .cropHeight(50)
+                //        .filter(mPhotoList)
                 //        .build();
                 //GalleryFinal.open(config);
                 GalleryConfig.Builder builder = new GalleryConfig.Builder(MainActivity.this);

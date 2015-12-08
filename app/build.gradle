@@ -36,7 +36,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile project(':galleryfinal')
-//    compile 'cn.finalteam:galleryfinal:1.1.0'
+//    compile project(':galleryfinal')
+    compile 'cn.finalteam:galleryfinal:1.2.0'
     compile 'org.xutils:xutils:3.1.7'
 }

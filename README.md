@@ -1,9 +1,9 @@
 ![](images/gallery_final_effect.png)
 # GalleryFinal简介
-Android自定义相册，实现了拍照、图片选择（单选/多选）、裁剪（单/多裁剪）、旋转、ImageLoader无绑定任由开发者选择
+Android自定义相册，实现了拍照、图片选择（单选/多选）、裁剪（单/多裁剪）、旋转、缩放、ImageLoader无绑定任由开发者选择
 
 #GalleryFinal intro
-GalleryFinal is an Android custom gallery.It can take photo,choose and clip pictures(single/multiple),rotate,ImageLoader unbinding
+GalleryFinal is an Android custom gallery.It can take photo,choose and clip pictures(single/multiple),rotate,zoom,ImageLoader unbinding
 
 ##为什么要使用GalleryFinal？
 * 拍照/选择图片倒立问题
@@ -22,23 +22,16 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * The System camera/gallery/slip didn't work well
 * The System Gallery is not smart
 
-##更新内容
-* UI重改
-* 多选图片裁剪
-* 所有功能可配置
-* 优化图片裁剪
-* 解决OOM情况
-* 图片手动选择
-* 支持汉语和英语
-
-##update
-* UI upgrade
-* Slip now can choose more than one image
-* Every feature was configurable
-* Optimize slip
-* Solve OOM problem
-* Images manual chosen
-* Support Chinese and English
+##V1.2.0更新内容
+* 提高图片清晰度
+* 支持图片手动缩放
+* 解决权限问题
+* 优化图片旋转
+* 解决二次裁剪问题
+* 解决多次旋转后图片不清晰问题
+* 添加图片选择过滤
+* 添加清理缓存
+* 提高体验效果和修改UI
 
 ##截图展示
 Demo apk二维码地址：
@@ -54,7 +47,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.1.0'
+compile 'cn.finalteam:galleryfinal:1.2.0'
 ```
 
 ##具体使用
@@ -90,13 +83,13 @@ public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
                 .load("file://" + path)
                 .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
-                .centerCrop()
+                .skipMemoryCache(true)
+                //.centerCrop()
                 .into(imageView);
     }
 
-    @Override 
+    @Override
     public void clearMemoryCache() {
     }
 }
@@ -114,7 +107,32 @@ public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader
                 .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .resize(width, height)
+                .centerInside()
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(imageView);
+    }
+
+    @Override
+    public void clearMemoryCache() {
+    }
+}
+```
+
+* xUtils3
+
+```java
+public class XUtils3ImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
+    @Override
+    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+        ImageOptions options = new ImageOptions.Builder()
+                .setLoadingDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
+                .setFailureDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
+                .setConfig(Bitmap.Config.RGB_565)
+                .setSize(width, height)
+                .setCrop(true)
+                .setUseMemCache(false)
+                .build();
+        x.image().bind(imageView, "file://" + path, options);
     }
 
     @Override
@@ -152,23 +170,6 @@ public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
 }
 ```
 
-* xUtils3
-
-```java
-public class GalleryImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-    
-    @Override
-    public void displayImage(final ImageView imageView, String url) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheInMemory(false)
-                .cacheOnDisk(false)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-        ImageLoader.getInstance().displayImage(url, imageView, options);
-    }
-}
-```
-
 * ……
 
 3、打开Gallery
@@ -185,6 +186,7 @@ GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
                         .cropSquare()
                         .cropWidth(50)
                         .cropHeight(50)
+                        .filter(mPhotoList)
                         .build();
 GalleryFinal.open(config);
 ```
@@ -211,10 +213,33 @@ colorTheme为主题色，colorThemeDark为主题加深色
 -keep class cn.finalteam.galleryfinal.widget.crop.*{*;}
 ```
 
+#更新日志
+
+##V1.2.0
+* 提高图片清晰度
+* 支持图片手动缩放
+* fix权限问题
+* 优化图片旋转
+* fix二次裁剪问题
+* fix多次旋转后图片不清晰问题
+* 添加图片选择过滤
+* 添加清理缓存
+* 提高体验效果和修改UI
+
+##V1.1.0
+* UI重改
+* 多选图片裁剪
+* 所有功能可配置
+* 优化图片裁剪
+* 解决OOM情况
+* 图片手动选择
+* 支持汉语和英语
+
 #关于作者
 * **QQ:**172340021   
 * **QQ群:**218801658  
 * **Email:**<pengjianbo@finalteam.cn>
+
 
 
 License

@@ -36,6 +36,7 @@ public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader
                 .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .resize(width, height)
+                .centerInside()
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(imageView);
     }

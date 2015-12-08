@@ -25,4 +25,4 @@ dependencies {
     compile 'com.commit451:PhotoView:1.2.4'
 }
 
-apply from: 'https://raw.githubusercontent.com/FinalTeam/ToolsFinal/master/bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/pengjianbo/ToolsFinal/master/bintray.gradle'
