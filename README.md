@@ -233,4 +233,3 @@ License
     limitations under the License.
     
     
-    https://github.com/AmineChikhaoui/PhotoEdit

@@ -102,6 +102,11 @@ public abstract class CropImageActivity extends MonitoredActivity {
 
     public void setSourceUri(Uri sourceUri) {
         this.sourceUri = sourceUri;
+        this.isSaving = false;
+        this.sampleSize = 0;
+        this.rotateBitmap = null;
+        this.cropView = null;
+        this.imageView.clear();
         if (sourceUri != null) {
             exifRotation = CropUtil.getExifRotation(CropUtil.getFromMediaUri(this, getContentResolver(), sourceUri));
 
