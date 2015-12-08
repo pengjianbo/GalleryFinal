@@ -17,6 +17,10 @@
 package cn.finalteam.galleryfinal;
 
 import android.app.Activity;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Desction:
@@ -34,6 +38,7 @@ public class GalleryConfig {
     private int cropWidth;
     private int cropHeight;
     private boolean cropSquare;
+    private List<String> filterList;//过滤器
 
     private Activity activity;
     private ImageLoader imageLoader;
@@ -50,9 +55,10 @@ public class GalleryConfig {
         this.cropWidth = builder.cropWidth;
         this.cropHeight = builder.cropHeight;
         this.cropSquare = builder.cropSquare;
+        this.filterList = builder.filterList;
     }
 
-    public static class Builder{
+    public static class Builder {
         private boolean mutiSelect;
         private int maxSize;
         private boolean editPhoto;//编辑
@@ -62,6 +68,7 @@ public class GalleryConfig {
         private int cropWidth;
         private int cropHeight;
         private boolean cropSquare;
+        private List<String> filterList;
 
         private Activity activity;
         private ImageLoader imageLoader;
@@ -70,12 +77,12 @@ public class GalleryConfig {
             this.activity = activity;
         }
 
-        public Builder mutiSelect(){
+        public Builder mutiSelect() {
             this.mutiSelect = true;
             return this;
         }
 
-        public Builder singleSelect(){
+        public Builder singleSelect() {
             this.mutiSelect = false;
             return this;
         }
@@ -90,7 +97,7 @@ public class GalleryConfig {
             return this;
         }
 
-        public Builder enableCrop(){
+        public Builder enableCrop() {
             this.crop = true;
             return this;
         }
@@ -117,6 +124,25 @@ public class GalleryConfig {
 
         public Builder cropSquare() {
             this.cropSquare = true;
+            return this;
+        }
+
+        public Builder filter(List<String> filterList) {
+            this.filterList = filterList;
+            return this;
+        }
+
+        public Builder filter(Collection<PhotoInfo> filterList) {
+            if ( filterList != null ) {
+                List<String> list = new ArrayList<>();
+                for(PhotoInfo info:filterList) {
+                    if (info != null) {
+                        list.add(info.getPhotoPath());
+                    }
+                }
+
+                this.filterList = list;
+            }
             return this;
         }
 
@@ -168,6 +194,10 @@ public class GalleryConfig {
 
     public int getCropHeight() {
         return cropHeight;
+    }
+
+    public List<String> getFilterList() {
+        return filterList;
     }
 
     public boolean isCropSquare() {

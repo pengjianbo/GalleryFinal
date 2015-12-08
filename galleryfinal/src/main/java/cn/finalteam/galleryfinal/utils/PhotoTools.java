@@ -19,6 +19,7 @@ package cn.finalteam.galleryfinal.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -60,6 +61,7 @@ public class PhotoTools {
         allPhotoFolderInfo.setFolderName(context.getResources().getString(R.string.all_photo));
         allPhotoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
         allPhotoFolderList.add(0, allPhotoFolderInfo);
+        List<String> filterList = GalleryFinal.getGalleryConfig().getFilterList();
         try {
             cursor = MediaStore.Images.Media.query(context.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     , projectionPhotos, "", null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
@@ -90,6 +92,7 @@ public class PhotoTools {
 
                     //通过bucketId获取文件夹
                     PhotoFolderInfo photoFolderInfo = bucketMap.get(bucketId);
+
                     if (photoFolderInfo == null) {
                         photoFolderInfo = new PhotoFolderInfo();
                         photoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
@@ -99,7 +102,9 @@ public class PhotoTools {
                         bucketMap.put(bucketId, photoFolderInfo);
                         allPhotoFolderList.add(photoFolderInfo);
                     }
-                    photoFolderInfo.getPhotoList().add(photoInfo);
+                    if ( filterList == null || !filterList.contains(photoInfo.getPhotoPath()) ) {
+                        photoFolderInfo.getPhotoList().add(photoInfo);
+                    }
                 }
             }
         } catch (Exception ex) {

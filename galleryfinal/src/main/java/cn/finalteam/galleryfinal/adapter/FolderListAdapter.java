@@ -59,7 +59,7 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
             path = photoInfo.getPhotoPath();
         }
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, 100, 100);
+        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, 200, 200);
 
         holder.mTvFolderName.setText(photoFolderInfo.getFolderName());
         int size = 0;

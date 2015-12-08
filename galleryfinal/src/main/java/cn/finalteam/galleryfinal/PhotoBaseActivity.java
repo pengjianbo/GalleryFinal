@@ -60,12 +60,24 @@ public abstract class PhotoBaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if ( GalleryFinal.getGalleryConfig() == null ) {
+            finish();
+            return;
+        }
         super.onCreate(savedInstanceState);
         ActivityManager.getActivityManager().addActivity(this);
         mMediaScanner = new MediaScanner(this);
         DisplayMetrics dm = DeviceUtils.getScreenPix(this);
         mScreenWidth = dm.widthPixels;
         mScreenHeight = dm.heightPixels;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if ( GalleryFinal.getGalleryConfig() == null ) {
+            finish();
+        }
     }
 
     @Override

@@ -35,10 +35,13 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
     private int mPickMode;
     private PhotoEditActivity mActivity;
     private GalleryConfig mGalleryConfig;
-    public PhotoEditListAdapter(PhotoEditActivity activity, List<PhotoInfo> list, GalleryConfig galleryConfig) {
+    private int mRowWidth;
+
+    public PhotoEditListAdapter(PhotoEditActivity activity, List<PhotoInfo> list, GalleryConfig galleryConfig, int screenWidth) {
         super(activity, list);
         mGalleryConfig = galleryConfig;
         mActivity = activity;
+        this.mRowWidth = screenWidth/5;
     }
 
     @Override

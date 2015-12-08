@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
                     builder.showCamera();
                 }
 
+                builder.filter(mPhotoList);//添加过滤集合
+
                 GalleryConfig config = builder.build();
                 GalleryFinal.open(config);
             }

@@ -356,6 +356,10 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mTvSubTitle.setText(photoFolderInfo.getFolderName());
         mFolderListAdapter.setSelectFolder(photoFolderInfo);
         mFolderListAdapter.notifyDataSetChanged();
+
+        if (mCurPhotoList.size() == 0) {
+            mTvEmptyView.setText(R.string.no_photo);
+        }
     }
 
     private void photoItemClick(View view, int position) {

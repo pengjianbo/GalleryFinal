@@ -167,7 +167,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         //mIvCrop.setBackgroundDrawable(getTitleStateListDrawable());
         //mIvRotation.setBackgroundDrawable(getTitleStateListDrawable());
 
-        mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mGalleryConfig);
+        mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mGalleryConfig, mScreenWidth);
         mLvGallery.setAdapter(mPhotoEditListAdapter);
 
         try {
@@ -260,6 +260,16 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             if (activity != null) {
                 activity.deleteSelect(dPhoto.getPhotoId());
             }
+
+            try {
+                Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
+                while (entries.hasNext()) {
+                    Map.Entry<String, PhotoInfo> entry = entries.next();
+                    if (entry.getValue() != null && entry.getValue().getPhotoId() == dPhoto.getPhotoId()) {
+                        entries.remove();
+                    }
+                }
+            } catch (Exception e){}
         }
 
         if (mPhotoList.size() == 0) {

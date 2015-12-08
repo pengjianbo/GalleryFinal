@@ -39,12 +39,13 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
     private Map<String, PhotoInfo> mSelectList;
     private int mScreenWidth;
     private GalleryConfig mGalleryConfig;
-
+    private int mRowWidth;
     public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth, GalleryConfig galleryConfig) {
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
         this.mGalleryConfig = galleryConfig;
+        this.mRowWidth = mScreenWidth/3;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
         }
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, 100, 100);
+        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, mRowWidth, mRowWidth);
 
         if ( mGalleryConfig.isMutiSelect() ) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
