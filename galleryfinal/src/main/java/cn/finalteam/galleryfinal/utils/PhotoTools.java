@@ -77,32 +77,32 @@ public class PhotoTools {
                     final int imageId = cursor.getInt(imageIdColumn);
                     final String path = cursor.getString(dataColumn);
                     //final String thumb = cursor.getString(thumbImageColumn);
-                    final PhotoInfo photoInfo = new PhotoInfo();
-                    photoInfo.setPhotoId(imageId);
-                    photoInfo.setPhotoPath(path);
-                    //photoInfo.setThumbPath(thumb);
-                    if (StringUtils.isEmpty(photoInfo.getPhotoPath())) {
-                        continue;
-                    }
-                    if ( allPhotoFolderInfo.getCoverPhoto() == null ) {
-                        allPhotoFolderInfo.setCoverPhoto(photoInfo);
-                    }
-                    //添加到所有图片
-                    allPhotoFolderInfo.getPhotoList().add(photoInfo);
+                    if ( filterList == null || !filterList.contains(path) ) {
+                        final PhotoInfo photoInfo = new PhotoInfo();
+                        photoInfo.setPhotoId(imageId);
+                        photoInfo.setPhotoPath(path);
+                        //photoInfo.setThumbPath(thumb);
+                        if (StringUtils.isEmpty(photoInfo.getPhotoPath())) {
+                            continue;
+                        }
+                        if (allPhotoFolderInfo.getCoverPhoto() == null) {
+                            allPhotoFolderInfo.setCoverPhoto(photoInfo);
+                        }
+                        //添加到所有图片
+                        allPhotoFolderInfo.getPhotoList().add(photoInfo);
 
-                    //通过bucketId获取文件夹
-                    PhotoFolderInfo photoFolderInfo = bucketMap.get(bucketId);
+                        //通过bucketId获取文件夹
+                        PhotoFolderInfo photoFolderInfo = bucketMap.get(bucketId);
 
-                    if (photoFolderInfo == null) {
-                        photoFolderInfo = new PhotoFolderInfo();
-                        photoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
-                        photoFolderInfo.setFolderId(bucketId);
-                        photoFolderInfo.setFolderName(bucketName);
-                        photoFolderInfo.setCoverPhoto(photoInfo);
-                        bucketMap.put(bucketId, photoFolderInfo);
-                        allPhotoFolderList.add(photoFolderInfo);
-                    }
-                    if ( filterList == null || !filterList.contains(photoInfo.getPhotoPath()) ) {
+                        if (photoFolderInfo == null) {
+                            photoFolderInfo = new PhotoFolderInfo();
+                            photoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
+                            photoFolderInfo.setFolderId(bucketId);
+                            photoFolderInfo.setFolderName(bucketName);
+                            photoFolderInfo.setCoverPhoto(photoInfo);
+                            bucketMap.put(bucketId, photoFolderInfo);
+                            allPhotoFolderList.add(photoFolderInfo);
+                        }
                         photoFolderInfo.getPhotoList().add(photoInfo);
                     }
                 }
