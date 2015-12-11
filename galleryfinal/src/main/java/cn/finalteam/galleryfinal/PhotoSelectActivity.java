@@ -259,6 +259,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         message.what = HANLDER_TAKE_PHOTO_EVENT;
 
         if ( !mGalleryConfig.isMutiSelect() ) { //单选
+            mSelectPhotoMap.clear();
+            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
+
             if ( mGalleryConfig.isEditPhoto() ) {//裁剪
                 mHasRefreshGallery = true;
                 toPhotoEdit();
@@ -267,10 +270,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
                 list.add(photoInfo);
                 resultMuti(list);
             }
+
             mHanlder.sendMessageDelayed(message, 100);
         } else {//多选
             mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
-            mHanlder.sendMessageDelayed(message, 1);
+            mHanlder.sendMessageDelayed(message, 100);
         }
     }
 

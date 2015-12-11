@@ -28,7 +28,7 @@
     <string name="select_max_tips">已达到最大选择数量</string>
     <string name="empty_sdcard">没有SD卡</string>
     <string name="open_gallery_fail">相册初始化失败!</string>
-
+    <string name="take_photo_fail">拍照失败</string>
     <string name="saving">正在保存照片…</string>
 
 </resources>

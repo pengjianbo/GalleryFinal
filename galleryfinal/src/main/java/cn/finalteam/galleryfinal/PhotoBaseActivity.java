@@ -125,6 +125,8 @@ public abstract class PhotoBaseActivity extends Activity {
             Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakePhotoUri);
             startActivityForResult(captureIntent, GalleryFinal.TAKE_REQUEST_CODE);
+        } else {
+            Logger.e("create file failure");
         }
     }
 
@@ -139,7 +141,7 @@ public abstract class PhotoBaseActivity extends Activity {
                 updateGallery(path);
                 takeResult(info);
             } else {
-                toast("拍照失败");
+                toast(getString(R.string.take_photo_fail));
             }
         } else if ( requestCode == GalleryFinal.EDIT_REQUEST_CODE) {
             if ( resultCode == GalleryFinal.EDIT_OK ) {

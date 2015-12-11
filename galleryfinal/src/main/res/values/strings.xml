@@ -12,6 +12,6 @@
     <string name="select_max_tips">Has reached the maximum number selection!</string>
     <string name="empty_sdcard">No SD card</string>
     <string name="open_gallery_fail">Gallery init failure!</string>
-
+    <string name="take_photo_fail">Take photo failure</string>
     <string name="saving">Saving picture…</string>
 </resources>

@@ -150,7 +150,6 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mPhotoTempMap = new HashMap<>();
         mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
         mGalleryConfig = GalleryFinal.getGalleryConfig();
-
         if (mPhotoList == null) {
             mPhotoList = new ArrayList<>();
         }
@@ -171,7 +170,11 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mLvGallery.setAdapter(mPhotoEditListAdapter);
 
         try {
-            new File(Consts.PHOTO_EDIT_TEMP_DIR, ".nomedia").createNewFile();
+            File nomediaFile = new File(Consts.PHOTO_EDIT_TEMP_DIR, ".nomedia");
+            if (!nomediaFile.exists()) {
+                FileUtils.makeFolders(nomediaFile);
+                nomediaFile.createNewFile();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
