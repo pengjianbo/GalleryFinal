@@ -110,6 +110,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
         mGalleryConfig = GalleryFinal.getGalleryConfig();
 
+        if ( mGalleryConfig == null ) {
+            toast(getString(R.string.please_reopen_gf));
+            finish();
+            return;
+        }
         mPhotoTargetFolder = null;
 
         findViews();

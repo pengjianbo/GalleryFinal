@@ -57,8 +57,6 @@ public class GalleryFinal {
             return;
         }
 
-        //清理裁剪文件夹
-
         mGalleryConfig = config;
 
         Intent intent = new Intent(config.getActivity(), PhotoSelectActivity.class);

@@ -47,7 +47,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.2.0'
+compile 'cn.finalteam:galleryfinal:1.2.2'
 ```
 
 ##具体使用
@@ -214,6 +214,10 @@ colorTheme为主题色，colorThemeDark为主题加深色
 ```
 
 #更新日志
+
+## V1.2.2
+* 解决单选拍照问题
+* 提高稳定性
 
 ##V1.2.0
 * 提高图片清晰度

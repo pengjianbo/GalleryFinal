@@ -150,6 +150,11 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mPhotoTempMap = new HashMap<>();
         mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
         mGalleryConfig = GalleryFinal.getGalleryConfig();
+        if(mGalleryConfig != null) {
+            toast(getString(R.string.please_reopen_gf));
+            finish();
+            return;
+        }
         if (mPhotoList == null) {
             mPhotoList = new ArrayList<>();
         }

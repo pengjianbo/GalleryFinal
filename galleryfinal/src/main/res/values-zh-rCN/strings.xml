@@ -30,5 +30,6 @@
     <string name="open_gallery_fail">相册初始化失败!</string>
     <string name="take_photo_fail">拍照失败</string>
     <string name="saving">正在保存照片…</string>
+    <string name="please_reopen_gf">请重新打开图片浏览器</string>
 
 </resources>

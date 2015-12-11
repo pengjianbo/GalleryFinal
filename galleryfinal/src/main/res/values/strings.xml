@@ -14,4 +14,5 @@
     <string name="open_gallery_fail">Gallery init failure!</string>
     <string name="take_photo_fail">Take photo failure</string>
     <string name="saving">Saving picture…</string>
+    <string name="please_reopen_gf">Please reopen Gallery</string>
 </resources>
