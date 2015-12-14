@@ -435,7 +435,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
                 super.run();
 
                 mAllPhotoFolderList.clear();
-                List<PhotoFolderInfo> allFolderList = PhotoTools.getAllPhotoFolder(PhotoSelectActivity.this);
+                List<PhotoFolderInfo> allFolderList = PhotoTools.getAllPhotoFolder(PhotoSelectActivity.this, mSelectPhotoMap);
                 mAllPhotoFolderList.addAll(allFolderList);
 
                 mCurPhotoList.clear();

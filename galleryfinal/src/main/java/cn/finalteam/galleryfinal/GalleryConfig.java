@@ -38,7 +38,9 @@ public class GalleryConfig {
     private int cropWidth;
     private int cropHeight;
     private boolean cropSquare;
-    private List<String> filterList;//过滤器
+    private ArrayList<String> selectedList;
+    private ArrayList<String> filterList;//过滤器
+
 
     private Activity activity;
     private ImageLoader imageLoader;
@@ -55,6 +57,7 @@ public class GalleryConfig {
         this.cropWidth = builder.cropWidth;
         this.cropHeight = builder.cropHeight;
         this.cropSquare = builder.cropSquare;
+        this.selectedList = builder.selectedList;
         this.filterList = builder.filterList;
     }
 
@@ -68,7 +71,8 @@ public class GalleryConfig {
         private int cropWidth;
         private int cropHeight;
         private boolean cropSquare;
-        private List<String> filterList;
+        private ArrayList<String> selectedList;
+        private ArrayList<String> filterList;
 
         private Activity activity;
         private ImageLoader imageLoader;
@@ -127,14 +131,37 @@ public class GalleryConfig {
             return this;
         }
 
-        public Builder filter(List<String> filterList) {
-            this.filterList = filterList;
+        public Builder selected(ArrayList<String> selectedList) {
+            if (selectedList != null) {
+                this.selectedList = (ArrayList<String>) selectedList.clone();
+            }
+            return this;
+        }
+
+        public Builder selected(Collection<PhotoInfo> selectedList) {
+            if ( selectedList != null ) {
+                ArrayList<String> list = new ArrayList<>();
+                for(PhotoInfo info:selectedList) {
+                    if (info != null) {
+                        list.add(info.getPhotoPath());
+                    }
+                }
+
+                this.selectedList = list;
+            }
+            return this;
+        }
+
+        public Builder filter(ArrayList<String> filterList) {
+            if ( filterList != null ) {
+                this.filterList = (ArrayList<String>) filterList.clone();
+            }
             return this;
         }
 
         public Builder filter(Collection<PhotoInfo> filterList) {
             if ( filterList != null ) {
-                List<String> list = new ArrayList<>();
+                ArrayList<String> list = new ArrayList<>();
                 for(PhotoInfo info:filterList) {
                     if (info != null) {
                         list.add(info.getPhotoPath());
@@ -196,7 +223,11 @@ public class GalleryConfig {
         return cropHeight;
     }
 
-    public List<String> getFilterList() {
+    public List<String> getSelectedList() {
+        return selectedList;
+    }
+
+    public ArrayList<String> getFilterList() {
         return filterList;
     }
 

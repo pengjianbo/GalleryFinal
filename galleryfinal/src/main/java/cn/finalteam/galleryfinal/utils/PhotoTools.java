@@ -24,10 +24,10 @@ import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.toolsfinal.Logger;
-import cn.finalteam.toolsfinal.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Desction:
@@ -41,7 +41,7 @@ public class PhotoTools {
      * @param context
      * @return
      */
-    public static List<PhotoFolderInfo> getAllPhotoFolder(Context context) {
+    public static List<PhotoFolderInfo> getAllPhotoFolder(Context context, Map<String, PhotoInfo> selectPhotoMap) {
         List<PhotoFolderInfo> allFolderList = new ArrayList<>();
         final String[] projectionPhotos = {
                 MediaStore.Images.Media._ID,
@@ -61,6 +61,7 @@ public class PhotoTools {
         allPhotoFolderInfo.setFolderName(context.getResources().getString(R.string.all_photo));
         allPhotoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
         allPhotoFolderList.add(0, allPhotoFolderInfo);
+        List<String> selectedList = GalleryFinal.getGalleryConfig().getSelectedList();
         List<String> filterList = GalleryFinal.getGalleryConfig().getFilterList();
         try {
             cursor = MediaStore.Images.Media.query(context.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -82,9 +83,6 @@ public class PhotoTools {
                         photoInfo.setPhotoId(imageId);
                         photoInfo.setPhotoPath(path);
                         //photoInfo.setThumbPath(thumb);
-                        if (StringUtils.isEmpty(photoInfo.getPhotoPath())) {
-                            continue;
-                        }
                         if (allPhotoFolderInfo.getCoverPhoto() == null) {
                             allPhotoFolderInfo.setCoverPhoto(photoInfo);
                         }
@@ -104,6 +102,10 @@ public class PhotoTools {
                             allPhotoFolderList.add(photoFolderInfo);
                         }
                         photoFolderInfo.getPhotoList().add(photoInfo);
+
+                        if (selectedList != null && selectedList.size() > 0 && selectedList.contains(path)) {
+                            selectPhotoMap.put(path, photoInfo);
+                        }
                     }
                 }
             }
@@ -115,6 +117,9 @@ public class PhotoTools {
             }
         }
         allFolderList.addAll(allPhotoFolderList);
+        if (selectedList != null) {
+            selectedList.clear();
+        }
         return allFolderList;
     }
 }
