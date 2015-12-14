@@ -323,7 +323,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         } else if ( id == R.id.fab_ok ) {
             ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
             if (mSelectPhotoMap.size() == 0 || !mGalleryConfig.isEditPhoto()) {
-                //resultMuti(photoList);
+                resultMuti(photoList);
             } else {
                 toPhotoEdit();
             }
