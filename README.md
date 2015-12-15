@@ -14,9 +14,8 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 系统Gallery App不美观
 * ……
 
-##V1.2.5
-* 支持自定义缓存路径
-* 添加gallery已选集合
+##V1.2.6
+* 去掉V4包
 
 ##截图展示
 Demo apk二维码地址：
@@ -203,7 +202,7 @@ colorTheme为主题色，colorThemeDark为主题加深色
 
 #更新日志
 
-# V1.2.6
+## V1.2.6
 * 去掉V4包
 
 ## V1.2.5
