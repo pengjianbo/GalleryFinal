@@ -32,7 +32,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.2.5'
+compile 'cn.finalteam:galleryfinal:1.2.6'
 ```
 
 ##具体使用
@@ -202,13 +202,20 @@ colorTheme为主题色，colorThemeDark为主题加深色
 ```
 
 #更新日志
+
+# V1.2.6
+* 去掉V4包
+
 ## V1.2.5
 * 自定义缓存目录
 * 添加已选集合
+
 ## V1.2.4
 * 解决多选且不裁剪确认按钮无响应问题
+
 ## V1.2.3
 * 解决筛选器无效问题
+
 ## V1.2.2
 * 解决单选拍照问题
 * 提高稳定性
