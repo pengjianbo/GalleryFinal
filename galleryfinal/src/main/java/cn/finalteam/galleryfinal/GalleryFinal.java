@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.widget.Toast;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
-import java.io.File;
 
 /**
  * Desction:
@@ -61,42 +60,38 @@ public class GalleryFinal {
 
         Intent intent = new Intent(config.getActivity(), PhotoSelectActivity.class);
         config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
-
-        //定时清理文件
-        cleanTempFile();
-
     }
 
     /**
      * 清楚缓存文件
      */
-    public static void clearCacheFile() {
+    public static void cleanCacheFile() {
         if (mGalleryConfig != null && mGalleryConfig.getEditPhotoCacheFolder() != null) {
             //清楚裁剪冗余图片
             FileUtils.deleteFile(mGalleryConfig.getEditPhotoCacheFolder());
         }
     }
 
-    private static void cleanTempFile() {
-        if (mGalleryConfig == null || mGalleryConfig.getEditPhotoCacheFolder() == null) {
-            return;
-        }
-
-        File file = mGalleryConfig.getEditPhotoCacheFolder();
-        if ( file.exists() ) {
-            File []files = file.listFiles();
-            if ( files != null && files.length > 0 ) {
-                for (File f : files) {
-                    long t = f.lastModified();
-                    long curTime = System.currentTimeMillis();
-                    if (t == 0l && (curTime - t) > 86400000) {
-                        try {
-                            f.delete();
-                        } catch (Exception e){}
-                    }
-                }
-            }
-        }
-    }
+    //public static void cleanFile() {
+    //    if (mGalleryConfig == null || mGalleryConfig.getEditPhotoCacheFolder() == null) {
+    //        return;
+    //    }
+    //
+    //    File file = mGalleryConfig.getEditPhotoCacheFolder();
+    //    if ( file.exists() ) {
+    //        File []files = file.listFiles();
+    //        if ( files != null && files.length > 0 ) {
+    //            for (File f : files) {
+    //                long t = f.lastModified();
+    //                long curTime = System.currentTimeMillis();
+    //                if (t == 0l && (curTime - t) > 86400000) {
+    //                    try {
+    //                        f.delete();
+    //                    } catch (Exception e){}
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
 }
