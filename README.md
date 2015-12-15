@@ -32,7 +32,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.2.6'
+compile 'cn.finalteam:galleryfinal:1.2.7'
 ```
 
 ##具体使用
