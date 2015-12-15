@@ -14,25 +14,9 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 系统Gallery App不美观
 * ……
 
-# Why GalleryFinal?
-* GalleryFinal solved the "photos are upside down" problem
-* GalleryFinal solved some Exceptions cause of different camera and image explorer not compatible
-* GalleryFinal solved some crash due to different cellphone adapted
-* The System Gallery cannot do multiple choice
-* The System camera/gallery/slip didn't work well
-* The System Gallery is not smart
-
-##V1.2.0更新内容
-* 提高图片清晰度
-* 支持图片手动缩放
-* 解决权限问题
-* 优化图片旋转
-* 解决二次裁剪问题
-* 解决多次旋转后图片不清晰问题
-* 添加图片选择过滤
-* 添加清理缓存
-* 提高体验效果和修改UI
-* 解决多选且不裁剪确认按钮无响应问题
+##V1.2.5
+* 支持自定义缓存路径
+* 添加gallery已选集合
 
 ##截图展示
 Demo apk二维码地址：
@@ -48,7 +32,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.2.4'
+compile 'cn.finalteam:galleryfinal:1.2.5'
 ```
 
 ##具体使用
@@ -187,7 +171,10 @@ GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
                         .cropSquare()
                         .cropWidth(50)
                         .cropHeight(50)
-                        .filter(mPhotoList)
+                        //.setTakePhotoFolter(new File(...)) //自定义拍照存储目录
+                        //.setEditPhotoCacheFolder(new File(...)) //自定义编辑产生的图片缓存目录
+                        //.filter(mPhotoList)
+                        .selected(mPhotoList)
                         .build();
 GalleryFinal.open(config);
 ```
@@ -215,7 +202,9 @@ colorTheme为主题色，colorThemeDark为主题加深色
 ```
 
 #更新日志
-
+## V1.2.5
+* 自定义缓存目录
+* 添加已选集合
 ## V1.2.4
 * 解决多选且不裁剪确认按钮无响应问题
 ## V1.2.3

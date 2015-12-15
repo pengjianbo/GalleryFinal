@@ -80,6 +80,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private GalleryConfig mGalleryConfig;
     private HashMap<String, PhotoInfo> mSelectPhotoMap;
     private Map<Integer, PhotoTempModel> mPhotoTempMap;
+    private File mEditPhotoCacheFile;
 
     private android.os.Handler mHanlder = new android.os.Handler() {
         @Override
@@ -155,6 +156,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             finish();
             return;
         }
+        mEditPhotoCacheFile = GalleryFinal.getGalleryConfig().getEditPhotoCacheFolder();
+
         if (mPhotoList == null) {
             mPhotoList = new ArrayList<>();
         }
@@ -175,7 +178,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mLvGallery.setAdapter(mPhotoEditListAdapter);
 
         try {
-            File nomediaFile = new File(Consts.PHOTO_EDIT_TEMP_DIR, ".nomedia");
+            File nomediaFile = new File(mEditPhotoCacheFile, ".nomedia");
             if (!nomediaFile.exists()) {
                 FileUtils.makeFolders(nomediaFile);
                 nomediaFile.createNewFile();
@@ -331,7 +334,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 System.gc();
                 PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
                 try {
-                    File toFile = new File(Consts.PHOTO_EDIT_TEMP_DIR, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop.jpg");
+                    File toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop.jpg");
                     FileUtils.makeFolders(toFile);
                     onSaveClicked(toFile);//保存裁剪
                 } catch (Exception e) {
@@ -392,7 +395,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             if (photoInfo != null) {
                 final PhotoTempModel photoTempModel = mPhotoTempMap.get(photoInfo.getPhotoId());
                 final String path = photoTempModel.getSourcePath();
-                final File rotateFile = new File(Consts.PHOTO_EDIT_TEMP_DIR, Utils.getFileName(path) + "_rotate.jpg");
+                final File rotateFile = new File(mEditPhotoCacheFile, Utils.getFileName(path) + "_rotate.jpg");
                 new AsyncTask<Void, Void, Bitmap>() {
                     @Override
                     protected void onPreExecute() {

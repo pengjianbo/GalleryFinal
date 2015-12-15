@@ -22,7 +22,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -111,8 +110,7 @@ public abstract class PhotoBaseActivity extends Activity {
 
         File takePhotoFolder = null;
         if (StringUtils.isEmpty(mPhotoTargetFolder)) {
-            takePhotoFolder = new File(Environment.getExternalStorageDirectory(),
-                    "/DCIM/" + Consts.TAKE_PHOTO_FOLDER);
+            takePhotoFolder = GalleryFinal.getGalleryConfig().getTakePhotoFolder();
         } else {
             takePhotoFolder = new File(mPhotoTargetFolder);
         }

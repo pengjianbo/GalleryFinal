@@ -17,7 +17,9 @@
 package cn.finalteam.galleryfinal;
 
 import android.app.Activity;
+import android.os.Environment;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,8 +42,8 @@ public class GalleryConfig {
     private boolean cropSquare;
     private ArrayList<String> selectedList;
     private ArrayList<String> filterList;//过滤器
-
-
+    private File takePhotoFolder;
+    private File editPhotoCacheFolder;
     private Activity activity;
     private ImageLoader imageLoader;
 
@@ -59,6 +61,16 @@ public class GalleryConfig {
         this.cropSquare = builder.cropSquare;
         this.selectedList = builder.selectedList;
         this.filterList = builder.filterList;
+        this.takePhotoFolder = builder.takePhotoFolder;
+        this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
+
+        if ( takePhotoFolder == null ) {
+            takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal" + File.separator);
+        }
+
+        if ( editPhotoCacheFolder == null ) {
+            editPhotoCacheFolder = new File(Environment.getExternalStorageDirectory() + "/GalleryFinal/edittemp/");
+        }
     }
 
     public static class Builder {
@@ -73,6 +85,8 @@ public class GalleryConfig {
         private boolean cropSquare;
         private ArrayList<String> selectedList;
         private ArrayList<String> filterList;
+        private File takePhotoFolder;
+        private File editPhotoCacheFolder;
 
         private Activity activity;
         private ImageLoader imageLoader;
@@ -173,6 +187,26 @@ public class GalleryConfig {
             return this;
         }
 
+        /**
+         * 配置拍照缓存母驴
+         * @param file
+         * @return
+         */
+        public Builder setTakePhotoFolter(File file) {
+            this.takePhotoFolder = file;
+            return this;
+        }
+
+        /**
+         * 配置编辑图片产生的文件缓存目录
+         * @param file
+         * @return
+         */
+        public Builder setEditPhotoCacheFolder(File file) {
+            this.editPhotoCacheFolder = file;
+            return this;
+        }
+
         public Builder imageloader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
             return this;
@@ -233,5 +267,13 @@ public class GalleryConfig {
 
     public boolean isCropSquare() {
         return cropSquare;
+    }
+
+    public File getTakePhotoFolder() {
+        return takePhotoFolder;
+    }
+
+    public File getEditPhotoCacheFolder() {
+        return editPhotoCacheFolder;
     }
 }

@@ -71,12 +71,18 @@ public class GalleryFinal {
      * 清楚缓存文件
      */
     public static void clearCacheFile() {
-        //清楚裁剪冗余图片
-        FileUtils.deleteFile(Consts.PHOTO_EDIT_TEMP_DIR);
+        if (mGalleryConfig != null && mGalleryConfig.getEditPhotoCacheFolder() != null) {
+            //清楚裁剪冗余图片
+            FileUtils.deleteFile(mGalleryConfig.getEditPhotoCacheFolder());
+        }
     }
 
     private static void cleanTempFile() {
-        File file = new File(Consts.PHOTO_EDIT_TEMP_DIR);
+        if (mGalleryConfig == null || mGalleryConfig.getEditPhotoCacheFolder() == null) {
+            return;
+        }
+
+        File file = mGalleryConfig.getEditPhotoCacheFolder();
         if ( file.exists() ) {
             File []files = file.listFiles();
             if ( files != null && files.length > 0 ) {

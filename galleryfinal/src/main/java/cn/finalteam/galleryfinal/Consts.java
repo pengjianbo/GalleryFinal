@@ -16,15 +16,12 @@
 
 package cn.finalteam.galleryfinal;
 
-import android.os.Environment;
-import java.io.File;
-
 /**
  * Desction:
  * Author:pengjianbo
  * Date:15/12/2 上午11:36
  */
 class Consts {
-    public static final String TAKE_PHOTO_FOLDER = "GalleryFinal" + File.separator;
-    public static final String PHOTO_EDIT_TEMP_DIR = Environment.getExternalStorageDirectory() + "/GalleryFinal/edittemp/";
+    //public static final String TAKE_PHOTO_FOLDER = "GalleryFinal" + File.separator;
+    //public static final String PHOTO_EDIT_TEMP_DIR = Environment.getExternalStorageDirectory() + "/GalleryFinal/edittemp/";
 }
