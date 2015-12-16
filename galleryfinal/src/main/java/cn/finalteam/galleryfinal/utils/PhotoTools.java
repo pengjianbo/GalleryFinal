@@ -24,6 +24,7 @@ import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.toolsfinal.Logger;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +79,8 @@ public class PhotoTools {
                     final int imageId = cursor.getInt(imageIdColumn);
                     final String path = cursor.getString(dataColumn);
                     //final String thumb = cursor.getString(thumbImageColumn);
-                    if ( filterList == null || !filterList.contains(path) ) {
+                    File file = new File(path);
+                    if ( (filterList == null || !filterList.contains(path)) && file.exists() && file.length() > 0 ) {
                         final PhotoInfo photoInfo = new PhotoInfo();
                         photoInfo.setPhotoId(imageId);
                         photoInfo.setPhotoPath(path);
