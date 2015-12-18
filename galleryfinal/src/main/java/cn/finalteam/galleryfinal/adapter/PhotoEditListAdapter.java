@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import cn.finalteam.galleryfinal.GalleryConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.PhotoEditActivity;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -58,6 +59,7 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
             path = photoInfo.getPhotoPath();
         }
         holder.mIvPhoto.setImageResource(R.drawable.ic_gf_default_photo);
+        holder.mIvDelete.setImageResource(GalleryFinal.getGalleryTheme().getIconDelete());
         mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, 100, 100);
         if (!mGalleryConfig.isMutiSelect()) {
             holder.mIvDelete.setVisibility(View.GONE);

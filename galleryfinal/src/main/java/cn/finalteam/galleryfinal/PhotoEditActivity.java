@@ -81,6 +81,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private HashMap<String, PhotoInfo> mSelectPhotoMap;
     private Map<Integer, PhotoTempModel> mPhotoTempMap;
     private File mEditPhotoCacheFile;
+    private LinearLayout mTitlebar;
+    private GalleryTheme mGalleryTheme;
 
     private android.os.Handler mHanlder = new android.os.Handler() {
         @Override
@@ -157,6 +159,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             return;
         }
         mEditPhotoCacheFile = GalleryFinal.getGalleryConfig().getEditPhotoCacheFolder();
+        mGalleryTheme = GalleryFinal.getGalleryTheme();
 
         if (mPhotoList == null) {
             mPhotoList = new ArrayList<>();
@@ -168,11 +171,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
         findViews();
         setListener();
-
-        mIvBack.setBackgroundDrawable(getTitleStateListDrawable());
-        //mIvTakePhoto.setBackgroundDrawable(getTitleStateListDrawable());
-        //mIvCrop.setBackgroundDrawable(getTitleStateListDrawable());
-        //mIvRotation.setBackgroundDrawable(getTitleStateListDrawable());
+        setTheme();
 
         mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mGalleryConfig, mScreenWidth);
         mLvGallery.setAdapter(mPhotoEditListAdapter);
@@ -207,6 +206,40 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         if (mPhotoList.size() > 0) {
             loadImage(mPhotoList.get(0));
         }
+
+    }
+
+    private void setTheme() {
+        mIvBack.setImageResource(mGalleryTheme.getIconBack());
+        if (mGalleryTheme.getIconBack() == R.drawable.ic_gf_back) {
+            mIvBack.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        mIvTakePhoto.setImageResource(mGalleryTheme.getIconCamera());
+        if (mGalleryTheme.getIconCamera() == R.drawable.ic_gf_camera) {
+            mIvTakePhoto.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        mIvCrop.setImageResource(mGalleryTheme.getIconCrop());
+        if (mGalleryTheme.getIconCrop() == R.drawable.ic_gf_crop) {
+            mIvCrop.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        mIvRotation.setImageResource(mGalleryTheme.getIconRotate());
+        if (mGalleryTheme.getIconRotate() == R.drawable.ic_gf_rotation) {
+            mIvRotation.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        if ( mGalleryTheme.getEditPhotoBgTexture() != null ) {
+            mIvSourcePhoto.setBackgroundDrawable(mGalleryTheme.getEditPhotoBgTexture());
+            mIvCropPhoto.setBackgroundDrawable(mGalleryTheme.getEditPhotoBgTexture());
+        }
+
+        mFabCrop.setIcon(mGalleryTheme.getIconFab());
+        mTitlebar.setBackgroundColor(mGalleryTheme.getTitleBarBgColor());
+        mTvTitle.setTextColor(mGalleryTheme.getTitleBarTextColor());
+        mFabCrop.setColorPressed(mGalleryTheme.getFabPressedColor());
+        mFabCrop.setColorNormal(mGalleryTheme.getFabNornalColor());
     }
 
     private void findViews() {
@@ -221,6 +254,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mIvCrop = (ImageView) findViewById(R.id.iv_crop);
         mIvRotation = (ImageView) findViewById(R.id.iv_rotation);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
+        mTitlebar = (LinearLayout) findViewById(R.id.titlebar);
     }
 
     private void setListener() {

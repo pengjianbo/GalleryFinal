@@ -18,13 +18,10 @@ package cn.finalteam.galleryfinal;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Window;
 import android.widget.Toast;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -85,13 +82,6 @@ public abstract class PhotoBaseActivity extends Activity {
         super.onDestroy();
         mMediaScanner.unScanFile();
         ActivityManager.getActivityManager().finishActivity(this);
-    }
-
-    public int getColorByTheme(int attr) {
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(attr, typedValue, true);
-        int colorTheme = typedValue.data;
-        return colorTheme;
     }
 
     public void toast(String msg) {
@@ -179,11 +169,4 @@ public abstract class PhotoBaseActivity extends Activity {
     }
 
     protected abstract void takeResult(PhotoInfo info);
-
-    public StateListDrawable getTitleStateListDrawable() {
-        StateListDrawable bg = new StateListDrawable();
-        bg.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(getColorByTheme(R.attr.colorThemeDark)));
-        bg.addState(new int[] {}, new ColorDrawable(getColorByTheme(R.attr.colorTheme)));
-        return bg;
-    }
 }

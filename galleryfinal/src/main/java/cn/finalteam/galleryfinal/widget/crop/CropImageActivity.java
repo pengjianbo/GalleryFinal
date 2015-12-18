@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
+import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.toolsfinal.Logger;
 import java.io.File;
@@ -214,7 +215,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 return;
             }
 
-            HighlightView hv = new HighlightView(imageView, getColorByTheme(R.attr.colorTheme));
+            HighlightView hv = new HighlightView(imageView, GalleryFinal.getGalleryTheme().getCropControlColor());
             final int width = rotateBitmap.getWidth();
             final int height = rotateBitmap.getHeight();
 

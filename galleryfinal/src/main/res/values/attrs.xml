@@ -16,8 +16,8 @@
   -->
 
 <resources>
-    <attr name="colorTheme" format="reference|color"/>
-    <attr name="colorThemeDark" format="reference|color"/>
+    <!--<attr name="colorTheme" format="reference|color"/>-->
+    <!--<attr name="colorThemeDark" format="reference|color"/>-->
 
     <declare-styleable name="GFFloatingActionButton">
         <attr name="fabColorPressed" format="color"/>

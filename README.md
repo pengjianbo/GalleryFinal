@@ -14,11 +14,16 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 系统Gallery App不美观
 * ……
 
-##Update V1.3.0
+##Updating V1.3.0
 * 代码设置主题颜色
 * 支持对外打开相册
 * 支持对外打开编辑
 * 支持对外打开相机
+* gif图片不能编辑
+* 解决三星部分机型编辑出现OOM情况
+* 添加旋转是否覆盖源文件（默认不覆盖）
+* 添加裁剪是否覆盖源文件（默认不覆盖）
+* 添加必须裁剪功能
 
 ##截图展示
 Demo apk二维码地址：

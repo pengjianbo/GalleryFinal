@@ -17,7 +17,6 @@
 package cn.finalteam.galleryfinal;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +28,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
 import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
@@ -66,6 +66,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private LinearLayout mLlTitle;
     private FloatingActionButton mFabOk;
     private TextView mTvEmptyView;
+    private RelativeLayout mTitlebar;
+    private TextView mTvTitle;
+    private ImageView mIvFolderArrow;
 
     private List<PhotoFolderInfo> mAllPhotoFolderList;
     private FolderListAdapter mFolderListAdapter;
@@ -74,6 +77,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private PhotoListAdapter mPhotoListAdapter;
 
     private GalleryConfig mGalleryConfig;
+    private GalleryTheme mGalleryTheme;
 
     //是否需要刷新相册
     private boolean mHasRefreshGallery = false;
@@ -109,8 +113,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         setContentView(R.layout.gf_activity_photo_select);
 
         mGalleryConfig = GalleryFinal.getGalleryConfig();
+        mGalleryTheme = GalleryFinal.getGalleryTheme();
 
-        if ( mGalleryConfig == null ) {
+        if ( mGalleryConfig == null || mGalleryTheme == null) {
             toast(getString(R.string.please_reopen_gf));
             finish();
             return;
@@ -133,9 +138,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             mFabOk.setVisibility(View.VISIBLE);
         }
 
-        mIvBack.setBackgroundDrawable(getTitleStateListDrawable());
-        //mIvTakePhoto.setBackgroundDrawable(getTitleStateListDrawable());
-        //mIvClear.setBackgroundDrawable(getTitleStateListDrawable());
+        setTheme();
         mGvPhotoList.setEmptyView(mTvEmptyView);
 
         if (mGalleryConfig.isShowCamera()) {
@@ -146,6 +149,36 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
         refreshSelectCount();
         getPhotos();
+    }
+
+    private void setTheme() {
+        mIvBack.setImageResource(mGalleryTheme.getIconBack());
+        if (mGalleryTheme.getIconBack() == R.drawable.ic_gf_back) {
+            mIvBack.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        mIvFolderArrow.setImageResource(mGalleryTheme.getIconFolderArrow());
+        if (mGalleryTheme.getIconFolderArrow() == R.drawable.ic_gf_triangle_arrow) {
+            mIvFolderArrow.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        mIvClear.setImageResource(mGalleryTheme.getIconClear());
+        if (mGalleryTheme.getIconClear() == R.drawable.ic_gf_clear) {
+            mIvClear.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+
+        mIvTakePhoto.setImageResource(mGalleryTheme.getIconCamera());
+        if (mGalleryTheme.getIconCamera() == R.drawable.ic_gf_camera) {
+            mIvTakePhoto.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        }
+        mFabOk.setIcon(mGalleryTheme.getIconFab());
+
+        mTitlebar.setBackgroundColor(mGalleryTheme.getTitleBarBgColor());
+        mTvSubTitle.setTextColor(mGalleryTheme.getTitleBarTextColor());
+        mTvTitle.setTextColor(mGalleryTheme.getTitleBarTextColor());
+        mTvChooseCount.setTextColor(mGalleryTheme.getTitleBarTextColor());
+        mFabOk.setColorPressed(mGalleryTheme.getFabPressedColor());
+        mFabOk.setColorNormal(mGalleryTheme.getFabNornalColor());
     }
 
     private void findViews() {
@@ -160,6 +193,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mTvEmptyView = (TextView) findViewById(R.id.tv_empty_view);
         mLlTitle = (LinearLayout) findViewById(R.id.ll_title);
         mIvClear = (ImageView) findViewById(R.id.iv_clear);
+        mTitlebar = (RelativeLayout) findViewById(R.id.titlebar);
+        mTvTitle = (TextView) findViewById(R.id.tv_title);
+        mIvFolderArrow = (ImageView) findViewById(R.id.iv_folder_arrow);
     }
 
     private void setListener() {
@@ -403,9 +439,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         PhotoListAdapter.PhotoViewHolder holder = (PhotoListAdapter.PhotoViewHolder) view.getTag();
         if (holder != null) {
             if (checked) {
-                holder.mIvCheck.setBackgroundColor(getColorByTheme(R.attr.colorTheme));
+                holder.mIvCheck.setBackgroundColor(mGalleryTheme.getCheckSelectedColor());
             } else {
-                holder.mIvCheck.setBackgroundColor(Color.rgb(0xd2, 0xd2, 0xd7));
+                holder.mIvCheck.setBackgroundColor(mGalleryTheme.getCheckNornalColor());
             }
         } else {
             mPhotoListAdapter.notifyDataSetChanged();

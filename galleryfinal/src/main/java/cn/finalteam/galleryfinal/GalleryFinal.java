@@ -37,10 +37,23 @@ public class GalleryFinal {
     static final int EDIT_REQUEST_CODE = 1003;
 
     private static GalleryConfig mGalleryConfig;
+    private static GalleryTheme mGalleryTheme;
 
     public static GalleryConfig getGalleryConfig() {
         return mGalleryConfig;
     }
+
+    public static void init(GalleryTheme galleryTheme) {
+        mGalleryTheme = galleryTheme;
+    }
+
+    public static GalleryTheme getGalleryTheme() {
+        if (mGalleryTheme== null) {
+            //使用默认配置
+            mGalleryTheme = GalleryTheme.DEFAULT;
+        }
+        return mGalleryTheme;
+    }  
 
     public static void open(GalleryConfig config) {
         if ( config == null ) {

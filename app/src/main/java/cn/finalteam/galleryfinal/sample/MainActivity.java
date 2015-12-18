@@ -2,6 +2,7 @@ package cn.finalteam.galleryfinal.sample;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.GalleryTheme;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.sample.loader.GlideImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.PicassoImageLoader;
@@ -56,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.et_crop_height) EditText mEtCropHeight;
     @Bind(R.id.ll_crop_size) LinearLayout mLlCropSize;
     @Bind(R.id.cb_crop_square) CheckBox mCbCropSquare;
+    @Bind(R.id.rb_theme_default) RadioButton mRbThemeDefault;
+    @Bind(R.id.rb_theme_dark) RadioButton mRbThemeDark;
+    @Bind(R.id.rb_theme_cyan) RadioButton mRbThemeCyan;
+    @Bind(R.id.rb_theme_orange) RadioButton mRbThemeOrange;
+    @Bind(R.id.rb_theme_green) RadioButton mRbThemeGreen;
+    @Bind(R.id.rb_theme_teal) RadioButton mRbThemeTeal;
+    @Bind(R.id.rb_theme_custom) RadioButton mRbThemeCustom;
 
     private List<PhotoInfo> mPhotoList;
     private ChoosePhotoListAdapter mChoosePhotoListAdapter;
@@ -125,6 +134,37 @@ public class MainActivity extends AppCompatActivity {
                 //        .selected(mPhotoList)
                 //        .build();
                 //GalleryFinal.open(config);
+
+                //配置主题，这个步骤可以放到application中
+                if (mRbThemeDefault.isChecked()) {
+                    GalleryFinal.init(GalleryTheme.DEFAULT);
+                } else if (mRbThemeDark.isChecked()) {
+                    GalleryFinal.init(GalleryTheme.DARK);
+                } else if (mRbThemeCyan.isChecked()) {
+                    GalleryFinal.init(GalleryTheme.CYAN);
+                } else if (mRbThemeOrange.isChecked()) {
+                    GalleryFinal.init(GalleryTheme.ORANGE);
+                } else if (mRbThemeGreen.isChecked()) {
+                    GalleryFinal.init(GalleryTheme.GREEN);
+                } else if (mRbThemeTeal.isChecked()) {
+                    GalleryFinal.init(GalleryTheme.TEAL);
+                } else if (mRbThemeCustom.isChecked()) {
+                    GalleryTheme theme = new GalleryTheme.Builder()
+                            .setTitleBarBgColor(Color.rgb(0xFF, 0x57, 0x22))
+                            .setTitleBarTextColor(Color.BLACK)
+                            .setTitleBarIconColor(Color.BLACK)
+                            .setFabNornalColor(Color.RED)
+                            .setFabPressedColor(Color.BLUE)
+                            .setCheckNornalColor(Color.WHITE)
+                            .setCheckSelectedColor(Color.BLACK)
+                            .setIconBack(R.mipmap.ic_action_previous_item)
+                            .setIconRotate(R.mipmap.ic_action_repeat)
+                            .setIconCrop(R.mipmap.ic_action_crop)
+                            .setIconCamera(R.mipmap.ic_action_camera)
+                            .build();
+                    GalleryFinal.init(theme);
+                }
+
                 GalleryConfig.Builder builder = new GalleryConfig.Builder(MainActivity.this);
                 if (mRbUil.isChecked()) {
                     builder.imageloader(new UILImageLoader());

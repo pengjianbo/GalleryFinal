@@ -24,9 +24,9 @@
     >
 
     <LinearLayout
+        android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gf_title_bar_height"
-        android:background="?attr/colorTheme"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         >
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_rotation"
+            android:src="@drawable/ic_gf_rotation"
             android:visibility="gone"
             />
 
@@ -118,8 +118,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
-            app:fabColorNormal="?attr/colorTheme"
-            app:fabColorPressed="?attr/colorThemeDark"
             app:fabIcon="@drawable/ic_gf_done"
             />
     </FrameLayout>

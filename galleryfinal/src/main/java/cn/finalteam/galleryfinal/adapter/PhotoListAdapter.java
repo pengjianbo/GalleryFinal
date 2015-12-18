@@ -17,13 +17,12 @@
 package cn.finalteam.galleryfinal.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import cn.finalteam.galleryfinal.GalleryConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import java.util.List;
@@ -67,22 +66,18 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
         mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, mRowWidth, mRowWidth);
 
+        holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if ( mGalleryConfig.isMutiSelect() ) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
-            holder.mIvCheck.setImageDrawable(createCheckIcon(Color.WHITE, R.drawable.ic_gf_done));
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
-                TypedValue typedValue = new TypedValue();
-                mActivity.getTheme().resolveAttribute(R.attr.colorTheme, typedValue, true);
-                int colorTheme = typedValue.data;
-                holder.mIvCheck.setBackgroundColor(colorTheme);
+                holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
             } else {
-                holder.mIvCheck.setBackgroundColor(Color.rgb(0xd2, 0xd2, 0xd7));
+                holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckNornalColor());
             }
         } else {
             holder.mIvCheck.setVisibility(View.GONE);
         }
     }
-
 
     private void setHeight(final View convertView) {
         int height = mScreenWidth / 3 - 8;

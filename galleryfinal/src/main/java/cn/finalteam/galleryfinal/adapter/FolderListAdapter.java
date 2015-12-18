@@ -17,12 +17,12 @@
 package cn.finalteam.galleryfinal.adapter;
 
 import android.app.Activity;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.finalteam.galleryfinal.GalleryConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -68,12 +68,10 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
         }
         holder.mTvPhotoCount.setText(mActivity.getString(R.string.folder_photo_size, size));
 
+        holder.mIvFolderCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if (mSelectFolder == photoFolderInfo || (mSelectFolder == null && position == 0)) {
-            TypedValue typedValue = new TypedValue();
-            mActivity.getTheme().resolveAttribute(R.attr.colorTheme, typedValue, true);
-            int colorTheme = typedValue.data;
-            holder.mIvFolderCheck.setImageDrawable(createCheckIcon(colorTheme, R.drawable.ic_folder_check));
             holder.mIvFolderCheck.setVisibility(View.VISIBLE);
+            holder.mIvFolderCheck.setColorFilter(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
         } else {
             holder.mIvFolderCheck.setVisibility(View.GONE);
         }

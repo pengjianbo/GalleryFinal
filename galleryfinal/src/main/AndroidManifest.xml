@@ -1,23 +1,24 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.finalteam.galleryfinal">
+<manifest package="cn.finalteam.galleryfinal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--在SDCard中创建与删除文件权限-->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!--往SDCard写入数据权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--从SDCard读取数据权限-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <application android:allowBackup="true"
+    <application
+        android:allowBackup="true"
         android:supportsRtl="true"
         >
 
-        <activity android:name=".PhotoSelectActivity"
-            android:theme="@style/PhotoActivityTheme"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PhotoEditActivity"
-            android:theme="@style/PhotoActivityTheme"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PhotoSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PhotoEditActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

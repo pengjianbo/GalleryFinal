@@ -9,7 +9,6 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity"
@@ -19,54 +18,130 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="主题(Theme)"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/rb_theme_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Default"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_theme_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_theme_cyan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cyan"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_theme_orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orange"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_theme_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Green"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_theme_teal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Teal"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_theme_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark"
+                />
+
+        </RadioGroup>
+    </HorizontalScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="图片ImageLoader选择(Image Loader)"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         />
 
-    <RadioGroup
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         >
-
-        <RadioButton
-            android:id="@+id/rb_uil"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="UIL"
-            />
+            android:orientation="horizontal"
+            >
 
-        <RadioButton
-            android:id="@+id/rb_glide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Glide"
-            />
+            <RadioButton
+                android:id="@+id/rb_uil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="UIL"
+                />
 
-        <RadioButton
-            android:id="@+id/rb_picasso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Picasso"
-            />
+            <RadioButton
+                android:id="@+id/rb_glide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Glide"
+                />
 
-        <RadioButton
-            android:id="@+id/rb_xutils3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="xUtils3"
-            />
+            <RadioButton
+                android:id="@+id/rb_picasso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Picasso"
+                />
 
-        <RadioButton
-            android:id="@+id/rb_xutils"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="xUtils"
-            />
+            <RadioButton
+                android:id="@+id/rb_xutils3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xUtils3"
+                />
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_xutils"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xUtils"
+                />
+
+        </RadioGroup>
+    </HorizontalScrollView>
 
     <TextView
         android:layout_width="match_parent"
@@ -205,17 +280,17 @@
                 android:id="@+id/et_crop_width"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="30dp"
                 android:hint="Width"
                 android:inputType="number"
+                android:minWidth="30dp"
                 />
             <EditText
                 android:id="@+id/et_crop_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="30dp"
                 android:hint="Height"
                 android:inputType="number"
+                android:minWidth="30dp"
                 />
 
             <CheckBox
