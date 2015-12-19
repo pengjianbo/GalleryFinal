@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.rb_theme_green) RadioButton mRbThemeGreen;
     @Bind(R.id.rb_theme_teal) RadioButton mRbThemeTeal;
     @Bind(R.id.rb_theme_custom) RadioButton mRbThemeCustom;
+    @Bind(R.id.cb_crop_replace_source) CheckBox mCbCropReplaceSource;
+    @Bind(R.id.cb_rotate_replace_source) CheckBox mCbRotateReplaceSource;
 
     private List<PhotoInfo> mPhotoList;
     private ChoosePhotoListAdapter mChoosePhotoListAdapter;
@@ -112,8 +114,20 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mLlCropSize.setVisibility(View.VISIBLE);
+                    mCbCropReplaceSource.setVisibility(View.VISIBLE);
                 } else {
                     mLlCropSize.setVisibility(View.GONE);
+                    mCbCropReplaceSource.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        mCbRotate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mCbRotateReplaceSource.setVisibility(View.VISIBLE);
+                } else {
+                    mCbRotateReplaceSource.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -199,6 +213,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mCbRotate.isChecked()) {
                     builder.enableRotate();
+                    if (mCbRotateReplaceSource.isChecked()) {
+                        builder.rotateReplaceSource(true);
+                    }
                 }
 
                 if (mCbCrop.isChecked()) {
@@ -215,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
 
                     if (mCbCropSquare.isChecked()) {
                         builder.cropSquare();
+                    }
+                    if(mCbCropReplaceSource.isChecked()) {
+                        builder.cropReplaceSource(true);
                     }
                 }
 
@@ -306,5 +326,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

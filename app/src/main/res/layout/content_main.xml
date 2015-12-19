@@ -256,6 +256,32 @@
                 />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <CheckBox
+                android:id="@+id/cb_crop_replace_source"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="裁剪覆盖原图（Crop Replace Source）"
+                android:textSize="12sp"
+                />
+
+            <CheckBox
+                android:id="@+id/cb_rotate_replace_source"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="旋转覆盖原图（Rotate Replace Source）"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_crop_size"
@@ -270,6 +296,7 @@
             android:text="裁剪大小（Crop Size）"
             android:textColor="@android:color/black"
             android:textStyle="bold"
+            android:textSize="12sp"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -283,6 +310,7 @@
                 android:hint="Width"
                 android:inputType="number"
                 android:minWidth="30dp"
+                android:textSize="12sp"
                 />
             <EditText
                 android:id="@+id/et_crop_height"
@@ -291,6 +319,7 @@
                 android:hint="Height"
                 android:inputType="number"
                 android:minWidth="30dp"
+                android:textSize="12sp"
                 />
 
             <CheckBox
@@ -299,6 +328,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
+                android:textSize="12sp"
                 android:text="裁剪正方形（Crop Square）"
                 />
 

@@ -395,7 +395,13 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
                 try {
                     String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
-                    File toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop." + ext);
+                    File toFile;
+                    if (mGalleryConfig.isCropReplaceSource()) {
+                        toFile = new File(photoInfo.getPhotoPath());
+                    } else {
+                        toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop." + ext);
+                    }
+
                     FileUtils.makeFolders(toFile);
                     onSaveClicked(toFile);//保存裁剪
                 } catch (Exception e) {
@@ -470,7 +476,15 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             if (photoInfo != null) {
                 final PhotoTempModel photoTempModel = mPhotoTempMap.get(photoInfo.getPhotoId());
                 final String path = photoTempModel.getSourcePath();
-                final File rotateFile = new File(mEditPhotoCacheFile, Utils.getFileName(path) + "_rotate." + ext);
+
+                File file;
+                if (mGalleryConfig.isRotateReplaceSource()) { //裁剪覆盖源文件
+                    file = new File(path);
+                } else {
+                    file = new File(mEditPhotoCacheFile, Utils.getFileName(path) + "_rotate." + ext);
+                }
+
+                final File rotateFile = file;
                 new AsyncTask<Void, Void, Bitmap>() {
                     @Override
                     protected void onPreExecute() {
@@ -481,7 +495,12 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
                     @Override
                     protected Bitmap doInBackground(Void... params) {
-                        int orientation = photoTempModel.getOrientation() + 90;
+                        int orientation;
+                        if ( mGalleryConfig.isRotateReplaceSource() ) {
+                            orientation = 90;
+                        } else {
+                            orientation = photoTempModel.getOrientation() + 90;
+                        }
                         Bitmap bitmap = Utils.rotateBitmap(path, orientation, mScreenWidth, mScreenHeight);
                         if (bitmap != null) {
                             Bitmap.CompressFormat format;
@@ -506,11 +525,13 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                             mIvSourcePhoto.setImageBitmap(bitmap);
                             mTvEmptyView.setVisibility(View.GONE);
 
-                            int orientation = photoTempModel.getOrientation() + 90;
-                            if (orientation == 360) {
-                                orientation = 0;
+                            if ( !mGalleryConfig.isRotateReplaceSource() ) {
+                                int orientation = photoTempModel.getOrientation() + 90;
+                                if (orientation == 360) {
+                                    orientation = 0;
+                                }
+                                photoTempModel.setOrientation(orientation);
                             }
-                            photoTempModel.setOrientation(orientation);
 
                             Message message = mHanlder.obtainMessage();
                             message.what = UPDATE_PATH;

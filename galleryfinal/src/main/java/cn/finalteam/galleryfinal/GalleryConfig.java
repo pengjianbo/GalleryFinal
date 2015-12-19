@@ -35,11 +35,14 @@ public class GalleryConfig {
     private int maxSize;
     protected boolean editPhoto;//编辑
     protected boolean crop;//裁剪
-    private boolean rotate;//选择
+    private boolean rotate;//旋转
     private boolean showCamera;
     private int cropWidth;
     private int cropHeight;
     private boolean cropSquare;
+    private boolean rotateReplaceSource;//旋转是否覆盖源文件
+    private boolean cropReplaceSource;//裁剪是否覆盖源文件
+
     private ArrayList<String> selectedList;
     private ArrayList<String> filterList;//过滤器
     private File takePhotoFolder;
@@ -63,6 +66,8 @@ public class GalleryConfig {
         this.filterList = builder.filterList;
         this.takePhotoFolder = builder.takePhotoFolder;
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
+        this.rotateReplaceSource = builder.rotateReplaceSource;
+        this.cropReplaceSource = builder.cropReplaceSource;
 
         if ( takePhotoFolder == null ) {
             takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal" + File.separator);
@@ -78,11 +83,13 @@ public class GalleryConfig {
         private int maxSize;
         private boolean editPhoto;//编辑
         private boolean crop;//裁剪
-        private boolean rotate;//选择
+        private boolean rotate;//旋转
         private boolean showCamera;
         private int cropWidth;
         private int cropHeight;
         private boolean cropSquare;
+        private boolean rotateReplaceSource;//旋转是否覆盖源文件
+        private boolean cropReplaceSource;//裁剪是否覆盖源文件
         private ArrayList<String> selectedList;
         private ArrayList<String> filterList;
         private File takePhotoFolder;
@@ -188,11 +195,11 @@ public class GalleryConfig {
         }
 
         /**
-         * 配置拍照缓存母驴
+         * 配置拍照缓存目录
          * @param file
          * @return
          */
-        public Builder setTakePhotoFolter(File file) {
+        public Builder takePhotoFolter(File file) {
             this.takePhotoFolder = file;
             return this;
         }
@@ -202,9 +209,17 @@ public class GalleryConfig {
          * @param file
          * @return
          */
-        public Builder setEditPhotoCacheFolder(File file) {
+        public Builder editPhotoCacheFolder(File file) {
             this.editPhotoCacheFolder = file;
             return this;
+        }
+
+        public void rotateReplaceSource(boolean rotateReplaceSource) {
+            this.rotateReplaceSource = rotateReplaceSource;
+        }
+
+        public void cropReplaceSource(boolean cropReplaceSource) {
+            this.cropReplaceSource = cropReplaceSource;
         }
 
         public Builder imageloader(ImageLoader imageLoader) {
@@ -275,5 +290,21 @@ public class GalleryConfig {
 
     public File getEditPhotoCacheFolder() {
         return editPhotoCacheFolder;
+    }
+
+    public boolean isRotateReplaceSource() {
+        return rotateReplaceSource;
+    }
+
+    public void setRotateReplaceSource(boolean rotateReplaceSource) {
+        this.rotateReplaceSource = rotateReplaceSource;
+    }
+
+    public boolean isCropReplaceSource() {
+        return cropReplaceSource;
+    }
+
+    public void setCropReplaceSource(boolean cropReplaceSource) {
+        this.cropReplaceSource = cropReplaceSource;
     }
 }
