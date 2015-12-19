@@ -19,7 +19,7 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 支持对外打开相册
 * 支持对外打开编辑
 * 支持对外打开裁剪
-* gif图片不能编辑
+* 非png和非jpg图片不能编辑
 * 解决三星部分机型编辑出现OOM情况
 * 添加旋转是否覆盖源文件（默认不覆盖）
 * 添加裁剪是否覆盖源文件（默认不覆盖）
@@ -252,6 +252,9 @@ colorTheme为主题色，colorThemeDark为主题加深色
 * 解决OOM情况
 * 图片手动选择
 * 支持汉语和英语
+
+#感谢（Thanks）
+* 图片裁剪[android-crop](https://github.com/jdamcd/android-crop)
 
 #关于作者
 * **QQ:**172340021   

@@ -39,6 +39,7 @@ import cn.finalteam.galleryfinal.widget.crop.CropImageView;
 import cn.finalteam.toolsfinal.ActivityManager;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
+import cn.finalteam.toolsfinal.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -393,7 +394,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 System.gc();
                 PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
                 try {
-                    File toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop.jpg");
+                    String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
+                    File toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop." + ext);
                     FileUtils.makeFolders(toFile);
                     onSaveClicked(toFile);//保存裁剪
                 } catch (Exception e) {
@@ -416,19 +418,25 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         } else if (id == R.id.iv_crop) {
 
             if (mPhotoList.size() > 0) {
-                if (mCropState) {
-                    setCropEnabled(false);
-
-                    corpPageState(false);
-
-                    mTvTitle.setText(R.string.photo_edit);
+                PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
+                String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
+                if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg"))) {
+                    toast(getString(R.string.edit_letoff_photo_format));
                 } else {
-                    corpPageState(true);
-                    setCropEnabled(true);
+                    if (mCropState) {
+                        setCropEnabled(false);
 
-                    mTvTitle.setText(R.string.photo_crop);
+                        corpPageState(false);
+
+                        mTvTitle.setText(R.string.photo_edit);
+                    } else {
+                        corpPageState(true);
+                        setCropEnabled(true);
+
+                        mTvTitle.setText(R.string.photo_crop);
+                    }
+                    mCropState = !mCropState;
                 }
-                mCropState = !mCropState;
             }
         } else if (id == R.id.iv_rotation) {
             rotationPhoto();
@@ -452,13 +460,17 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
      */
     private void rotationPhoto() {
         if (mPhotoList.size() > 0 && mPhotoList.get(mSelectIndex) != null && !mRotating) {
-            mRotating = true;
-
             final PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
+            final String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
+            if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg"))) {
+                toast(getString(R.string.edit_letoff_photo_format));
+                return;
+            }
+            mRotating = true;
             if (photoInfo != null) {
                 final PhotoTempModel photoTempModel = mPhotoTempMap.get(photoInfo.getPhotoId());
                 final String path = photoTempModel.getSourcePath();
-                final File rotateFile = new File(mEditPhotoCacheFile, Utils.getFileName(path) + "_rotate.jpg");
+                final File rotateFile = new File(mEditPhotoCacheFile, Utils.getFileName(path) + "_rotate." + ext);
                 new AsyncTask<Void, Void, Bitmap>() {
                     @Override
                     protected void onPreExecute() {
@@ -472,7 +484,13 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                         int orientation = photoTempModel.getOrientation() + 90;
                         Bitmap bitmap = Utils.rotateBitmap(path, orientation, mScreenWidth, mScreenHeight);
                         if (bitmap != null) {
-                            Utils.saveBitmap(bitmap, rotateFile);
+                            Bitmap.CompressFormat format;
+                            if ( ext.equalsIgnoreCase("jpg") ) {
+                                format = Bitmap.CompressFormat.JPEG;
+                            } else {
+                                format = Bitmap.CompressFormat.PNG;
+                            }
+                            Utils.saveBitmap(bitmap, format, rotateFile);
                         }
                         return bitmap;
                     }

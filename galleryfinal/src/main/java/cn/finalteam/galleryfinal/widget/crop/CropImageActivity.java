@@ -32,6 +32,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
+import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
 import java.io.File;
 import java.io.IOException;
@@ -376,7 +377,15 @@ public abstract class CropImageActivity extends MonitoredActivity {
             try {
                 outputStream = getContentResolver().openOutputStream(Uri.fromFile(saveFile));
                 if (outputStream != null) {
-                    croppedImage.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                    String ext = FileUtils.getFileExtension(saveFile.getAbsolutePath());
+                    Bitmap.CompressFormat format;
+                    if ( ext.equalsIgnoreCase("jpg") ) {
+                        format = Bitmap.CompressFormat.JPEG;
+                        croppedImage.compress(format, 90, outputStream);
+                    } else {
+                        format = Bitmap.CompressFormat.PNG;
+                        croppedImage.compress(format, 100, outputStream);
+                    }
                 }
             } catch (IOException e) {
                 setCropSaveException(e);

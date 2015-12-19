@@ -43,15 +43,16 @@ public class Utils {
     /**
      * 保存Bitmap到文件
      * @param bitmap
+     * @param format
      * @param target
      */
-    public static void saveBitmap(Bitmap bitmap, File target) {
+    public static void saveBitmap(Bitmap bitmap, Bitmap.CompressFormat format, File target) {
         if (target.exists()) {
             target.delete();
         }
         try {
             FileOutputStream out = new FileOutputStream(target);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            bitmap.compress(format, 100, out);
             out.flush();
             out.close();
         } catch (Exception e) {
