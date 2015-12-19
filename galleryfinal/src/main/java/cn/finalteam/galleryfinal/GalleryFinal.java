@@ -18,8 +18,12 @@ package cn.finalteam.galleryfinal;
 
 import android.content.Intent;
 import android.widget.Toast;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
+import cn.finalteam.toolsfinal.StringUtils;
+import java.util.HashMap;
 
 /**
  * Desction:
@@ -53,9 +57,13 @@ public class GalleryFinal {
             mGalleryTheme = GalleryTheme.DEFAULT;
         }
         return mGalleryTheme;
-    }  
+    }
 
-    public static void open(GalleryConfig config) {
+    /**
+     * 打开Gallery
+     * @param config
+     */
+    public static void openGallery(GalleryConfig config) {
         if ( config == null ) {
             return;
         }
@@ -72,6 +80,70 @@ public class GalleryFinal {
         mGalleryConfig = config;
 
         Intent intent = new Intent(config.getActivity(), PhotoSelectActivity.class);
+        config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    /**
+     * 打开相机
+     * @param config
+     */
+    public static void openCamera(GalleryConfig config) {
+        if ( config == null ) {
+            return;
+        }
+        config.mutiSelect = false;//拍照为单选
+        mGalleryConfig = config;
+        Intent intent = new Intent(config.getActivity(), PhotoEditActivity.class);
+        intent.putExtra(PhotoEditActivity.TAKE_PHOTO_ACTION, true);
+        config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    /**
+     * 打开裁剪
+     * @param config
+     * @param photoPath
+     */
+    public static void openCrop(GalleryConfig config, String photoPath) {
+        if ( config == null || StringUtils.isEmpty(photoPath)) {
+            return;
+        }
+        //必须设置这个三个选项
+        config.mutiSelect = false;//拍照为单选
+        config.editPhoto = true;
+        config.crop = true;
+
+        mGalleryConfig = config;
+        HashMap<String, PhotoInfo> map = new HashMap<>();
+        PhotoInfo photoInfo = new PhotoInfo();
+        photoInfo.setPhotoPath(photoPath);
+        photoInfo.setPhotoId(Utils.getRandom(10000, 99999));
+        map.put(photoPath, photoInfo);
+        Intent intent = new Intent(config.getActivity(), PhotoEditActivity.class);
+        intent.putExtra(PhotoEditActivity.CROP_PHOTO_ACTION, true);
+        intent.putExtra(PhotoEditActivity.SELECT_MAP, map);
+        config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    /**
+     * 打开编辑
+     * @param config
+     * @param photoPath
+     */
+    public static void openEdit(GalleryConfig config, String photoPath) {
+        if ( config == null || StringUtils.isEmpty(photoPath)) {
+            return;
+        }
+        config.mutiSelect = false;//拍照为单选
+
+        mGalleryConfig = config;
+        HashMap<String, PhotoInfo> map = new HashMap<>();
+        PhotoInfo photoInfo = new PhotoInfo();
+        photoInfo.setPhotoPath(photoPath);
+        photoInfo.setPhotoId(Utils.getRandom(10000, 99999));
+        map.put(photoPath, photoInfo);
+        Intent intent = new Intent(config.getActivity(), PhotoEditActivity.class);
+        intent.putExtra(PhotoEditActivity.EDIT_PHOTO_ACTION, true);
+        intent.putExtra(PhotoEditActivity.SELECT_MAP, map);
         config.getActivity().startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 

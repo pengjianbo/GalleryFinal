@@ -34,6 +34,7 @@ public class GalleryTheme {
             .setFabNornalColor(Color.rgb(0x38, 0x42, 0x48))
             .setFabPressedColor(Color.rgb(0x20, 0x25, 0x28))
             .setCheckSelectedColor(Color.rgb(0x38, 0x42, 0x48))
+            .setCropControlColor(Color.rgb(0x38, 0x42, 0x48))
             .build();
     //蓝绿主题
     public static GalleryTheme CYAN = new GalleryTheme.Builder()
@@ -41,6 +42,7 @@ public class GalleryTheme {
             .setFabNornalColor(Color.rgb(0x00, 0xac, 0xc1))
             .setFabPressedColor(Color.rgb(0x01, 0x83, 0x93))
             .setCheckSelectedColor(Color.rgb(0x00, 0xac, 0xc1))
+            .setCropControlColor(Color.rgb(0x00, 0xac, 0xc1))
             .build();
     //橙色主题
     public static GalleryTheme ORANGE = new GalleryTheme.Builder()
@@ -48,6 +50,7 @@ public class GalleryTheme {
             .setFabNornalColor(Color.rgb(0xFF, 0x57, 0x22))
             .setFabPressedColor(Color.rgb(0xE6, 0x4A, 0x19))
             .setCheckSelectedColor(Color.rgb(0xFF, 0x57, 0x22))
+            .setCropControlColor(Color.rgb(0xFF, 0x57, 0x22))
             .build();
     //绿色主题
     public static GalleryTheme GREEN = new GalleryTheme.Builder()
@@ -55,6 +58,7 @@ public class GalleryTheme {
             .setFabNornalColor(Color.rgb(0x4C, 0xAF, 0x50))
             .setFabPressedColor(Color.rgb(0x38, 0x8E, 0x3C))
             .setCheckSelectedColor(Color.rgb(0x4C, 0xAF, 0x50))
+            .setCropControlColor(Color.rgb(0x4C, 0xAF, 0x50))
             .build();
     //青绿色主题
     public static GalleryTheme TEAL = new GalleryTheme.Builder()
@@ -62,6 +66,7 @@ public class GalleryTheme {
             .setFabNornalColor(Color.rgb(0x00, 0x96, 0x88))
             .setFabPressedColor(Color.rgb(0x00, 0x79, 0x6B))
             .setCheckSelectedColor(Color.rgb(0x00, 0x96, 0x88))
+            .setCropControlColor(Color.rgb(0x00, 0x96, 0x88))
             .build();
 
     private int titleBarTextColor;
@@ -152,8 +157,9 @@ public class GalleryTheme {
             return this;
         }
 
-        public void setCropControlColor(int cropControlColor) {
+        public Builder setCropControlColor(int cropControlColor) {
             this.cropControlColor = cropControlColor;
+            return this;
         }
 
         public Builder setFabNornalColor(int fabNornalColor) {

@@ -31,10 +31,10 @@ import java.util.List;
  */
 public class GalleryConfig {
 
-    private boolean mutiSelect;
+    protected boolean mutiSelect;
     private int maxSize;
-    private boolean editPhoto;//编辑
-    private boolean crop;//裁剪
+    protected boolean editPhoto;//编辑
+    protected boolean crop;//裁剪
     private boolean rotate;//选择
     private boolean showCamera;
     private int cropWidth;

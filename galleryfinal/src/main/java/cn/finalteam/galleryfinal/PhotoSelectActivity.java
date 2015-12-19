@@ -118,37 +118,37 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         if ( mGalleryConfig == null || mGalleryTheme == null) {
             toast(getString(R.string.please_reopen_gf));
             finish();
-            return;
-        }
-        mPhotoTargetFolder = null;
-
-        findViews();
-        setListener();
-
-        mAllPhotoFolderList = new ArrayList<>();
-        mFolderListAdapter = new FolderListAdapter(this, mAllPhotoFolderList, mGalleryConfig);
-        mLvFolderList.setAdapter(mFolderListAdapter);
-
-        mCurPhotoList = new ArrayList<>();
-        mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth, mGalleryConfig);
-        mGvPhotoList.setAdapter(mPhotoListAdapter);
-
-        if ( mGalleryConfig.isMutiSelect() ) {
-            mTvChooseCount.setVisibility(View.VISIBLE);
-            mFabOk.setVisibility(View.VISIBLE);
-        }
-
-        setTheme();
-        mGvPhotoList.setEmptyView(mTvEmptyView);
-
-        if (mGalleryConfig.isShowCamera()) {
-            mIvTakePhoto.setVisibility(View.VISIBLE);
         } else {
-            mIvTakePhoto.setVisibility(View.GONE);
-        }
+            mPhotoTargetFolder = null;
 
-        refreshSelectCount();
-        getPhotos();
+            findViews();
+            setListener();
+
+            mAllPhotoFolderList = new ArrayList<>();
+            mFolderListAdapter = new FolderListAdapter(this, mAllPhotoFolderList, mGalleryConfig);
+            mLvFolderList.setAdapter(mFolderListAdapter);
+
+            mCurPhotoList = new ArrayList<>();
+            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth, mGalleryConfig);
+            mGvPhotoList.setAdapter(mPhotoListAdapter);
+
+            if (mGalleryConfig.isMutiSelect()) {
+                mTvChooseCount.setVisibility(View.VISIBLE);
+                mFabOk.setVisibility(View.VISIBLE);
+            }
+
+            setTheme();
+            mGvPhotoList.setEmptyView(mTvEmptyView);
+
+            if (mGalleryConfig.isShowCamera()) {
+                mIvTakePhoto.setVisibility(View.VISIBLE);
+            } else {
+                mIvTakePhoto.setVisibility(View.GONE);
+            }
+
+            refreshSelectCount();
+            getPhotos();
+        }
     }
 
     private void setTheme() {

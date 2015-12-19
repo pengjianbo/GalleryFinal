@@ -28,6 +28,7 @@ import cn.finalteam.galleryfinal.sample.loader.XUtils3ImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 import cn.finalteam.toolsfinal.Logger;
+import com.baoyz.actionsheet.ActionSheet;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -220,9 +221,38 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 builder.selected(mPhotoList);//添加过滤集合
+                final GalleryConfig config = builder.build();
+                ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
+                        .setCancelButtonTitle("取消(Cancel)")
+                        .setOtherButtonTitles("打开相册(Open Gallery)", "拍照(Camera)", "裁剪(Crop)", "编辑(Edit)")
+                        .setCancelableOnTouchOutside(true)
+                        .setListener(new ActionSheet.ActionSheetListener() {
+                            @Override
+                            public void onDismiss(ActionSheet actionSheet, boolean isCancel) {
 
-                GalleryConfig config = builder.build();
-                GalleryFinal.open(config);
+                            }
+
+                            @Override
+                            public void onOtherButtonClick(ActionSheet actionSheet, int index) {
+                                switch (index) {
+                                    case 0:
+                                        GalleryFinal.openGallery(config);
+                                        break;
+                                    case 1:
+                                        GalleryFinal.openCamera(config);
+                                        break;
+                                    case 2:
+                                        GalleryFinal.openCrop(config, "/sdcard/pk1-2.jpg");
+                                        break;
+                                    case 3:
+                                        GalleryFinal.openEdit(config, "/sdcard/pk1-2.jpg");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         initImageLoader(this);

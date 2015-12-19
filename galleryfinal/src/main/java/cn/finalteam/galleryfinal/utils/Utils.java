@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Random;
 
 /**
  * Desction:
@@ -110,5 +111,17 @@ public class Utils {
         } catch (Exception e) {
         }
         return bitmap;
+    }
+
+    /**
+     * 取某个范围的任意数
+     * @param min
+     * @param max
+     * @return
+     */
+    public static int getRandom(int min, int max){
+        Random random = new Random();
+        int s = random.nextInt(max) % (max - min + 1) + min;
+        return s;
     }
 }

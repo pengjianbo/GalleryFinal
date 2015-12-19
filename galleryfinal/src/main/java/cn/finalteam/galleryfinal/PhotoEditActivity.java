@@ -54,7 +54,11 @@ import uk.co.senab.photoview.PhotoView;
  */
 public class PhotoEditActivity extends CropImageActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    public static final String SELECT_MAP = "select_map";
+    static final String CROP_PHOTO_ACTION = "crop_photo_action";
+    static final String TAKE_PHOTO_ACTION = "take_photo_action";
+    static final String EDIT_PHOTO_ACTION = "edit_photo_action";
+
+    static final String SELECT_MAP = "select_map";
     private final int CROP_SUC = 1;//裁剪成功
     private final int CROP_FAIL = 2;//裁剪失败
     private final int UPDATE_PATH = 3;//更新path
@@ -83,6 +87,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private File mEditPhotoCacheFile;
     private LinearLayout mTitlebar;
     private GalleryTheme mGalleryTheme;
+
+    private boolean mTakePhotoAction;//打开相机动作
+    private boolean mCropPhotoAction;//裁剪图片动作
+    private boolean mEditPhotoAction;//编辑图片动作
 
     private android.os.Handler mHanlder = new android.os.Handler() {
         @Override
@@ -146,67 +154,83 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gf_activity_photo_edit);
 
-        mSelectPhotoMap = (HashMap<String, PhotoInfo>) this.getIntent().getSerializableExtra(SELECT_MAP);
-        if (mSelectPhotoMap == null) {
-            mSelectPhotoMap = new HashMap<>();
-        }
-        mPhotoTempMap = new HashMap<>();
-        mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
+        mGalleryTheme = GalleryFinal.getGalleryTheme();
         mGalleryConfig = GalleryFinal.getGalleryConfig();
-        if(mGalleryConfig == null) {
+        if ( mGalleryConfig == null || mGalleryTheme == null) {
             toast(getString(R.string.please_reopen_gf));
             finish();
-            return;
-        }
-        mEditPhotoCacheFile = GalleryFinal.getGalleryConfig().getEditPhotoCacheFolder();
-        mGalleryTheme = GalleryFinal.getGalleryTheme();
+        } else {
+            mSelectPhotoMap = (HashMap<String, PhotoInfo>) this.getIntent().getSerializableExtra(SELECT_MAP);
+            mTakePhotoAction = this.getIntent().getBooleanExtra(TAKE_PHOTO_ACTION, false);
+            mCropPhotoAction = this.getIntent().getBooleanExtra(CROP_PHOTO_ACTION, false);
+            mEditPhotoAction = this.getIntent().getBooleanExtra(EDIT_PHOTO_ACTION, false);
 
-        if (mPhotoList == null) {
-            mPhotoList = new ArrayList<>();
-        }
-
-        for(PhotoInfo info:mPhotoList) {
-            mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
-        }
-
-        findViews();
-        setListener();
-        setTheme();
-
-        mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mGalleryConfig, mScreenWidth);
-        mLvGallery.setAdapter(mPhotoEditListAdapter);
-
-        try {
-            File nomediaFile = new File(mEditPhotoCacheFile, ".nomedia");
-            if (!nomediaFile.exists()) {
-                FileUtils.makeFolders(nomediaFile);
-                nomediaFile.createNewFile();
+            if (mSelectPhotoMap == null) {
+                mSelectPhotoMap = new HashMap<>();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            mPhotoTempMap = new HashMap<>();
+            mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
 
-        if (mGalleryConfig.isShowCamera()) {
-            mIvTakePhoto.setVisibility(View.VISIBLE);
-        }
+            mEditPhotoCacheFile = GalleryFinal.getGalleryConfig().getEditPhotoCacheFolder();
 
-        if (mGalleryConfig.isCrop()) {
-            mIvCrop.setVisibility(View.VISIBLE);
-        }
+            if (mPhotoList == null) {
+                mPhotoList = new ArrayList<>();
+            }
 
-        if (mGalleryConfig.isRotate()) {
-            mIvRotation.setVisibility(View.VISIBLE);
-        }
+            for (PhotoInfo info : mPhotoList) {
+                mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
+            }
 
-        if (!mGalleryConfig.isMutiSelect()) {
-            mLlGallery.setVisibility(View.GONE);
-        }
+            findViews();
+            setListener();
+            setTheme();
 
-        initCrop(mIvCropPhoto, mGalleryConfig.isCropSquare(), mGalleryConfig.getCropWidth(), mGalleryConfig.getCropHeight());
-        if (mPhotoList.size() > 0) {
-            loadImage(mPhotoList.get(0));
-        }
+            mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mGalleryConfig, mScreenWidth);
+            mLvGallery.setAdapter(mPhotoEditListAdapter);
 
+            try {
+                File nomediaFile = new File(mEditPhotoCacheFile, ".nomedia");
+                if (!nomediaFile.exists()) {
+                    FileUtils.makeFolders(nomediaFile);
+                    nomediaFile.createNewFile();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (mGalleryConfig.isShowCamera()) {
+                mIvTakePhoto.setVisibility(View.VISIBLE);
+            }
+
+            if (mGalleryConfig.isCrop()) {
+                mIvCrop.setVisibility(View.VISIBLE);
+            }
+
+            if (mGalleryConfig.isRotate()) {
+                mIvRotation.setVisibility(View.VISIBLE);
+            }
+
+            if (!mGalleryConfig.isMutiSelect()) {
+                mLlGallery.setVisibility(View.GONE);
+            }
+
+            initCrop(mIvCropPhoto, mGalleryConfig.isCropSquare(), mGalleryConfig.getCropWidth(), mGalleryConfig.getCropHeight());
+            if (mPhotoList.size() > 0 && !mTakePhotoAction) {
+                loadImage(mPhotoList.get(0));
+            }
+
+            if (mTakePhotoAction) {
+                //打开相机
+                takePhotoAction();
+            }
+
+            if (mCropPhotoAction) {
+                mIvCrop.performClick();
+                if ( !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera()) {
+                    mIvCrop.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     private void setTheme() {
@@ -377,13 +401,17 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 }
             } else { //完成选择
                 ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
-                Intent intent = getIntent();
-                if (intent == null) {
-                    intent = new Intent();
+                if ( mTakePhotoAction || mCropPhotoAction || mEditPhotoAction) {
+                    resultMuti(photoList);
+                } else {
+                    Intent intent = getIntent();
+                    if (intent == null) {
+                        intent = new Intent();
+                    }
+                    intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, photoList);
+                    setResult(GalleryFinal.EDIT_OK, intent);
+                    finish();
                 }
-                intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, photoList);
-                setResult(GalleryFinal.EDIT_OK, intent);
-                finish();
             }
         } else if (id == R.id.iv_crop) {
 
@@ -411,7 +439,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 takePhotoAction();
             }
         } else if (id == R.id.iv_back) {
-            if (mCropState) {
+            if (mCropState && !(mCropPhotoAction && !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera())) {
                 mIvCrop.performClick();
             } else {
                 finish();
@@ -521,7 +549,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mCropState) {
+            if (mCropState && !(mCropPhotoAction && !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera())) {
                 mIvCrop.performClick();
                 return true;
             }

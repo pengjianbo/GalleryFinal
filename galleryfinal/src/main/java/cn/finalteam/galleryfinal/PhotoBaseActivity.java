@@ -26,6 +26,7 @@ import android.view.Window;
 import android.widget.Toast;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.MediaScanner;
+import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.ActivityManager;
 import cn.finalteam.toolsfinal.DateUtils;
 import cn.finalteam.toolsfinal.DeviceUtils;
@@ -35,7 +36,6 @@ import cn.finalteam.toolsfinal.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * Desction:
@@ -124,7 +124,7 @@ public abstract class PhotoBaseActivity extends Activity {
             if (resultCode == RESULT_OK && mTakePhotoUri != null) {
                 final String path = mTakePhotoUri.getPath();
                 final PhotoInfo info = new PhotoInfo();
-                info.setPhotoId(getRandom(10000, 99999));
+                info.setPhotoId(Utils.getRandom(10000, 99999));
                 info.setPhotoPath(path);
                 updateGallery(path);
                 takeResult(info);
@@ -139,17 +139,7 @@ public abstract class PhotoBaseActivity extends Activity {
         }
     }
 
-    /**
-     * 取某个范围的任意数
-     * @param min
-     * @param max
-     * @return
-     */
-    private int getRandom(int min, int max){
-        Random random = new Random();
-        int s = random.nextInt(max) % (max - min + 1) + min;
-        return s;
-    }
+
 
     /**
      * 更新相册
