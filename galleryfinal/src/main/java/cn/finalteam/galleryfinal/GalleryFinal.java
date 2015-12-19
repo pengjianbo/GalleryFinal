@@ -153,7 +153,14 @@ public class GalleryFinal {
     public static void cleanCacheFile() {
         if (mGalleryConfig != null && mGalleryConfig.getEditPhotoCacheFolder() != null) {
             //清楚裁剪冗余图片
-            FileUtils.deleteFile(mGalleryConfig.getEditPhotoCacheFolder());
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    FileUtils.deleteFile(mGalleryConfig.getEditPhotoCacheFolder());
+                }
+            }.start();
+
         }
     }
 

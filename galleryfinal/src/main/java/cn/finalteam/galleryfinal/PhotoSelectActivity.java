@@ -202,6 +202,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mLlTitle.setOnClickListener(this);
         mIvTakePhoto.setOnClickListener(this);
         mIvBack.setOnClickListener(this);
+        mIvFolderArrow.setOnClickListener(this);
 
         mLvFolderList.setOnItemClickListener(this);
         mGvPhotoList.setOnItemClickListener(this);
@@ -331,7 +332,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if ( id == R.id.ll_title ) {
+        if ( id == R.id.ll_title || id == R.id.iv_folder_arrow) {
             if ( mLlFolderPanel.getVisibility() == View.VISIBLE ) {
                 mLlFolderPanel.setVisibility(View.GONE);
             } else {
