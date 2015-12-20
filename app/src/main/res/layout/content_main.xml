@@ -295,8 +295,8 @@
             android:layout_marginTop="4dp"
             android:text="裁剪大小（Crop Size）"
             android:textColor="@android:color/black"
-            android:textStyle="bold"
             android:textSize="12sp"
+            android:textStyle="bold"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -328,11 +328,59 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:textSize="12sp"
                 android:text="裁剪正方形（Crop Square）"
+                android:textSize="12sp"
                 />
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_force_crop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="强制裁剪（Force Crop）--只针对单选生效"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <CheckBox
+                    android:id="@+id/cb_open_force_crop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="强制裁剪（Force Crop）"
+                    android:textSize="12sp"
+                    />
+                <CheckBox
+                    android:id="@+id/cb_open_force_crop_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="强制裁剪后可编辑（Force Crop Edit）"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
     <TextView

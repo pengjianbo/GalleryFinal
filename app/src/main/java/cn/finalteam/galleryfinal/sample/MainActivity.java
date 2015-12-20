@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.rb_theme_custom) RadioButton mRbThemeCustom;
     @Bind(R.id.cb_crop_replace_source) CheckBox mCbCropReplaceSource;
     @Bind(R.id.cb_rotate_replace_source) CheckBox mCbRotateReplaceSource;
+    @Bind(R.id.cb_open_force_crop) CheckBox mCbOpenForceCrop;
+    @Bind(R.id.cb_open_force_crop_edit) CheckBox mCbOpenForceCropEdit;
+    @Bind(R.id.ll_force_crop) LinearLayout mLlForceCrop;
 
     private List<PhotoInfo> mPhotoList;
     private ChoosePhotoListAdapter mChoosePhotoListAdapter;
@@ -94,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mLlMaxSize.setVisibility(View.VISIBLE);
+                    mLlForceCrop.setVisibility(View.GONE);
                 } else {
+                    if ( mCbEdit.isChecked() ) {
+                        mLlForceCrop.setVisibility(View.VISIBLE);
+                    }
                     mLlMaxSize.setVisibility(View.GONE);
                 }
             }
@@ -115,19 +122,33 @@ public class MainActivity extends AppCompatActivity {
                 if (isChecked) {
                     mLlCropSize.setVisibility(View.VISIBLE);
                     mCbCropReplaceSource.setVisibility(View.VISIBLE);
+                    if (mRbSingleSelect.isChecked()) {
+                        mLlForceCrop.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     mLlCropSize.setVisibility(View.GONE);
                     mCbCropReplaceSource.setVisibility(View.INVISIBLE);
+                    mLlForceCrop.setVisibility(View.GONE);
                 }
             }
         });
         mCbRotate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     mCbRotateReplaceSource.setVisibility(View.VISIBLE);
                 } else {
                     mCbRotateReplaceSource.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        mCbOpenForceCrop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mCbOpenForceCropEdit.setVisibility(View.VISIBLE);
+                } else {
+                    mCbOpenForceCropEdit.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -149,8 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 //        //.setEditPhotoCacheFolder(new File(...))
                 //        //.filter(mPhotoList)
                 //        .selected(mPhotoList)
+                //        .rotateReplaceSource(false)
+                //        .cropReplaceSource(false)
                 //        .build();
-                //GalleryFinal.open(config);
+                //GalleryFinal.openGallery(config);
 
                 //配置主题，这个步骤可以放到application中
                 if (mRbThemeDefault.isChecked()) {
@@ -233,8 +256,14 @@ public class MainActivity extends AppCompatActivity {
                     if (mCbCropSquare.isChecked()) {
                         builder.cropSquare();
                     }
-                    if(mCbCropReplaceSource.isChecked()) {
+                    if (mCbCropReplaceSource.isChecked()) {
                         builder.cropReplaceSource(true);
+                    }
+                    if (mCbOpenForceCrop.isChecked() && mRbSingleSelect.isChecked()) {
+                        builder.forceCrop(true);
+                        if ( mCbOpenForceCropEdit.isChecked() ) {
+                            builder.forceCropEdit(true);
+                        }
                     }
                 }
 

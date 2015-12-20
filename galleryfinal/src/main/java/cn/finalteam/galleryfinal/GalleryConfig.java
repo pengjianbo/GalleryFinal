@@ -42,6 +42,8 @@ public class GalleryConfig {
     private boolean cropSquare;
     private boolean rotateReplaceSource;//旋转是否覆盖源文件
     private boolean cropReplaceSource;//裁剪是否覆盖源文件
+    private boolean forceCrop;//强制裁剪
+    private boolean forceCropEdit;//强制裁剪后是否可对图片编辑，默认不可以
 
     private ArrayList<String> selectedList;
     private ArrayList<String> filterList;//过滤器
@@ -68,6 +70,8 @@ public class GalleryConfig {
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.rotateReplaceSource = builder.rotateReplaceSource;
         this.cropReplaceSource = builder.cropReplaceSource;
+        this.forceCrop = builder.forceCrop;
+        this.forceCropEdit = builder.forceCropEdit;
 
         if ( takePhotoFolder == null ) {
             takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal" + File.separator);
@@ -94,6 +98,8 @@ public class GalleryConfig {
         private ArrayList<String> filterList;
         private File takePhotoFolder;
         private File editPhotoCacheFolder;
+        private boolean forceCrop;//强制裁剪
+        private boolean forceCropEdit;//强制裁剪后是否可对图片编辑，默认不可以
 
         private Activity activity;
         private ImageLoader imageLoader;
@@ -214,12 +220,44 @@ public class GalleryConfig {
             return this;
         }
 
-        public void rotateReplaceSource(boolean rotateReplaceSource) {
+        /**
+         * 设置旋转后是否替换原图
+         * @param rotateReplaceSource
+         * @return
+         */
+        public Builder rotateReplaceSource(boolean rotateReplaceSource) {
             this.rotateReplaceSource = rotateReplaceSource;
+            return this;
         }
 
-        public void cropReplaceSource(boolean cropReplaceSource) {
+        /**
+         * 设置裁剪后是否替换原图
+         * @param cropReplaceSource
+         * @return
+         */
+        public Builder cropReplaceSource(boolean cropReplaceSource) {
             this.cropReplaceSource = cropReplaceSource;
+            return this;
+        }
+
+        /**
+         * 强制裁剪
+         * @param forceCrop
+         * @return
+         */
+        public Builder forceCrop(boolean forceCrop) {
+            this.forceCrop = forceCrop;
+            return this;
+        }
+
+        /**
+         * 强制裁剪后是否可以对图片编辑，默认不可编辑
+         * @param forceCropEdit
+         * @return
+         */
+        public Builder forceCropEdit(boolean forceCropEdit) {
+            this.forceCropEdit = forceCropEdit;
+            return this;
         }
 
         public Builder imageloader(ImageLoader imageLoader) {
@@ -296,15 +334,16 @@ public class GalleryConfig {
         return rotateReplaceSource;
     }
 
-    public void setRotateReplaceSource(boolean rotateReplaceSource) {
-        this.rotateReplaceSource = rotateReplaceSource;
-    }
 
     public boolean isCropReplaceSource() {
         return cropReplaceSource;
     }
 
-    public void setCropReplaceSource(boolean cropReplaceSource) {
-        this.cropReplaceSource = cropReplaceSource;
+    public boolean isForceCrop() {
+        return forceCrop;
+    }
+
+    public boolean isForceCropEdit() {
+        return forceCropEdit;
     }
 }

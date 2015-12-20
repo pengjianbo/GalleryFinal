@@ -118,6 +118,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 message.what = UPDATE_PATH;
                 message.obj = path;
                 mHanlder.sendMessage(message);
+
             } else if ( msg.what == CROP_FAIL ) {
                 toast(getString(R.string.crop_fail));
             } else if ( msg.what == UPDATE_PATH ) {
@@ -141,6 +142,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
                     loadImage(photoInfo);
                     mPhotoEditListAdapter.notifyDataSetChanged();
+                }
+
+                if (mGalleryConfig.isForceCrop() && !mGalleryConfig.isForceCropEdit()) {
+                    resultAction();
                 }
             }
 
@@ -228,6 +233,14 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             if (mCropPhotoAction) {
                 mIvCrop.performClick();
                 if ( !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera()) {
+                    mIvCrop.setVisibility(View.GONE);
+                }
+            }
+
+            //判断是否强制裁剪
+            if(mGalleryConfig.isForceCrop()) {
+                mIvCrop.performClick();//进入裁剪状态
+                if(!mGalleryConfig.isForceCropEdit()) {//强制裁剪后是否可以编辑
                     mIvCrop.setVisibility(View.GONE);
                 }
             }
@@ -408,18 +421,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     Logger.e(e);
                 }
             } else { //完成选择
-                ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
-                if ( mTakePhotoAction || mCropPhotoAction || mEditPhotoAction) {
-                    resultMuti(photoList);
-                } else {
-                    Intent intent = getIntent();
-                    if (intent == null) {
-                        intent = new Intent();
-                    }
-                    intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, photoList);
-                    setResult(GalleryFinal.EDIT_OK, intent);
-                    finish();
-                }
+                resultAction();
             }
         } else if (id == R.id.iv_crop) {
 
@@ -454,10 +456,27 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             }
         } else if (id == R.id.iv_back) {
             if (mCropState && !(mCropPhotoAction && !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera())) {
-                mIvCrop.performClick();
-            } else {
-                finish();
+                if ((mGalleryConfig.isForceCrop() && mGalleryConfig.isForceCropEdit())) {
+                    mIvCrop.performClick();
+                    return;
+                }
             }
+            finish();
+        }
+    }
+
+    private void resultAction() {
+        ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
+        if ( mTakePhotoAction || mCropPhotoAction || mEditPhotoAction) {
+            resultMuti(photoList);
+        } else {
+            Intent intent = getIntent();
+            if (intent == null) {
+                intent = new Intent();
+            }
+            intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, photoList);
+            setResult(GalleryFinal.EDIT_OK, intent);
+            finish();
         }
     }
 
@@ -589,8 +608,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mCropState && !(mCropPhotoAction && !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera())) {
-                mIvCrop.performClick();
-                return true;
+                if ((mGalleryConfig.isForceCrop() && mGalleryConfig.isForceCropEdit())) {
+                    mIvCrop.performClick();
+                    return true;
+                }
             }
         }
         return super.onKeyDown(keyCode, event);
