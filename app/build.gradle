@@ -18,9 +18,9 @@ android {
         }
 
         debug {
-//            minifyEnabled true
+            minifyEnabled true
             debuggable true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro','../galleryfinal/proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro','../galleryfinal/proguard-rules.pro'
         }
     }
 }

@@ -541,7 +541,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                             mProgressDialog = null;
                         }
                         if (bitmap != null) {
-                            mIvSourcePhoto.setImageBitmap(bitmap);
+                            bitmap.recycle();
+                            
                             mTvEmptyView.setVisibility(View.GONE);
 
                             if ( !mGalleryConfig.isRotateReplaceSource() ) {

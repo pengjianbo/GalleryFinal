@@ -2,10 +2,10 @@
 # GalleryFinal简介
 Android自定义相册，实现了拍照、图片选择（单选/多选）、裁剪（单/多裁剪）、旋转、缩放、ImageLoader无绑定任由开发者选择
 
-#GalleryFinal intro
+# GalleryFinal intro
 GalleryFinal is an Android custom gallery.It can take photo,choose and clip pictures(single/multiple),rotate,zoom,ImageLoader unbinding
 
-##为什么要使用GalleryFinal？
+## 为什么要使用GalleryFinal？
 * 拍照/选择图片倒立问题
 * 市场上各种相机和图片浏览器泛滥导致各种异常问题
 * 各种手机兼容性问题引起crash
@@ -14,7 +14,7 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 系统Gallery App不美观
 * ……
 
-##Updating V1.3.0
+## 当前更新-V1.3.0
 * 代码设置主题颜色
 * 支持对外打开相册
 * 支持对外打开编辑
@@ -25,7 +25,7 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 添加裁剪是否覆盖源文件（默认不覆盖）
 * 添加必须裁剪功能
 
-##截图展示
+## 截图展示
 Demo apk二维码地址：
 ![DEMO APK](images/gallery_final_qrcode.png)
 ![](images/functions.jpg)
@@ -33,16 +33,16 @@ Demo apk二维码地址：
 ![](images/gallery_selects.jpg)       ![](images/gallery_edit.jpg)
 
 
-#GalleryFinal使用方法
+# GalleryFinal使用方法
 
-##下载GalleryFinal
+## 下载GalleryFinal
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.2.7.1'
+compile 'cn.finalteam:galleryfinal:1.3.0'
 ```
 
-##具体使用
+## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
 
 2、选择图片加载器
@@ -187,29 +187,53 @@ GalleryFinal.open(config);
 ```
 
 
-4、配置GalleryFinal Activity样式
-
-* 在styles.xml中添加
-
-```xml
-    <style name="PhotoActivityTheme">
-        <item name="colorTheme">@color/colorPrimary</item>
-        <item name="colorThemeDark">@color/colorPrimaryDark</item>
-    </style>
+4、主题的配置
+* 建议在你的app的Application这设置主题
+* GalleryFinal默认主题为DEFAULT（深蓝色）,GalleryFinal还自带主题：DARK（黑色主题）、CYAN（蓝绿主题）、ORANGE（橙色主题）、GREEN（绿色主题）和TEAL（青绿色主题），当然也支持自定义主题（Custom Theme）,在自定义主题中用户可以配置字体颜色、图标颜色、更换图标、和背景色
+* 设置主题
+1、自定义主题
+```java
+ GalleryTheme theme = new GalleryTheme.Builder()
+        .setTitleBarBgColor(Color.rgb(0xFF, 0x57, 0x22))
+        .setTitleBarTextColor(Color.BLACK)
+        .setTitleBarIconColor(Color.BLACK)
+        .setFabNornalColor(Color.RED)
+        .setFabPressedColor(Color.BLUE)
+        .setCheckNornalColor(Color.WHITE)
+        .setCheckSelectedColor(Color.BLACK)
+        .setIconBack(R.mipmap.ic_action_previous_item)
+        .setIconRotate(R.mipmap.ic_action_repeat)
+        .setIconCrop(R.mipmap.ic_action_crop)
+        .setIconCamera(R.mipmap.ic_action_camera)
+        .build();
+GalleryFinal.init(theme);
 ```
-colorTheme为主题色，colorThemeDark为主题加深色
+
+2、GalleryFinal主题
+
+
 
 5、如果你还想更深度的定制页面效果可以把资源文件名字定义成Gallery资源名已达到覆盖效果。如有不理解可以联系我。
 
-#混淆配置
-
+# 混淆配置
 ```properties
 -keep class cn.finalteam.galleryfinal.widget.*{*;}
 -keep class cn.finalteam.galleryfinal.widget.crop.*{*;}
 ```
 
-#更新日志
-##V1.2.7.1
+# 更新日志
+## V1.3.0
+* 代码设置主题颜色
+* 支持对外打开相册
+* 支持对外打开编辑
+* 支持对外打开裁剪
+* 非png和非jpg图片不能编辑
+* 解决三星部分机型编辑出现OOM情况
+* 添加旋转是否覆盖源文件（默认不覆盖）
+* 添加裁剪是否覆盖源文件（默认不覆盖）
+* 添加必须裁剪功能
+
+## V1.2.7.1
 * 将不存在或已损坏的图片移除
 
 ## V1.2.7	
@@ -233,7 +257,7 @@ colorTheme为主题色，colorThemeDark为主题加深色
 * 解决单选拍照问题
 * 提高稳定性
 
-##V1.2.0
+## V1.2.0
 * 提高图片清晰度
 * 支持图片手动缩放
 * fix权限问题
@@ -244,7 +268,7 @@ colorTheme为主题色，colorThemeDark为主题加深色
 * 添加清理缓存
 * 提高体验效果和修改UI
 
-##V1.1.0
+## V1.1.0
 * UI重改
 * 多选图片裁剪
 * 所有功能可配置
@@ -253,10 +277,10 @@ colorTheme为主题色，colorThemeDark为主题加深色
 * 图片手动选择
 * 支持汉语和英语
 
-#感谢（Thanks）
+# 感谢（Thanks）
 * 图片裁剪[android-crop](https://github.com/jdamcd/android-crop)
 
-#关于作者
+# 关于作者
 * **QQ:**172340021   
 * **QQ群:**218801658  
 * **Email:**<pengjianbo@finalteam.cn>

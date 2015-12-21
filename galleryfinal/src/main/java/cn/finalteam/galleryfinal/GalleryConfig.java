@@ -334,7 +334,6 @@ public class GalleryConfig {
         return rotateReplaceSource;
     }
 
-
     public boolean isCropReplaceSource() {
         return cropReplaceSource;
     }

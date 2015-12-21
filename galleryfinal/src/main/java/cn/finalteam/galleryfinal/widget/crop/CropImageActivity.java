@@ -103,6 +103,10 @@ public abstract class CropImageActivity extends MonitoredActivity {
     }
 
     public void setSourceUri(Uri sourceUri) {
+        if(rotateBitmap != null) {
+            rotateBitmap.recycle();
+            rotateBitmap = null;
+        }
         this.sourceUri = sourceUri;
         this.isSaving = false;
         this.sampleSize = 0;

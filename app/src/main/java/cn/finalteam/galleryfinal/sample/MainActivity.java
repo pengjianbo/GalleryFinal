@@ -155,25 +155,6 @@ public class MainActivity extends AppCompatActivity {
         mOpenGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
-                //        .mutiSelect()
-                //        .mutiSelectMaxSize(8)
-                //        .enableEdit()
-                //        .enableCrop()
-                //        .enableRotate()
-                //        .showCamera()
-                //        .imageloader(new UILImageLoader())
-                //        .cropSquare()
-                //        .cropWidth(50)
-                //        .cropHeight(50)
-                //        //.setTakePhotoFolter(new File(...))
-                //        //.setEditPhotoCacheFolder(new File(...))
-                //        //.filter(mPhotoList)
-                //        .selected(mPhotoList)
-                //        .rotateReplaceSource(false)
-                //        .cropReplaceSource(false)
-                //        .build();
-                //GalleryFinal.openGallery(config);
 
                 //配置主题，这个步骤可以放到application中
                 if (mRbThemeDefault.isChecked()) {
@@ -352,6 +333,8 @@ public class MainActivity extends AppCompatActivity {
         if (itemId == R.id.action_clean_cache) {
             GalleryFinal.cleanCacheFile();
             Toast.makeText(this, "清理成功(Clear success)", Toast.LENGTH_SHORT).show();
+        } else {
+            startActivity(new Intent(this, FuncationActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

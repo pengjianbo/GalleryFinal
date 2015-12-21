@@ -160,30 +160,6 @@ public class GalleryFinal {
                     FileUtils.deleteFile(mGalleryConfig.getEditPhotoCacheFolder());
                 }
             }.start();
-
         }
     }
-
-    //public static void cleanFile() {
-    //    if (mGalleryConfig == null || mGalleryConfig.getEditPhotoCacheFolder() == null) {
-    //        return;
-    //    }
-    //
-    //    File file = mGalleryConfig.getEditPhotoCacheFolder();
-    //    if ( file.exists() ) {
-    //        File []files = file.listFiles();
-    //        if ( files != null && files.length > 0 ) {
-    //            for (File f : files) {
-    //                long t = f.lastModified();
-    //                long curTime = System.currentTimeMillis();
-    //                if (t == 0l && (curTime - t) > 86400000) {
-    //                    try {
-    //                        f.delete();
-    //                    } catch (Exception e){}
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
 }
