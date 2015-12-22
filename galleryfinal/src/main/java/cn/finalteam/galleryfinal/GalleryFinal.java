@@ -22,7 +22,9 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
+import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -42,6 +44,10 @@ public class GalleryFinal {
 
     private static GalleryConfig mGalleryConfig;
     private static GalleryTheme mGalleryTheme;
+
+    public static void setDebug(boolean debug) {
+        Logger.init("galleryfinal", debug);
+    }
 
     public static GalleryConfig getGalleryConfig() {
         return mGalleryConfig;
@@ -104,7 +110,8 @@ public class GalleryFinal {
      * @param photoPath
      */
     public static void openCrop(GalleryConfig config, String photoPath) {
-        if ( config == null || StringUtils.isEmpty(photoPath)) {
+        if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
+            Logger.d("config为空或文件不存在");
             return;
         }
         //必须设置这个三个选项
@@ -130,7 +137,8 @@ public class GalleryFinal {
      * @param photoPath
      */
     public static void openEdit(GalleryConfig config, String photoPath) {
-        if ( config == null || StringUtils.isEmpty(photoPath)) {
+        if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
+            Logger.d("config为空或文件不存在");
             return;
         }
         config.mutiSelect = false;//拍照为单选
