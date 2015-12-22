@@ -1,9 +1,6 @@
 ![](images/gallery_final_effect.png)
 # GalleryFinal简介
-Android自定义相册，实现了拍照、图片选择（单选/多选）、裁剪（单/多裁剪）、旋转、缩放、ImageLoader无绑定任由开发者选择
-
-# GalleryFinal intro
-GalleryFinal is an Android custom gallery.It can take photo,choose and clip pictures(single/multiple),rotate,zoom,ImageLoader unbinding
+Android自定义相册，实现了拍照、图片选择（单选/多选）、 裁剪（单/多裁剪）、旋转、ImageLoader无绑定任由开发者选择、功能可配置、主题样式可配置。GalleryFinal为你定制相册。
 
 ## 为什么要使用GalleryFinal？
 * 拍照/选择图片倒立问题
@@ -14,16 +11,10 @@ GalleryFinal is an Android custom gallery.It can take photo,choose and clip pict
 * 系统Gallery App不美观
 * ……
 
-## 当前更新-V1.3.0
-* 代码设置主题颜色
-* 支持对外打开相册
-* 支持对外打开编辑
-* 支持对外打开裁剪
-* 非png和非jpg图片不能编辑
-* 解决三星部分机型编辑出现OOM情况
-* 添加旋转是否覆盖源文件（默认不覆盖）
-* 添加裁剪是否覆盖源文件（默认不覆盖）
-* 添加必须裁剪功能
+## Updating V1.3.1
+* 对Fresco image loader的支持
+* 添加图片预览功能
+* ……
 
 ## 截图展示
 Demo apk二维码地址：
@@ -162,36 +153,101 @@ public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
 }
 ```
 
+* 对于使用facebook的fresco Imageloader框架，由于GalleryFinal没有对fresco的支持，开发者可以
+
 * ……
 
-3、打开Gallery
+3、启动GalleryFinal
+
+在GalleryFinal 1.3.0版本中相册、拍照、裁剪和图片编辑功能可独立使用
+
+* 打开相册（含GalleryFinal所有功能，可通过GalleryConfig配置）
 
 ```java
 GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
-                        .mutiSelect()
-                        .mutiSelectMaxSize(8)
-                        .enableEdit()
-                        .enableCrop()
-                        .enableRotate()
-                        .showCamera()
-                        .imageloader(new UILImageLoader())
-                        .cropSquare()
-                        .cropWidth(50)
-                        .cropHeight(50)
-                        //.setTakePhotoFolter(new File(...)) //自定义拍照存储目录
-                        //.setEditPhotoCacheFolder(new File(...)) //自定义编辑产生的图片缓存目录
-                        //.filter(mPhotoList)
-                        .selected(mPhotoList)
-                        .build();
-GalleryFinal.open(config);
+	.mutiSelect()
+	.mutiSelectMaxSize(8)
+	.enableEdit()
+	.enableCrop()
+	.enableRotate()
+	.showCamera()
+	.imageloader(new UILImageLoader())
+	.cropSquare()
+	.cropWidth(50)
+	.cropHeight(50)
+	//.setTakePhotoFolter(new File(...))
+	//.setEditPhotoCacheFolder(new File(...))
+	//.filter(mPhotoList)
+	.selected(mPhotoList)
+	.rotateReplaceSource(false)
+	.cropReplaceSource(false)
+	...//添加其他配置信息
+	.build();
+GalleryFinal.openGallery(config);	//打开相册
+```
+
+* 使用拍照
+
+```java
+GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)                
+	...//添加其他配置信息
+	.build();
+GalleryFinal.openCamera(config);
+```
+
+* 使用裁剪
+
+```java
+GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
+	...//添加其他配置信息
+	.build();
+GalleryFinal.openCrop(config);
+```
+
+* 使用图片编辑
+
+```java
+GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
+	...//添加其他配置信息
+	.build();
+GalleryFinal.openEdit(config);
+```
+
+* **GalleryConfig Builder类说明**
+
+```java
+mutiSelect()//配置多选
+singleSelect()//配置单选
+mutiSelectMaxSize(int maxSize)//配置多选数量
+enableEdit()//开启编辑功能
+enableCrop()//开启裁剪功能
+enableRotate()//开启选择功能
+showCamera()//开启相机功能
+cropWidth(int width)//裁剪宽度
+cropHeight(int height)//裁剪高度
+cropSquare()//裁剪正方形
+selected(List list)//添加已选列表,只是在列表中默认呗选中不会过滤图片
+filter(List list)//添加图片过滤，也就是不在GalleryFinal中显示
+takePhotoFolter(File file)//配置拍照保存目录，不做配置的话默认是/sdcard/DCIM/GalleryFinal/
+editPhotoCacheFolder(File file)//配置编辑（裁剪和旋转）功能产生的cache文件保存目录，不做配置的话默认保存在/sdcard/GalleryFinal/edittemp/
+rotateReplaceSource(boolean)//配置选择图片时是否替换原始图片，默认不替换
+cropReplaceSource(boolean)//配置裁剪图片时是否替换原始图片，默认不替换
+forceCrop(boolean)//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
+forceCropEdit(boolean)//在开启强制裁剪功能时是否可以对图片进行编辑（也就是是否显示旋转图标和拍照图标）
+imageloader(ImageLoader)//配置图片加载器
 ```
 
 
 4、主题的配置
+
 * 建议在你的app的Application这设置主题
+
 * GalleryFinal默认主题为DEFAULT（深蓝色）,GalleryFinal还自带主题：DARK（黑色主题）、CYAN（蓝绿主题）、ORANGE（橙色主题）、GREEN（绿色主题）和TEAL（青绿色主题），当然也支持自定义主题（Custom Theme）,在自定义主题中用户可以配置字体颜色、图标颜色、更换图标、和背景色
+
 * 设置主题
-1、自定义主题
+
+1)、使用自定义主题
+
 ```java
  GalleryTheme theme = new GalleryTheme.Builder()
         .setTitleBarBgColor(Color.rgb(0xFF, 0x57, 0x22))
@@ -205,13 +261,40 @@ GalleryFinal.open(config);
         .setIconRotate(R.mipmap.ic_action_repeat)
         .setIconCrop(R.mipmap.ic_action_crop)
         .setIconCamera(R.mipmap.ic_action_camera)
+        //...其他配置
         .build();
 GalleryFinal.init(theme);
 ```
 
-2、GalleryFinal主题
+2)、使用GalleryFinal主题
 
+```java
+GalleryFinal.init(GalleryTheme.CYAN);
+...
+```
+**3)、GalleryTheme 主题配置类说明**
 
+```java
+setTitleBarTextColor//标题栏文本字体颜色
+setTitleBarBgColor//标题栏背景颜色
+setTitleBarIconColor//标题栏icon颜色，如果设置了标题栏icon，设置setTitleBarIconColor将无效
+setCheckNornalColor//选择框未选颜色
+setCheckSelectedColor//选择框选中颜色
+setCropControlColor//设置裁剪控制点和裁剪框颜色
+setFabNornalColor//设置Floating按钮Nornal状态颜色
+setFabPressedColor//设置Floating按钮Pressed状态颜色
+
+setIconBack//设置返回按钮icon
+setIconCamera//设置相机icon
+setIconCrop//设置裁剪icon
+setIconRotate//设置选择icon
+setIconClear//设置清楚选择按钮icon（标题栏清除选择按钮）
+setIconFolderArrow//设置标题栏文件夹下拉arrow图标
+setIconDelete//设置多选编辑页删除按钮icon
+setIconCheck//设置checkbox和文件夹已选icon
+setIconFab//设置Floating按钮icon
+setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
+```
 
 5、如果你还想更深度的定制页面效果可以把资源文件名字定义成Gallery资源名已达到覆盖效果。如有不理解可以联系我。
 

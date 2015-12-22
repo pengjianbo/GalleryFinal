@@ -29,12 +29,12 @@ import cn.finalteam.galleryfinal.sample.loader.UILImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.XUtils3ImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
-import cn.finalteam.toolsfinal.Logger;
 import com.baoyz.actionsheet.ActionSheet;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.xutils.x;
@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.cb_open_force_crop) CheckBox mCbOpenForceCrop;
     @Bind(R.id.cb_open_force_crop_edit) CheckBox mCbOpenForceCropEdit;
     @Bind(R.id.ll_force_crop) LinearLayout mLlForceCrop;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Bind(R.id.rb_fresco) RadioButton mRbFresco;
 
     private List<PhotoInfo> mPhotoList;
     private ChoosePhotoListAdapter mChoosePhotoListAdapter;
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logger.init("galleryfinal", true);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     mLlMaxSize.setVisibility(View.VISIBLE);
                     mLlForceCrop.setVisibility(View.GONE);
                 } else {
-                    if ( mCbEdit.isChecked() ) {
+                    if (mCbEdit.isChecked()) {
                         mLlForceCrop.setVisibility(View.VISIBLE);
                     }
                     mLlMaxSize.setVisibility(View.GONE);
@@ -242,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (mCbOpenForceCrop.isChecked() && mRbSingleSelect.isChecked()) {
                         builder.forceCrop(true);
-                        if ( mCbOpenForceCropEdit.isChecked() ) {
+                        if (mCbOpenForceCropEdit.isChecked()) {
                             builder.forceCropEdit(true);
                         }
                     }
@@ -266,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onOtherButtonClick(ActionSheet actionSheet, int index) {
+                                String path = "/sdcard/pk1-2.jpg";
                                 switch (index) {
                                     case 0:
                                         GalleryFinal.openGallery(config);
@@ -274,10 +277,18 @@ public class MainActivity extends AppCompatActivity {
                                         GalleryFinal.openCamera(config);
                                         break;
                                     case 2:
-                                        GalleryFinal.openCrop(config, "/sdcard/pk1-2.jpg");
+                                        if (new File(path).exists()) {
+                                            GalleryFinal.openCrop(config, path);
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "图片不存在", Toast.LENGTH_SHORT).show();
+                                        }
                                         break;
                                     case 3:
-                                        GalleryFinal.openEdit(config, "/sdcard/pk1-2.jpg");
+                                        if (new File(path).exists()) {
+                                            GalleryFinal.openEdit(config, path);
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "图片不存在", Toast.LENGTH_SHORT).show();
+                                        }
                                         break;
                                     default:
                                         break;
@@ -334,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
             GalleryFinal.cleanCacheFile();
             Toast.makeText(this, "清理成功(Clear success)", Toast.LENGTH_SHORT).show();
         } else {
-            startActivity(new Intent(this, FuncationActivity.class));
+            //startActivity(new Intent(this, FuncationActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

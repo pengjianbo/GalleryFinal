@@ -127,6 +127,15 @@
                 />
 
             <RadioButton
+                android:id="@+id/rb_fresco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="#000000"
+                android:text="Fresco"
+                />
+
+            <RadioButton
                 android:id="@+id/rb_xutils3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

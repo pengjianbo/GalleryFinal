@@ -34,5 +34,6 @@ public class IApplication extends Application {
         GalleryTheme theme = new GalleryTheme.Builder()
                 .build();
         GalleryFinal.init(theme);
+        GalleryFinal.setDebug(BuildConfig.DEBUG);
     }
 }
