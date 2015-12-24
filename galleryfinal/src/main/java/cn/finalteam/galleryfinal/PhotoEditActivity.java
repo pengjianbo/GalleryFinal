@@ -69,7 +69,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private TextView mTvTitle;
     private ImageView mIvTakePhoto;
     private ImageView mIvCrop;
-    private ImageView mIvRotation;
+    private ImageView mIvRotate;
     private CropImageView mIvCropPhoto;
     private PhotoView mIvSourcePhoto;
     private TextView mTvEmptyView;
@@ -214,7 +214,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             }
 
             if (mGalleryConfig.isRotate()) {
-                mIvRotation.setVisibility(View.VISIBLE);
+                mIvRotate.setVisibility(View.VISIBLE);
             }
 
             if (!mGalleryConfig.isMutiSelect()) {
@@ -264,9 +264,9 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mIvCrop.setColorFilter(mGalleryTheme.getTitleBarIconColor());
         }
 
-        mIvRotation.setImageResource(mGalleryTheme.getIconRotate());
-        if (mGalleryTheme.getIconRotate() == R.drawable.ic_gf_rotation) {
-            mIvRotation.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvRotate.setImageResource(mGalleryTheme.getIconRotate());
+        if (mGalleryTheme.getIconRotate() == R.drawable.ic_gf_rotate) {
+            mIvRotate.setColorFilter(mGalleryTheme.getTitleBarIconColor());
         }
 
         if ( mGalleryTheme.getEditPhotoBgTexture() != null ) {
@@ -291,7 +291,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mTvEmptyView = (TextView) findViewById(R.id.tv_empty_view);
         mFabCrop = (FloatingActionButton) findViewById(R.id.fab_crop);
         mIvCrop = (ImageView) findViewById(R.id.iv_crop);
-        mIvRotation = (ImageView) findViewById(R.id.iv_rotation);
+        mIvRotate = (ImageView) findViewById(R.id.iv_rotate);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
         mTitlebar = (LinearLayout) findViewById(R.id.titlebar);
     }
@@ -302,7 +302,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mLvGallery.setOnItemClickListener(this);
         mFabCrop.setOnClickListener(this);
         mIvCrop.setOnClickListener(this);
-        mIvRotation.setOnClickListener(this);
+        mIvRotate.setOnClickListener(this);
     }
 
     @Override
@@ -447,8 +447,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     mCropState = !mCropState;
                 }
             }
-        } else if (id == R.id.iv_rotation) {
-            rotationPhoto();
+        } else if (id == R.id.iv_rotate) {
+            rotatePhoto();
         } else if (id == R.id.iv_take_photo) {
             if (mGalleryConfig.isMutiSelect() && mGalleryConfig.getMaxSize() == mSelectPhotoMap.size()) {
                 toast(getString(R.string.select_max_tips));
@@ -484,7 +484,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     /**
      * 图片旋转
      */
-    private void rotationPhoto() {
+    private void rotatePhoto() {
         if (mPhotoList.size() > 0 && mPhotoList.get(mSelectIndex) != null && !mRotating) {
             final PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
             final String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
@@ -580,7 +580,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 mIvCrop.setVisibility(View.VISIBLE);
             }
             if (mGalleryConfig.isRotate()) {
-                mIvRotation.setVisibility(View.GONE);
+                mIvRotate.setVisibility(View.GONE);
             }
 
             if (mGalleryConfig.isShowCamera()) {
@@ -593,7 +593,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 mIvCrop.setVisibility(View.VISIBLE);
             }
             if (mGalleryConfig.isRotate()) {
-                mIvRotation.setVisibility(View.VISIBLE);
+                mIvRotate.setVisibility(View.VISIBLE);
             }
 
             if (mGalleryConfig.isShowCamera()) {

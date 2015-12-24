@@ -124,7 +124,7 @@ public class GalleryTheme {
         private int iconBack = R.drawable.ic_gf_back;
         private int iconCamera = R.drawable.ic_gf_camera;
         private int iconCrop = R.drawable.ic_gf_crop;
-        private int iconRotate = R.drawable.ic_gf_rotation;
+        private int iconRotate = R.drawable.ic_gf_rotate;
         private int iconClear = R.drawable.ic_gf_clear;
         private int iconFolderArrow = R.drawable.ic_gf_triangle_arrow;
         private int iconDelete = R.drawable.ic_delete_photo;

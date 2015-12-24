@@ -62,12 +62,12 @@
             />
 
         <ImageView
-            android:id="@+id/iv_rotation"
+            android:id="@+id/iv_rotate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_gf_rotation"
+            android:src="@drawable/ic_gf_rotate"
             android:visibility="gone"
             />
 

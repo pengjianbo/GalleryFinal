@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 /**
- * Desction:是否
+ * Desction:释放imageview bitmap
  * Author:pengjianbo
+ *
  * Date:2015/12/24 0024 18:43
  */
 public class RecycleViewBitmapUtils {
