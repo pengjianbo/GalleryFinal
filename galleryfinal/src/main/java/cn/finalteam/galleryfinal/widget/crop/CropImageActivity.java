@@ -383,7 +383,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 if (outputStream != null) {
                     String ext = FileUtils.getFileExtension(saveFile.getAbsolutePath());
                     Bitmap.CompressFormat format;
-                    if ( ext.equalsIgnoreCase("jpg") ) {
+                    if ( ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") ) {
                         format = Bitmap.CompressFormat.JPEG;
                         croppedImage.compress(format, 90, outputStream);
                     } else {

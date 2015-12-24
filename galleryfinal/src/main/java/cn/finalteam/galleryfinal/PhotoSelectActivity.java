@@ -30,6 +30,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
 import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
@@ -38,12 +46,6 @@ import cn.finalteam.galleryfinal.utils.PhotoTools;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.StringUtils;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Desction:图片选择器

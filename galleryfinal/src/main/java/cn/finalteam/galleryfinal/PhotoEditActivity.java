@@ -428,7 +428,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             if (mPhotoList.size() > 0) {
                 PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
                 String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
-                if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg"))) {
+                if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
                     toast(getString(R.string.edit_letoff_photo_format));
                 } else {
                     if (mCropState) {
@@ -487,7 +487,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         if (mPhotoList.size() > 0 && mPhotoList.get(mSelectIndex) != null && !mRotating) {
             final PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
             final String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
-            if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg"))) {
+            if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
                 toast(getString(R.string.edit_letoff_photo_format));
                 return;
             }
@@ -523,7 +523,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                         Bitmap bitmap = Utils.rotateBitmap(path, orientation, mScreenWidth, mScreenHeight);
                         if (bitmap != null) {
                             Bitmap.CompressFormat format;
-                            if ( ext.equalsIgnoreCase("jpg") ) {
+                            if ( ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") ) {
                                 format = Bitmap.CompressFormat.JPEG;
                             } else {
                                 format = Bitmap.CompressFormat.PNG;
