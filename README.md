@@ -14,6 +14,8 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 ## Updating V1.3.1
 * 对Fresco image loader的支持
 * 添加图片预览功能
+* 解决jpeg图片编辑提示bug
+* 解决GalleryTheme设置方法没有返回Bulder的bug
 * ……
 
 ## 截图展示
@@ -153,7 +155,8 @@ public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
 }
 ```
 
-* 对于使用facebook的fresco Imageloader框架，由于GalleryFinal没有对fresco的支持，开发者可以
+* fresco
+敬请期待
 
 * ……
 
