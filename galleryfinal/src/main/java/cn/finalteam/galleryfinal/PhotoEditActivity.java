@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.finalteam.galleryfinal.adapter.PhotoEditListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.utils.RecycleViewBitmapUtils;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
@@ -603,6 +604,12 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 mLlGallery.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RecycleViewBitmapUtils.recycleImageView(mIvCropPhoto);
     }
 
     @Override
