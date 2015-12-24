@@ -202,20 +202,24 @@ public class GalleryTheme {
             return this;
         }
 
-        public void setIconDelete(int iconDelete) {
+        public Builder setIconDelete(int iconDelete) {
             this.iconDelete = iconDelete;
+            return this;
         }
 
-        public void setIconCheck(int iconCheck) {
+        public Builder setIconCheck(int iconCheck) {
             this.iconCheck = iconCheck;
+            return this;
         }
 
-        public void setIconFab(int iconFab) {
+        public Builder setIconFab(int iconFab) {
             this.iconFab = iconFab;
+            return this;
         }
 
-        public void setEditPhotoBgTexture(Drawable bgEditTexture) {
+        public Builder setEditPhotoBgTexture(Drawable bgEditTexture) {
             this.bgEditTexture = bgEditTexture;
+            return this;
         }
 
         public GalleryTheme build() {
