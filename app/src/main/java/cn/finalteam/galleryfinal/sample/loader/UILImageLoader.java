@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 /**
  * Desction:
  * Author:pengjianbo
@@ -29,7 +31,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 public class UILImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
     @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
         ImageSize size = new ImageSize(width, height);
         ImageLoader.getInstance().displayImage("file://" + path, imageView, size);
     }

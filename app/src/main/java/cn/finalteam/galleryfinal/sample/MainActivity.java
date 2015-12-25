@@ -23,6 +23,7 @@ import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.GalleryTheme;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.sample.loader.FrescoImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.GlideImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.PicassoImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.UILImageLoader;
@@ -197,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
                     builder.imageloader(new XUtils3ImageLoader());
                 } else if (mRbGlide.isChecked()) {
                     builder.imageloader(new GlideImageLoader());
+                } else if (mRbFresco.isChecked()) {
+                    builder.imageloader(new FrescoImageLoader(MainActivity.this));
                 } else {
                     builder.imageloader(new PicassoImageLoader());
                 }

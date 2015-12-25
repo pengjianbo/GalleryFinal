@@ -17,8 +17,10 @@
 package cn.finalteam.galleryfinal;
 
 import android.app.Activity;
-import cn.finalteam.galleryfinal.widget.GalleryImageView;
+
 import java.io.Serializable;
+
+import cn.finalteam.galleryfinal.widget.GFImageView;
 
 /**
  * Desction:imageloader抽象类，外部需要实现这个类去加载图片， GalleryFinal尽力减少对第三方库的依赖，所以这么干了
@@ -26,6 +28,6 @@ import java.io.Serializable;
  * Date:15/10/10 下午5:27
  */
 public interface ImageLoader extends Serializable{
-    void displayImage(Activity activity, String path, GalleryImageView imageView, int width, int height);
+    void displayImage(Activity activity, String path, GFImageView imageView, int width, int height);
     void clearMemoryCache();
 }

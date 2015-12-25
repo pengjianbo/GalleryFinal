@@ -20,7 +20,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <cn.finalteam.galleryfinal.widget.GFImageView
         android:id="@+id/iv_thumb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -17,6 +17,11 @@
 package cn.finalteam.galleryfinal.sample;
 
 import android.app.Application;
+import android.graphics.Bitmap;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.GalleryTheme;
 
@@ -35,5 +40,10 @@ public class IApplication extends Application {
                 .build();
         GalleryFinal.init(theme);
         GalleryFinal.setDebug(BuildConfig.DEBUG);
+
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setBitmapsConfig(Bitmap.Config.ARGB_8888)
+                .build();
+        Fresco.initialize(this, config);
     }
 }

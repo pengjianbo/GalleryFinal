@@ -22,6 +22,8 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 /**
  * Desction:
  * Author:pengjianbo
@@ -30,7 +32,7 @@ import java.io.File;
 public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
     @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
         Picasso.with(activity)
                 .load(new File(path))
                 .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)

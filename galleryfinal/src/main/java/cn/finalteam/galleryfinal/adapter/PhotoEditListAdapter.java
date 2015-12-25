@@ -24,6 +24,8 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.PhotoEditActivity;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 import java.util.List;
 
 /**
@@ -70,11 +72,11 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
     }
 
     public class ViewHolder extends CommonBaseAdapter.ViewHolder {
-        ImageView mIvPhoto;
+        GFImageView mIvPhoto;
         ImageView mIvDelete;
         public ViewHolder(View view) {
             super(view);
-            mIvPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+            mIvPhoto = (GFImageView) view.findViewById(R.id.iv_photo);
             mIvDelete = (ImageView) view.findViewById(R.id.iv_delete);
         }
     }

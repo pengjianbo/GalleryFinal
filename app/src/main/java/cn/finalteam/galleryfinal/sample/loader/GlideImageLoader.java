@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 /**
  * Desction:
  * Author:pengjianbo
@@ -29,7 +31,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
     @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
         Glide.with(activity)
                 .load("file://" + path)
                 .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)

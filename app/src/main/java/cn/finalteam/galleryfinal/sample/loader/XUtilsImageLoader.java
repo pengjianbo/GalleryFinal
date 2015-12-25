@@ -25,6 +25,8 @@ import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
 import com.lidroid.xutils.bitmap.core.BitmapSize;
 
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 /**
  * Desction:
  * Author:pengjianbo
@@ -41,7 +43,7 @@ public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
     }
 
     @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
         BitmapDisplayConfig config = new BitmapDisplayConfig();
         config.setLoadFailedDrawable(defaultImage);
         config.setLoadingDrawable(defaultImage);

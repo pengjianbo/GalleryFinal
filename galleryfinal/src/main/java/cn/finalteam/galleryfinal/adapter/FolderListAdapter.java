@@ -26,6 +26,8 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 import java.util.List;
 
 /**
@@ -86,14 +88,14 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
     }
 
     static class FolderViewHolder extends CommonBaseAdapter.ViewHolder {
-        ImageView mIvCover;
+        GFImageView mIvCover;
         ImageView mIvFolderCheck;
         TextView mTvFolderName;
         TextView mTvPhotoCount;
 
         public FolderViewHolder(View view) {
             super(view);
-            mIvCover = (ImageView) view.findViewById(R.id.iv_cover);
+            mIvCover = (GFImageView) view.findViewById(R.id.iv_cover);
             mTvFolderName = (TextView) view.findViewById(R.id.tv_folder_name);
             mTvPhotoCount = (TextView) view.findViewById(R.id.tv_photo_count);
             mIvFolderCheck = (ImageView) view.findViewById(R.id.iv_folder_check);

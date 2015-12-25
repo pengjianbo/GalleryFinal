@@ -1,1 +1,1 @@
-include ':app', ':galleryfinal', ':fresco-image-loader'
+include ':app', ':galleryfinal'

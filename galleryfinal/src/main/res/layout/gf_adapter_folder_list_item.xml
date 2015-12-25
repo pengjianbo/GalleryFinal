@@ -23,7 +23,7 @@
     android:background="#FFFFFF"
     >
 
-    <ImageView
+    <cn.finalteam.galleryfinal.widget.GFImageView
         android:id="@+id/iv_cover"
         android:layout_width="68dp"
         android:layout_height="68dp"

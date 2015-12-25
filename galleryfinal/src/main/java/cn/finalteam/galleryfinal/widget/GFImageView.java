@@ -1,39 +1,50 @@
 package cn.finalteam.galleryfinal.widget;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Desction:
  * Author:pengjianbo
  * Date:2015/12/24 0024 20:14
  */
-public class GalleryImageView extends ImageView {
+public class GFImageView extends PhotoView {
 
     private ImageViewListener mImageViewListener;
 
-    public GalleryImageView(Context context) {
+    public GFImageView(Context context) {
         super(context);
+        setZoomable(false);
     }
 
-    public GalleryImageView(Context context, AttributeSet attrs) {
+    public GFImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setZoomable(false);
     }
 
-    public GalleryImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GFImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setZoomable(false);
     }
 
-    private void init() {
-        mImageViewListener = new ImageViewListener() ;
+    public void setImageViewListener(ImageViewListener imageViewListener) {
+        mImageViewListener = imageViewListener;
     }
 
-    public class ImageViewListener {
-        void onDetach(){}
-        void onAttach(){}
-        //boolean verifyDrawable(Drawable dr){};
+    public static class ImageViewListener {
+        public void onDetach() {
+        }
 
+        public void onAttach() {
+        }
+
+        public boolean verifyDrawable(Drawable dr) {
+            return false;
+        }
     }
 
     @Override
@@ -48,13 +59,13 @@ public class GalleryImageView extends ImageView {
         super.onAttachedToWindow();
     }
 
-    //@Override
-    //protected boolean verifyDrawable(Drawable dr) {
-    //    if (mImageViewListener.verifyDrawable(dr)) {
-    //        return true;
-    //    }
-    //    return super.verifyDrawable(dr);
-    //}
+    @Override
+    protected boolean verifyDrawable(Drawable dr) {
+        if (mImageViewListener.verifyDrawable(dr)) {
+            return true;
+        }
+        return super.verifyDrawable(dr);
+    }
 
     @Override
     public void onStartTemporaryDetach() {

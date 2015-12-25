@@ -88,7 +88,7 @@
         android:layout_weight="1"
         >
 
-        <uk.co.senab.photoview.PhotoView
+        <cn.finalteam.galleryfinal.widget.GFImageView
             android:id="@+id/iv_source_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

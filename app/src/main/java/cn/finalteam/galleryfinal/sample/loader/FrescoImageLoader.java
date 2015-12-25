@@ -18,11 +18,15 @@ package cn.finalteam.galleryfinal.sample.loader;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import cn.finalteam.galleryfinal.widget.GalleryImageView;
+import android.widget.ImageView;
+
 import com.facebook.common.references.CloseableReference;
+import com.facebook.common.util.UriUtil;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -33,60 +37,90 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeHolder;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.image.CloseableStaticBitmap;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 /**
  * Desction:
  * Author:pengjianbo
  * Date:15/12/24 下午9:34
  */
-public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader  {
+public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
-    private DraweeHolder<GenericDraweeHierarchy> mDraweeHolder;
-    private CloseableReference<CloseableImage> imageReference = null;
+    private Context context;
 
     public FrescoImageLoader(Context context) {
-        if (mDraweeHolder == null) {
-            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(context.getResources())
-                    .setFadeDuration(300)
-                    .setProgressBarImage(new ProgressBarDrawable())
-                    .build();
-            mDraweeHolder = DraweeHolder.create(hierarchy, context);
-        }
+        this.context = context;
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
+                .setBitmapsConfig(Bitmap.Config.ARGB_8888)
+                .build();
+        Fresco.initialize(context, config);
     }
 
     @Override
-    public void displayImage(Activity activity, String path, GalleryImageView imageView, int width, int height) {
-        setImageUri("file:/"+path, new ResizeOptions(width, height), imageView);
-    }
+    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
+        Resources resources = context.getResources();
+        Drawable defaultDrawable = resources.getDrawable(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo);
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(resources)
+                .setFadeDuration(300)
+                .setPlaceholderImage(defaultDrawable)
+                .setFailureImage(defaultDrawable)
+                .setProgressBarImage(new ProgressBarDrawable())
+                .build();
+        final DraweeHolder<GenericDraweeHierarchy> draweeHolder = DraweeHolder.create(hierarchy, context);
+        imageView.setImageViewListener(new GFImageView.ImageViewListener() {
+            @Override
+            public void onDetach() {
+                draweeHolder.onDetach();
+            }
 
-    @Override
-    public void clearMemoryCache() {
+            @Override
+            public void onAttach() {
+                draweeHolder.onAttach();
+            }
 
+            @Override
+            public boolean verifyDrawable(Drawable dr) {
+                if (dr == draweeHolder.getHierarchy().getTopLevelDrawable()) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        Uri uri = new Uri.Builder()
+                .scheme(UriUtil.LOCAL_FILE_SCHEME)
+                .path(path)
+                .build();
+        displayImage(uri, new ResizeOptions(width*2, height*2), imageView, draweeHolder);
     }
 
     /**
      * 加载远程图片
+     *
      * @param url
      * @param imageSize
      */
-    private void setImageUri(String url, ResizeOptions imageSize, final  GalleryImageView imageView) {
+    private void displayImage(Uri url, ResizeOptions imageSize, final ImageView imageView, final DraweeHolder<GenericDraweeHierarchy> draweeHolder) {
         ImageRequest imageRequest = ImageRequestBuilder
-                .newBuilderWithSource(Uri.parse(url))
+                .newBuilderWithSource(url)
                 .setResizeOptions(imageSize)//图片目标大小
                 .build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
+
         final DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, this);
         DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setOldController(mDraweeHolder.getController())
+                .setOldController(draweeHolder.getController())
                 .setImageRequest(imageRequest)
                 .setControllerListener(new BaseControllerListener<ImageInfo>() {
                     @Override
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
+                        CloseableReference<CloseableImage> imageReference = null;
                         try {
                             imageReference = dataSource.getResult();
                             if (imageReference != null) {
@@ -95,7 +129,6 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                                     CloseableStaticBitmap closeableStaticBitmap = (CloseableStaticBitmap) image;
                                     Bitmap bitmap = closeableStaticBitmap.getUnderlyingBitmap();
                                     if (bitmap != null) {
-
                                         imageView.setImageBitmap(bitmap);
                                     }
                                 }
@@ -108,6 +141,12 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                 })
                 .setTapToRetryEnabled(true)
                 .build();
-        mDraweeHolder.setController(controller);
+        draweeHolder.setController(controller);
     }
+
+    @Override
+    public void clearMemoryCache() {
+
+    }
+
 }

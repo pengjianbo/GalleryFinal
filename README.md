@@ -16,6 +16,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 添加图片预览功能
 * 解决jpeg图片编辑提示bug
 * 解决GalleryTheme设置方法没有返回Bulder的bug
+* 添加对Fragment onActivitForResult的支持
 * ……
 
 ## 截图展示

@@ -21,12 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+
+import java.util.List;
+import java.util.Map;
+
 import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import java.util.List;
-import java.util.Map;
+import cn.finalteam.galleryfinal.widget.GFImageView;
 
 /**
  * Desction:
@@ -86,12 +89,12 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
 
     public static class PhotoViewHolder extends CommonBaseAdapter.ViewHolder {
 
-        public ImageView mIvThumb;
+        public GFImageView mIvThumb;
         public ImageView mIvCheck;
 
         public PhotoViewHolder(View view) {
             super(view);
-            mIvThumb = (ImageView) view.findViewById(R.id.iv_thumb);
+            mIvThumb = (GFImageView) view.findViewById(R.id.iv_thumb);
             mIvCheck = (ImageView) view.findViewById(R.id.iv_check);
         }
     }

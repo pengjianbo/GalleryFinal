@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import cn.finalteam.galleryfinal.widget.GFImageView;
+
 /**
  * Desction:
  * Author:pengjianbo
@@ -29,7 +31,7 @@ import org.xutils.x;
  */
 public class XUtils3ImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
     @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
         ImageOptions options = new ImageOptions.Builder()
                 .setLoadingDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
                 .setFailureDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
