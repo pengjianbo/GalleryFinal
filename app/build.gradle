@@ -40,5 +40,5 @@ dependencies {
     //    compile 'cn.finalteam:galleryfinal:1.2.7'
     compile 'org.xutils:xutils:3.1.7'
     compile 'com.baoyz.actionsheet:library:1.1.4'
-    compile project(':fresco-image-loader')
+    compile 'com.facebook.fresco:fresco:0.8.1+'
 }

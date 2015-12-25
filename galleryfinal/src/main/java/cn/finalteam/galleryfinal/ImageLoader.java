@@ -17,7 +17,7 @@
 package cn.finalteam.galleryfinal;
 
 import android.app.Activity;
-import android.widget.ImageView;
+import cn.finalteam.galleryfinal.widget.GalleryImageView;
 import java.io.Serializable;
 
 /**
@@ -26,6 +26,6 @@ import java.io.Serializable;
  * Date:15/10/10 下午5:27
  */
 public interface ImageLoader extends Serializable{
-    void displayImage(Activity activity, String path, ImageView imageView, int width, int height);
+    void displayImage(Activity activity, String path, GalleryImageView imageView, int width, int height);
     void clearMemoryCache();
 }
