@@ -5,30 +5,25 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import uk.co.senab.photoview.PhotoView;
-
 /**
  * Desction:
  * Author:pengjianbo
  * Date:2015/12/24 0024 20:14
  */
-public class GFImageView extends PhotoView {
+public class GFImageView extends ImageView {
 
     private ImageViewListener mImageViewListener;
 
     public GFImageView(Context context) {
         super(context);
-        setZoomable(false);
     }
 
     public GFImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setZoomable(false);
     }
 
     public GFImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setZoomable(false);
     }
 
     public void setImageViewListener(ImageViewListener imageViewListener) {

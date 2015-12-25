@@ -34,10 +34,10 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.RecycleViewBitmapUtils;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
-import cn.finalteam.galleryfinal.widget.GFImageView;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 import cn.finalteam.galleryfinal.widget.crop.CropImageActivity;
 import cn.finalteam.galleryfinal.widget.crop.CropImageView;
+import cn.finalteam.galleryfinal.widget.zoonview.PhotoView;
 import cn.finalteam.toolsfinal.ActivityManager;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import uk.co.senab.photoview.PhotoView;
 
 /**
  * Desction:图片裁剪
@@ -72,7 +71,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private ImageView mIvCrop;
     private ImageView mIvRotate;
     private CropImageView mIvCropPhoto;
-    private GFImageView mIvSourcePhoto;
+    private PhotoView mIvSourcePhoto;
     private TextView mTvEmptyView;
     private FloatingActionButton mFabCrop;
     private HorizontalListView mLvGallery;
@@ -285,7 +284,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private void findViews() {
         mIvTakePhoto = (ImageView) findViewById(R.id.iv_take_photo);
         mIvCropPhoto = (CropImageView) findViewById(R.id.iv_crop_photo);
-        mIvSourcePhoto = (GFImageView) findViewById(R.id.iv_source_photo);
+        mIvSourcePhoto = (PhotoView) findViewById(R.id.iv_source_photo);
         mLvGallery = (HorizontalListView) findViewById(R.id.lv_gallery);
         mLlGallery = (LinearLayout) findViewById(R.id.ll_gallery);
         mIvBack = (ImageView) findViewById(R.id.iv_back);

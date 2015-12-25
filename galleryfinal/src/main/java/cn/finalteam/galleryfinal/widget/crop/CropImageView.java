@@ -19,7 +19,6 @@ package cn.finalteam.galleryfinal.widget.crop;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -100,7 +99,7 @@ public class CropImageView extends ImageViewTouchBase {
     }
 
     @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         CropImageActivity cropImageActivity = (CropImageActivity) context;
         if (cropImageActivity.isSaving()) {
             return false;
@@ -197,7 +196,7 @@ public class CropImageView extends ImageViewTouchBase {
     }
 
     @Override
-    protected void onDraw(@NonNull Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (HighlightView highlightView : highlightViews) {
             highlightView.draw(canvas);

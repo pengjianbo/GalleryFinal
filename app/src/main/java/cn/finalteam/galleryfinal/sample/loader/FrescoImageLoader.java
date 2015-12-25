@@ -47,7 +47,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import cn.finalteam.galleryfinal.widget.GFImageView;
 
 /**
- * Desction:
+ * Desction:fresco image loader
  * Author:pengjianbo
  * Date:15/12/24 下午9:34
  */
@@ -58,7 +58,7 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
     public FrescoImageLoader(Context context) {
         this.context = context;
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
-                .setBitmapsConfig(Bitmap.Config.ARGB_8888)
+                .setBitmapsConfig(Bitmap.Config.ARGB_4444)
                 .build();
         Fresco.initialize(context, config);
     }
@@ -97,7 +97,7 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                 .scheme(UriUtil.LOCAL_FILE_SCHEME)
                 .path(path)
                 .build();
-        displayImage(uri, new ResizeOptions(width*2, height*2), imageView, draweeHolder);
+        displayImage(uri, new ResizeOptions(width, height), imageView, draweeHolder);
     }
 
     /**
@@ -128,7 +128,7 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                                 if (image != null && image instanceof CloseableStaticBitmap) {
                                     CloseableStaticBitmap closeableStaticBitmap = (CloseableStaticBitmap) image;
                                     Bitmap bitmap = closeableStaticBitmap.getUnderlyingBitmap();
-                                    if (bitmap != null) {
+                                    if (bitmap != null && imageView != null) {
                                         imageView.setImageBitmap(bitmap);
                                     }
                                 }

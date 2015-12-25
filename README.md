@@ -11,13 +11,12 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 系统Gallery App不美观
 * ……
 
-## Updating V1.3.1
-* 对Fresco image loader的支持
-* 添加图片预览功能
-* 解决jpeg图片编辑提示bug
-* 解决GalleryTheme设置方法没有返回Bulder的bug
-* 添加对Fragment onActivitForResult的支持
+## Updating V1.4.0
+* activityforResult改为事件回调形式
+* 优化GalleryConfig配置方式
+* 增强各手机兼容性
 * ……
+
 
 ## 截图展示
 Demo apk二维码地址：
@@ -33,7 +32,8 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.3.0'
+compile 'cn.finalteam:galleryfinal:1.3.1'
+compile 'com.android.support:support-v4:23.0.1'
 ```
 
 ## 具体使用
@@ -306,9 +306,18 @@ setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
 ```properties
 -keep class cn.finalteam.galleryfinal.widget.*{*;}
 -keep class cn.finalteam.galleryfinal.widget.crop.*{*;}
+-keep class cn.finalteam.galleryfinal.widget.zoonview.*{*;}
 ```
 
 # 更新日志
+## V1.3.1
+* 对Fresco image loader的支持
+* 添加图片预览功能
+* 解决jpeg图片编辑提示bug
+* 解决GalleryTheme设置方法没有返回Builder的bug
+* 添加对Fragment onActivitForResult的支持
+
+
 ## V1.3.0
 * 代码设置主题颜色
 * 支持对外打开相册
@@ -366,6 +375,7 @@ setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
 
 # 感谢（Thanks）
 * 图片裁剪[android-crop](https://github.com/jdamcd/android-crop)
+* 图片缩放[PhotoView](https://github.com/chrisbanes/PhotoView)
 
 # 关于作者
 * **QQ:**172340021   

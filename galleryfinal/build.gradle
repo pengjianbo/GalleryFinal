@@ -21,7 +21,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'cn.finalteam:toolsfinal:1.1.0'
-    compile 'com.commit451:PhotoView:1.2.4'
+    compile "com.android.support:support-v4:23.0.1"
 }
 
 apply from: 'https://raw.githubusercontent.com/pengjianbo/ToolsFinal/master/bintray.gradle'
