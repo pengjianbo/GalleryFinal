@@ -14,31 +14,34 @@
  *  limitations under the License.
  */
 
-package cn.finalteam.galleryfinal.sample.loader;
+package cn.finalteam.galleryfinal.imageloader.picasso;
 
 import android.app.Activity;
-import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import android.graphics.drawable.Drawable;
+
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import cn.finalteam.galleryfinal.widget.GFImageView;
 
 /**
  * Desction:
  * Author:pengjianbo
- * Date:15/12/1 下午10:28
+ * Date:15/12/1 下午10:26
  */
-public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
+public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
     @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
-        Glide.with(activity)
-                .load("file://" + path)
-                .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
-                .skipMemoryCache(true)
-                //.centerCrop()
+    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
+        Picasso.with(activity)
+                .load(new File(path))
+                .placeholder(defaultDrawable)
+                .error(defaultDrawable)
+                .resize(width, height)
+                .centerInside()
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(imageView);
     }
 

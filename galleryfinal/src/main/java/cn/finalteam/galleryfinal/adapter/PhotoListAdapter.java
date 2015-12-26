@@ -17,6 +17,7 @@
 package cn.finalteam.galleryfinal.adapter;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -67,7 +68,8 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
         }
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, mRowWidth, mRowWidth);
+        Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
+        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
 
         holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if ( mGalleryConfig.isMutiSelect() ) {

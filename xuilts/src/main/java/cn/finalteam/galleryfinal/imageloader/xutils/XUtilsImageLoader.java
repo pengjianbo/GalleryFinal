@@ -14,11 +14,13 @@
  *  limitations under the License.
  */
 
-package cn.finalteam.galleryfinal.sample.loader;
+package cn.finalteam.galleryfinal.imageloader.xutils;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.graphics.drawable.Drawable;
+
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
@@ -29,13 +31,20 @@ import cn.finalteam.galleryfinal.widget.GFImageView;
  * Author:pengjianbo
  * Date:15/12/2 下午6:54
  */
-public class XUtils3ImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
+public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
+
+    private Bitmap.Config mImageConfig;
+
+    public XUtilsImageLoader(Bitmap.Config config) {
+        this.mImageConfig = config;
+    }
+
     @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
         ImageOptions options = new ImageOptions.Builder()
-                .setLoadingDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .setFailureDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .setConfig(Bitmap.Config.RGB_565)
+                .setLoadingDrawable(defaultDrawable)
+                .setFailureDrawable(defaultDrawable)
+                .setConfig(mImageConfig)
                 .setSize(width, height)
                 .setCrop(true)
                 .setUseMemCache(false)

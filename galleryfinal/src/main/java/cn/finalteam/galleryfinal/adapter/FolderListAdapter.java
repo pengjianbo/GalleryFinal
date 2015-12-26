@@ -17,6 +17,7 @@
 package cn.finalteam.galleryfinal.adapter;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -61,7 +62,8 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
             path = photoInfo.getPhotoPath();
         }
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, 200, 200);
+        Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
+        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
 
         holder.mTvFolderName.setText(photoFolderInfo.getFolderName());
         int size = 0;

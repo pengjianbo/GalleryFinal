@@ -33,8 +33,9 @@ Demo apk二维码地址：
 
 ```gradle
 compile 'cn.finalteam:galleryfinal:1.3.1'
-compile 'com.android.support:support-v4:23.0.1'
+compile 'com.android.support:support-v4:23.1.1'
 ```
+
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -44,120 +45,36 @@ compile 'com.android.support:support-v4:23.0.1'
 * UIL
 
 ```java
-public class UILImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
-    @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
-        ImageSize size = new ImageSize(width, height);
-        ImageLoader.getInstance().displayImage("file://" + path, imageView, size);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
 ```
 
 * Glide
 
 ```java
-public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
-    @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
-        Glide.with(activity)
-                .load("file://" + path)
-                .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
-                .skipMemoryCache(true)
-                //.centerCrop()
-                .into(imageView);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
 ```
 
 * Picasso
 
 ```java
-public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
-    @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
-        Picasso.with(activity)
-                .load(new File(path))
-                .placeholder(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .error(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .resize(width, height)
-                .centerInside()
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(imageView);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
 ```
 
 * xUtils3
 
-```java
-public class XUtils3ImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-    @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
-        ImageOptions options = new ImageOptions.Builder()
-                .setLoadingDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .setFailureDrawableId(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo)
-                .setConfig(Bitmap.Config.RGB_565)
-                .setSize(width, height)
-                .setCrop(true)
-                .setUseMemCache(false)
-                .build();
-        x.image().bind(imageView, "file://" + path, options);
-    }
+```gradle
 
-    @Override
-    public void clearMemoryCache() {
-    }
-}
 ```
 
-* xUitls
+* xUitls2
 
-```java
-public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-
-    private BitmapUtils bitmapUtils;
-    private Drawable defaultImage;
-
-    public XUtilsImageLoader(Context context) {
-        bitmapUtils = new BitmapUtils(context);
-        defaultImage = context.getResources().getDrawable(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo);
-    }
-
-    @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
-        BitmapDisplayConfig config = new BitmapDisplayConfig();
-        config.setLoadFailedDrawable(defaultImage);
-        config.setLoadingDrawable(defaultImage);
-        config.setBitmapConfig(Bitmap.Config.RGB_565);
-        config.setBitmapMaxSize(new BitmapSize(width, height));
-        bitmapUtils.display(imageView, "file://" + path, config);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
-```
+实现见demo
 
 * fresco
-敬请期待
+```xml
+```
+
+* 自定义
 
 * ……
 

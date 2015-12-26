@@ -32,21 +32,19 @@ import cn.finalteam.galleryfinal.widget.GFImageView;
  * Author:pengjianbo
  * Date:15/12/2 下午6:44
  */
-public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
+public class XUtils2ImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
     private BitmapUtils bitmapUtils;
-    private Drawable defaultImage;
 
-    public XUtilsImageLoader(Context context) {
+    public XUtils2ImageLoader(Context context) {
         bitmapUtils = new BitmapUtils(context);
-        defaultImage = context.getResources().getDrawable(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo);
     }
 
     @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
         BitmapDisplayConfig config = new BitmapDisplayConfig();
-        config.setLoadFailedDrawable(defaultImage);
-        config.setLoadingDrawable(defaultImage);
+        config.setLoadFailedDrawable(defaultDrawable);
+        config.setLoadingDrawable(defaultDrawable);
         config.setBitmapConfig(Bitmap.Config.RGB_565);
         config.setBitmapMaxSize(new BitmapSize(width, height));
         bitmapUtils.display(imageView, "file://" + path, config);

@@ -22,13 +22,13 @@ import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.GalleryTheme;
+import cn.finalteam.galleryfinal.imageloader.fresco.FrescoImageLoader;
+import cn.finalteam.galleryfinal.imageloader.glide.GlideImageLoader;
+import cn.finalteam.galleryfinal.imageloader.picasso.PicassoImageLoader;
+import cn.finalteam.galleryfinal.imageloader.uil.UILImageLoader;
+import cn.finalteam.galleryfinal.imageloader.xutils.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.galleryfinal.sample.loader.FrescoImageLoader;
-import cn.finalteam.galleryfinal.sample.loader.GlideImageLoader;
-import cn.finalteam.galleryfinal.sample.loader.PicassoImageLoader;
-import cn.finalteam.galleryfinal.sample.loader.UILImageLoader;
-import cn.finalteam.galleryfinal.sample.loader.XUtils3ImageLoader;
-import cn.finalteam.galleryfinal.sample.loader.XUtilsImageLoader;
+import cn.finalteam.galleryfinal.sample.loader.XUtils2ImageLoader;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 import com.baoyz.actionsheet.ActionSheet;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -193,9 +193,9 @@ public class MainActivity extends AppCompatActivity {
                 if (mRbUil.isChecked()) {
                     builder.imageloader(new UILImageLoader());
                 } else if (mRbXutils.isChecked()) {
-                    builder.imageloader(new XUtilsImageLoader(MainActivity.this));
+                    builder.imageloader(new XUtils2ImageLoader(MainActivity.this));
                 } else if (mRbXutils3.isChecked()) {
-                    builder.imageloader(new XUtils3ImageLoader());
+                    builder.imageloader(new XUtilsImageLoader());
                 } else if (mRbGlide.isChecked()) {
                     builder.imageloader(new GlideImageLoader());
                 } else if (mRbFresco.isChecked()) {

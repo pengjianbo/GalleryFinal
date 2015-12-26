@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package cn.finalteam.galleryfinal.sample.loader;
+package cn.finalteam.galleryfinal.imageloader.fresco;
 
 import android.app.Activity;
 import android.content.Context;
@@ -64,9 +64,8 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
     }
 
     @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, int width, int height) {
+    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
         Resources resources = context.getResources();
-        Drawable defaultDrawable = resources.getDrawable(cn.finalteam.galleryfinal.R.drawable.ic_gf_default_photo);
         GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(resources)
                 .setFadeDuration(300)
                 .setPlaceholderImage(defaultDrawable)
@@ -148,5 +147,4 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
     public void clearMemoryCache() {
 
     }
-
 }

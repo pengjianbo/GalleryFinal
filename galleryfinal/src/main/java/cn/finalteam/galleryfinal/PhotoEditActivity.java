@@ -19,6 +19,7 @@ package cn.finalteam.galleryfinal;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -89,6 +90,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private File mEditPhotoCacheFile;
     private LinearLayout mTitlebar;
     private GalleryTheme mGalleryTheme;
+    private Drawable mDefaultDrawable;
 
     private boolean mTakePhotoAction;//打开相机动作
     private boolean mCropPhotoAction;//裁剪图片动作
@@ -160,6 +162,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gf_activity_photo_edit);
+
+        mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);
 
         mGalleryTheme = GalleryFinal.getGalleryTheme();
         mGalleryConfig = GalleryFinal.getGalleryConfig();
@@ -336,7 +340,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             setSourceUri(Uri.fromFile(new File(path)));
         }
 
-        mGalleryConfig.getImageLoader().displayImage(this, path, mIvSourcePhoto, mScreenWidth, mScreenHeight);
+        mGalleryConfig.getImageLoader().displayImage(this, path, mIvSourcePhoto, mDefaultDrawable, mScreenWidth, mScreenHeight);
     }
 
     public void deleteIndex(int position, PhotoInfo dPhoto) {
