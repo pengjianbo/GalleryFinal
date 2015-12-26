@@ -18,11 +18,9 @@ package cn.finalteam.galleryfinal.imageloader.glide;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-
+import cn.finalteam.galleryfinal.widget.GFImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import cn.finalteam.galleryfinal.widget.GFImageView;
 
 /**
  * Desction:

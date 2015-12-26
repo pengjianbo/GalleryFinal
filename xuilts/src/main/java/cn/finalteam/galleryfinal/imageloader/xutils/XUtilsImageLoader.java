@@ -35,6 +35,10 @@ public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
 
     private Bitmap.Config mImageConfig;
 
+    public XUtilsImageLoader() {
+        this(Bitmap.Config.RGB_565);
+    }
+
     public XUtilsImageLoader(Bitmap.Config config) {
         this.mImageConfig = config;
     }

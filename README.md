@@ -42,39 +42,52 @@ compile 'com.android.support:support-v4:23.1.1'
 
 2、选择图片加载器
 
-* UIL
-
-```java
-
-```
-
-* Glide
-
-```java
-
-```
-
-* Picasso
-
-```java
-
-```
-
-* xUtils3
+* **UIL**
 
 ```gradle
-
+compile 'cn.finalteam:gf-loader-uil:1.3.1'
 ```
 
-* xUitls2
+* **Glide**
 
-实现见demo
-
-* fresco
-```xml
+```gradle
+compile 'cn.finalteam:gf-loader-glide:1.3.1'
 ```
 
-* 自定义
+* **Picasso**
+
+```gradle
+compile 'cn.finalteam:gf-loader-picasso:1.3.1'
+```
+
+* **fresco**
+ 
+```gradle
+compile 'cn.finalteam:gf-loader-fresco:1.3.1'
+```
+
+* **xUtils**
+
+```gradle
+compile 'cn.finalteam:gf-loader-xutils:1.3.1'
+```
+
+* **xUitls2**
+
+见demo
+
+
+* **自定义**
+
+自定义步骤：
+
+1)、实现ImageLoader接口
+
+2)、在displayImage方法中实现图片加载，**这个需要注意的是一定要禁止缓存到本地和禁止缓存到内存**
+
+3)、设置请求图片目标大小。displayImage方法中已经给出了width和height
+
+4)、设置默认图和请求图片清晰度，建议把图片请求清晰度调整为Bitmap.Config.RGB_565
 
 * ……
 
@@ -233,6 +246,7 @@ setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
 * 解决jpeg图片编辑提示bug
 * 解决GalleryTheme设置方法没有返回Builder的bug
 * 添加对Fragment onActivitForResult的支持
+* 主流Imageloader GalleryFinal配置实现
 
 
 ## V1.3.0

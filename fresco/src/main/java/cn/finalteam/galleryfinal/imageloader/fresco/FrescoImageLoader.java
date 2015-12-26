@@ -56,11 +56,15 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
     private Context context;
 
     public FrescoImageLoader(Context context) {
+        this(context, Bitmap.Config.RGB_565);
+    }
+
+    public FrescoImageLoader(Context context, Bitmap.Config config) {
         this.context = context;
-        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
-                .setBitmapsConfig(Bitmap.Config.ARGB_4444)
+        ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(context)
+                .setBitmapsConfig(config)
                 .build();
-        Fresco.initialize(context, config);
+        Fresco.initialize(context, imagePipelineConfig);
     }
 
     @Override
