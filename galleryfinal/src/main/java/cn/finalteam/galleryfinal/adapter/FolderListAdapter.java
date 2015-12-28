@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import cn.finalteam.galleryfinal.GalleryConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
@@ -39,11 +39,11 @@ import java.util.List;
 public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.FolderViewHolder, PhotoFolderInfo> {
 
     private PhotoFolderInfo mSelectFolder;
-    private GalleryConfig mGalleryConfig;
+    private FunctionConfig mFunctionConfig;
 
-    public FolderListAdapter(Activity activity, List<PhotoFolderInfo> list, GalleryConfig galleryConfig) {
+    public FolderListAdapter(Activity activity, List<PhotoFolderInfo> list, FunctionConfig FunctionConfig) {
         super(activity, list);
-        this.mGalleryConfig = galleryConfig;
+        this.mFunctionConfig = FunctionConfig;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
         }
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
+        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
 
         holder.mTvFolderName.setText(photoFolderInfo.getFolderName());
         int size = 0;

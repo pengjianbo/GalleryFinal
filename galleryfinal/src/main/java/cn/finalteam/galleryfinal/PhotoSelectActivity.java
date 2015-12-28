@@ -79,7 +79,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private List<PhotoInfo> mCurPhotoList;
     private PhotoListAdapter mPhotoListAdapter;
 
-    private GalleryConfig mGalleryConfig;
+    private FunctionConfig mFunctionConfig;
     private GalleryTheme mGalleryTheme;
 
     //是否需要刷新相册
@@ -115,10 +115,10 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gf_activity_photo_select);
 
-        mGalleryConfig = GalleryFinal.getGalleryConfig();
+        mFunctionConfig = GalleryFinal.getFunctionConfig();
         mGalleryTheme = GalleryFinal.getGalleryTheme();
 
-        if ( mGalleryConfig == null || mGalleryTheme == null) {
+        if ( mFunctionConfig == null || mGalleryTheme == null) {
             toast(getString(R.string.please_reopen_gf));
             finish();
         } else {
@@ -128,14 +128,14 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             setListener();
 
             mAllPhotoFolderList = new ArrayList<>();
-            mFolderListAdapter = new FolderListAdapter(this, mAllPhotoFolderList, mGalleryConfig);
+            mFolderListAdapter = new FolderListAdapter(this, mAllPhotoFolderList, mFunctionConfig);
             mLvFolderList.setAdapter(mFolderListAdapter);
 
             mCurPhotoList = new ArrayList<>();
-            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth, mGalleryConfig);
+            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth);
             mGvPhotoList.setAdapter(mPhotoListAdapter);
 
-            if (mGalleryConfig.isMutiSelect()) {
+            if (mFunctionConfig.isMutiSelect()) {
                 mTvChooseCount.setVisibility(View.VISIBLE);
                 mFabOk.setVisibility(View.VISIBLE);
             }
@@ -143,7 +143,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             setTheme();
             mGvPhotoList.setEmptyView(mTvEmptyView);
 
-            if (mGalleryConfig.isShowCamera()) {
+            if (mFunctionConfig.isCamera()) {
                 mIvTakePhoto.setVisibility(View.VISIBLE);
             } else {
                 mIvTakePhoto.setVisibility(View.GONE);
@@ -303,11 +303,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         message.obj = photoInfo;
         message.what = HANLDER_TAKE_PHOTO_EVENT;
 
-        if ( !mGalleryConfig.isMutiSelect() ) { //单选
+        if ( !mFunctionConfig.isMutiSelect() ) { //单选
             mSelectPhotoMap.clear();
             mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
 
-            if ( mGalleryConfig.isEditPhoto() ) {//裁剪
+            if ( mFunctionConfig.isEditPhoto() ) {//裁剪
                 mHasRefreshGallery = true;
                 toPhotoEdit();
             } else {
@@ -343,7 +343,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             }
         } else if ( id == R.id.iv_take_photo ) {
             //判断是否达到多选最大数量
-            if (mGalleryConfig.isMutiSelect() && mSelectPhotoMap.size() == mGalleryConfig.getMaxSize()) {
+            if (mFunctionConfig.isMutiSelect() && mSelectPhotoMap.size() == mFunctionConfig.getMaxSize()) {
                 toast(getString(R.string.select_max_tips));
                 return;
             }
@@ -362,7 +362,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             }
         } else if ( id == R.id.fab_ok ) {
             ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
-            if (mSelectPhotoMap.size() == 0 || !mGalleryConfig.isEditPhoto()) {
+            if (mSelectPhotoMap.size() == 0 || !mFunctionConfig.isEditPhoto()) {
                 resultMuti(photoList);
             } else {
                 toPhotoEdit();
@@ -413,11 +413,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     private void photoItemClick(View view, int position) {
         PhotoInfo info = mCurPhotoList.get(position);
-        if (!mGalleryConfig.isMutiSelect()) {
+        if (!mFunctionConfig.isMutiSelect()) {
             mSelectPhotoMap.clear();
             mSelectPhotoMap.put(info.getPhotoPath(), info);
             String ext = FileUtils.getFileExtension(info.getPhotoPath());
-            if (mGalleryConfig.isEditPhoto() && (ext.equalsIgnoreCase("png")
+            if (mFunctionConfig.isEditPhoto() && (ext.equalsIgnoreCase("png")
                     || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
                 toPhotoEdit();
             } else {
@@ -429,7 +429,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         }
         boolean checked = false;
         if (mSelectPhotoMap.get(info.getPhotoPath()) == null) {
-            if (mGalleryConfig.isMutiSelect() && mSelectPhotoMap.size() == mGalleryConfig.getMaxSize()) {
+            if (mFunctionConfig.isMutiSelect() && mSelectPhotoMap.size() == mFunctionConfig.getMaxSize()) {
                 toast(getString(R.string.select_max_tips));
                 return;
             } else {
@@ -455,8 +455,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     }
 
     public void refreshSelectCount() {
-        mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoMap.size(), mGalleryConfig.getMaxSize()));
-        if ( mSelectPhotoMap.size() > 0 && mGalleryConfig.isMutiSelect() ) {
+        mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoMap.size(), mFunctionConfig.getMaxSize()));
+        if ( mSelectPhotoMap.size() > 0 && mFunctionConfig.isMutiSelect() ) {
             mIvClear.setVisibility(View.VISIBLE);
         } else {
             mIvClear.setVisibility(View.GONE);
@@ -515,8 +515,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        if ( mGalleryConfig.getImageLoader() != null ) {
-            mGalleryConfig.getImageLoader().clearMemoryCache();
+        if ( GalleryFinal.getCoreConfig().getImageLoader() != null ) {
+            GalleryFinal.getCoreConfig().getImageLoader().clearMemoryCache();
         }
     }
 

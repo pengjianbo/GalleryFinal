@@ -62,8 +62,8 @@ public class PhotoTools {
         allPhotoFolderInfo.setFolderName(context.getResources().getString(R.string.all_photo));
         allPhotoFolderInfo.setPhotoList(new ArrayList<PhotoInfo>());
         allPhotoFolderList.add(0, allPhotoFolderInfo);
-        List<String> selectedList = GalleryFinal.getGalleryConfig().getSelectedList();
-        List<String> filterList = GalleryFinal.getGalleryConfig().getFilterList();
+        List<String> selectedList = GalleryFinal.getFunctionConfig().getSelectedList();
+        List<String> filterList = GalleryFinal.getFunctionConfig().getFilterList();
         try {
             cursor = MediaStore.Images.Media.query(context.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     , projectionPhotos, "", null, MediaStore.Images.Media.DATE_TAKEN + " DESC");

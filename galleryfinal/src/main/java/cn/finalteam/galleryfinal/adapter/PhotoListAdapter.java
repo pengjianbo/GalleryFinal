@@ -22,15 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-
-import java.util.List;
-import java.util.Map;
-
-import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Desction:
@@ -41,13 +38,11 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
 
     private Map<String, PhotoInfo> mSelectList;
     private int mScreenWidth;
-    private GalleryConfig mGalleryConfig;
     private int mRowWidth;
-    public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth, GalleryConfig galleryConfig) {
+    public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth) {
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
-        this.mGalleryConfig = galleryConfig;
         this.mRowWidth = mScreenWidth/3;
     }
 
@@ -69,10 +64,10 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
+        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
 
         holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
-        if ( mGalleryConfig.isMutiSelect() ) {
+        if ( GalleryFinal.getFunctionConfig().isMutiSelect() ) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
                 holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());

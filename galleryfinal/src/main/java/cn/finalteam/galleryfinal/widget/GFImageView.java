@@ -44,20 +44,26 @@ public class GFImageView extends ImageView {
 
     @Override
     protected void onDetachedFromWindow() {
-        mImageViewListener.onDetach();
+        if(mImageViewListener != null) {
+            mImageViewListener.onDetach();
+        }
         super.onDetachedFromWindow();
     }
 
     @Override
     protected void onAttachedToWindow() {
-        mImageViewListener.onAttach();
+        if(mImageViewListener != null) {
+            mImageViewListener.onAttach();
+        }
         super.onAttachedToWindow();
     }
 
     @Override
     protected boolean verifyDrawable(Drawable dr) {
-        if (mImageViewListener.verifyDrawable(dr)) {
-            return true;
+        if(mImageViewListener != null) {
+            if (mImageViewListener.verifyDrawable(dr)) {
+                return true;
+            }
         }
         return super.verifyDrawable(dr);
     }
@@ -65,13 +71,17 @@ public class GFImageView extends ImageView {
     @Override
     public void onStartTemporaryDetach() {
         super.onStartTemporaryDetach();
-        mImageViewListener.onDetach();
+        if(mImageViewListener != null) {
+            mImageViewListener.onDetach();
+        }
     }
 
     @Override
     public void onFinishTemporaryDetach() {
         super.onFinishTemporaryDetach();
-        mImageViewListener.onAttach();
+        if(mImageViewListener != null) {
+            mImageViewListener.onAttach();
+        }
     }
 
 }

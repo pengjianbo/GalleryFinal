@@ -19,7 +19,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.finalteam.galleryfinal.GalleryConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.GalleryTheme;
 import cn.finalteam.galleryfinal.imageloader.fresco.FrescoImageLoader;
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     GalleryFinal.init(theme);
                 }
 
-                GalleryConfig.Builder builder = new GalleryConfig.Builder(MainActivity.this);
+                FunctionConfig.Builder builder = new FunctionConfig.Builder(MainActivity.this);
                 if (mRbUil.isChecked()) {
                     builder.imageloader(new UILImageLoader());
                 } else if (mRbXutils.isChecked()) {
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 builder.selected(mPhotoList);//添加过滤集合
-                final GalleryConfig config = builder.build();
+                final FunctionConfig config = builder.build();
                 ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
                         .setCancelButtonTitle("取消(Cancel)")
                         .setOtherButtonTitles("打开相册(Open Gallery)", "拍照(Camera)", "裁剪(Crop)", "编辑(Edit)")

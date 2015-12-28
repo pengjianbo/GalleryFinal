@@ -20,13 +20,11 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import cn.finalteam.galleryfinal.GalleryConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.PhotoEditActivity;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
-
 import java.util.List;
 
 /**
@@ -36,14 +34,11 @@ import java.util.List;
  */
 public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter.ViewHolder, PhotoInfo> {
 
-    private int mPickMode;
     private PhotoEditActivity mActivity;
-    private GalleryConfig mGalleryConfig;
     private int mRowWidth;
 
-    public PhotoEditListAdapter(PhotoEditActivity activity, List<PhotoInfo> list, GalleryConfig galleryConfig, int screenWidth) {
+    public PhotoEditListAdapter(PhotoEditActivity activity, List<PhotoInfo> list, int screenWidth) {
         super(activity, list);
-        mGalleryConfig = galleryConfig;
         mActivity = activity;
         this.mRowWidth = screenWidth/5;
     }
@@ -64,8 +59,8 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
         holder.mIvPhoto.setImageResource(R.drawable.ic_gf_default_photo);
         holder.mIvDelete.setImageResource(GalleryFinal.getGalleryTheme().getIconDelete());
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        mGalleryConfig.getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, defaultDrawable, 100, 100);
-        if (!mGalleryConfig.isMutiSelect()) {
+        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, defaultDrawable, 100, 100);
+        if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvDelete.setVisibility(View.GONE);
         } else {
             holder.mIvDelete.setVisibility(View.VISIBLE);

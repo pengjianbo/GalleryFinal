@@ -13,7 +13,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 
 ## Updating V1.4.0
 * activityforResult改为事件回调形式
-* 优化GalleryConfig配置方式
+* 优化FunctionConfig配置方式
 * 增强各手机兼容性
 * ……
 
@@ -95,10 +95,10 @@ compile 'cn.finalteam:gf-loader-xutils:1.3.1'
 
 在GalleryFinal 1.3.0版本中相册、拍照、裁剪和图片编辑功能可独立使用
 
-* 打开相册（含GalleryFinal所有功能，可通过GalleryConfig配置）
+* 打开相册（含GalleryFinal所有功能，可通过FunctionConfig配置）
 
 ```java
-GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
+FunctionConfig config = new FunctionConfig.Builder(MainActivity.this)
 	.mutiSelect()
 	.mutiSelectMaxSize(8)
 	.enableEdit()
@@ -123,7 +123,7 @@ GalleryFinal.openGallery(config);	//打开相册
 * 使用拍照
 
 ```java
-GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)                
+FunctionConfig config = new FunctionConfig.Builder(MainActivity.this)                
 	...//添加其他配置信息
 	.build();
 GalleryFinal.openCamera(config);
@@ -132,7 +132,7 @@ GalleryFinal.openCamera(config);
 * 使用裁剪
 
 ```java
-GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
+FunctionConfig config = new FunctionConfig.Builder(MainActivity.this)
 	...//添加其他配置信息
 	.build();
 GalleryFinal.openCrop(config);
@@ -141,13 +141,13 @@ GalleryFinal.openCrop(config);
 * 使用图片编辑
 
 ```java
-GalleryConfig config = new GalleryConfig.Builder(MainActivity.this)
+FunctionConfig config = new FunctionConfig.Builder(MainActivity.this)
 	...//添加其他配置信息
 	.build();
 GalleryFinal.openEdit(config);
 ```
 
-* **GalleryConfig Builder类说明**
+* **FunctionConfig Builder类说明**
 
 ```java
 mutiSelect()//配置多选

@@ -16,27 +16,23 @@
 
 package cn.finalteam.galleryfinal;
 
-import android.app.Activity;
-import android.os.Environment;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Desction:
  * Author:pengjianbo
  * Date:15/12/2 上午10:45
  */
-public class GalleryConfig {
+public class FunctionConfig implements Cloneable{
 
     protected boolean mutiSelect;
     private int maxSize;
     protected boolean editPhoto;//编辑
     protected boolean crop;//裁剪
     private boolean rotate;//旋转
-    private boolean showCamera;
+    private boolean camera;
     private int cropWidth;
     private int cropHeight;
     private boolean cropSquare;
@@ -44,42 +40,25 @@ public class GalleryConfig {
     private boolean cropReplaceSource;//裁剪是否覆盖源文件
     private boolean forceCrop;//强制裁剪
     private boolean forceCropEdit;//强制裁剪后是否可对图片编辑，默认不可以
-
     private ArrayList<String> selectedList;
     private ArrayList<String> filterList;//过滤器
-    private File takePhotoFolder;
-    private File editPhotoCacheFolder;
-    private Activity activity;
-    private ImageLoader imageLoader;
 
-    private GalleryConfig(final Builder builder) {
+    private FunctionConfig(final Builder builder) {
         this.mutiSelect = builder.mutiSelect;
         this.maxSize = builder.maxSize;
         this.editPhoto = builder.editPhoto;
         this.crop = builder.crop;
         this.rotate = builder.rotate;
-        this.showCamera = builder.showCamera;
-        this.activity = builder.activity;
-        this.imageLoader = builder.imageLoader;
+        this.camera = builder.camera;
         this.cropWidth = builder.cropWidth;
         this.cropHeight = builder.cropHeight;
         this.cropSquare = builder.cropSquare;
         this.selectedList = builder.selectedList;
         this.filterList = builder.filterList;
-        this.takePhotoFolder = builder.takePhotoFolder;
-        this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.rotateReplaceSource = builder.rotateReplaceSource;
         this.cropReplaceSource = builder.cropReplaceSource;
         this.forceCrop = builder.forceCrop;
         this.forceCropEdit = builder.forceCropEdit;
-
-        if ( takePhotoFolder == null ) {
-            takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal" + File.separator);
-        }
-
-        if ( editPhotoCacheFolder == null ) {
-            editPhotoCacheFolder = new File(Environment.getExternalStorageDirectory() + "/GalleryFinal/edittemp/");
-        }
     }
 
     public static class Builder {
@@ -88,7 +67,7 @@ public class GalleryConfig {
         private boolean editPhoto;//编辑
         private boolean crop;//裁剪
         private boolean rotate;//旋转
-        private boolean showCamera;
+        private boolean camera;
         private int cropWidth;
         private int cropHeight;
         private boolean cropSquare;
@@ -96,76 +75,62 @@ public class GalleryConfig {
         private boolean cropReplaceSource;//裁剪是否覆盖源文件
         private ArrayList<String> selectedList;
         private ArrayList<String> filterList;
-        private File takePhotoFolder;
-        private File editPhotoCacheFolder;
         private boolean forceCrop;//强制裁剪
         private boolean forceCropEdit;//强制裁剪后是否可对图片编辑，默认不可以
 
-        private Activity activity;
-        private ImageLoader imageLoader;
-
-        public Builder(Activity activity) {
-            this.activity = activity;
-        }
-
-        public Builder mutiSelect() {
-            this.mutiSelect = true;
+        protected Builder setMutiSelect(boolean mutiSelect) {
+            this.mutiSelect = mutiSelect;
             return this;
         }
 
-        public Builder singleSelect() {
-            this.mutiSelect = false;
-            return this;
-        }
-
-        public Builder mutiSelectMaxSize(int maxSize) {
+        public Builder setMutiSelectMaxSize(int maxSize) {
             this.maxSize = maxSize;
             return this;
         }
 
-        public Builder enableEdit() {
-            this.editPhoto = true;
+        public Builder setEnableEdit(boolean enable) {
+            this.editPhoto = enable;
             return this;
         }
 
-        public Builder enableCrop() {
-            this.crop = true;
+        public Builder setEnableCrop(boolean enable) {
+            this.crop = enable;
             return this;
         }
 
-        public Builder enableRotate() {
-            this.rotate = true;
+        public Builder setEnableRotate(boolean enable) {
+            this.rotate = enable;
             return this;
         }
 
-        public Builder showCamera() {
-            this.showCamera = true;
+        public Builder setEnableCamera(boolean enable) {
+            this.camera = enable;
             return this;
         }
 
-        public Builder cropWidth(int width) {
+        public Builder setCropWidth(int width) {
             this.cropWidth = width;
             return this;
         }
 
-        public Builder cropHeight(int height) {
+        public Builder setCropHeight(int height) {
             this.cropHeight = height;
             return this;
         }
 
-        public Builder cropSquare() {
-            this.cropSquare = true;
+        public Builder setCropSquare(boolean enable) {
+            this.cropSquare = enable;
             return this;
         }
 
-        public Builder selected(ArrayList<String> selectedList) {
+        public Builder setSelected(ArrayList<String> selectedList) {
             if (selectedList != null) {
                 this.selectedList = (ArrayList<String>) selectedList.clone();
             }
             return this;
         }
 
-        public Builder selected(Collection<PhotoInfo> selectedList) {
+        public Builder setSelected(Collection<PhotoInfo> selectedList) {
             if ( selectedList != null ) {
                 ArrayList<String> list = new ArrayList<>();
                 for(PhotoInfo info:selectedList) {
@@ -179,14 +144,14 @@ public class GalleryConfig {
             return this;
         }
 
-        public Builder filter(ArrayList<String> filterList) {
+        public Builder setFilter(ArrayList<String> filterList) {
             if ( filterList != null ) {
                 this.filterList = (ArrayList<String>) filterList.clone();
             }
             return this;
         }
 
-        public Builder filter(Collection<PhotoInfo> filterList) {
+        public Builder setFilter(Collection<PhotoInfo> filterList) {
             if ( filterList != null ) {
                 ArrayList<String> list = new ArrayList<>();
                 for(PhotoInfo info:filterList) {
@@ -201,31 +166,11 @@ public class GalleryConfig {
         }
 
         /**
-         * 配置拍照缓存目录
-         * @param file
-         * @return
-         */
-        public Builder takePhotoFolter(File file) {
-            this.takePhotoFolder = file;
-            return this;
-        }
-
-        /**
-         * 配置编辑图片产生的文件缓存目录
-         * @param file
-         * @return
-         */
-        public Builder editPhotoCacheFolder(File file) {
-            this.editPhotoCacheFolder = file;
-            return this;
-        }
-
-        /**
          * 设置旋转后是否替换原图
          * @param rotateReplaceSource
          * @return
          */
-        public Builder rotateReplaceSource(boolean rotateReplaceSource) {
+        public Builder setRotateReplaceSource(boolean rotateReplaceSource) {
             this.rotateReplaceSource = rotateReplaceSource;
             return this;
         }
@@ -235,7 +180,7 @@ public class GalleryConfig {
          * @param cropReplaceSource
          * @return
          */
-        public Builder cropReplaceSource(boolean cropReplaceSource) {
+        public Builder setCropReplaceSource(boolean cropReplaceSource) {
             this.cropReplaceSource = cropReplaceSource;
             return this;
         }
@@ -245,7 +190,7 @@ public class GalleryConfig {
          * @param forceCrop
          * @return
          */
-        public Builder forceCrop(boolean forceCrop) {
+        public Builder setForceCrop(boolean forceCrop) {
             this.forceCrop = forceCrop;
             return this;
         }
@@ -255,18 +200,13 @@ public class GalleryConfig {
          * @param forceCropEdit
          * @return
          */
-        public Builder forceCropEdit(boolean forceCropEdit) {
+        public Builder setForceCropEdit(boolean forceCropEdit) {
             this.forceCropEdit = forceCropEdit;
             return this;
         }
 
-        public Builder imageloader(ImageLoader imageLoader) {
-            this.imageLoader = imageLoader;
-            return this;
-        }
-
-        public GalleryConfig build() {
-            return new GalleryConfig(this);
+        public FunctionConfig build() {
+            return new FunctionConfig(this);
         }
     }
 
@@ -290,16 +230,8 @@ public class GalleryConfig {
         return rotate;
     }
 
-    public boolean isShowCamera() {
-        return showCamera;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public ImageLoader getImageLoader() {
-        return imageLoader;
+    public boolean isCamera() {
+        return camera;
     }
 
     public int getCropWidth() {
@@ -310,24 +242,8 @@ public class GalleryConfig {
         return cropHeight;
     }
 
-    public List<String> getSelectedList() {
-        return selectedList;
-    }
-
-    public ArrayList<String> getFilterList() {
-        return filterList;
-    }
-
     public boolean isCropSquare() {
         return cropSquare;
-    }
-
-    public File getTakePhotoFolder() {
-        return takePhotoFolder;
-    }
-
-    public File getEditPhotoCacheFolder() {
-        return editPhotoCacheFolder;
     }
 
     public boolean isRotateReplaceSource() {
@@ -344,5 +260,24 @@ public class GalleryConfig {
 
     public boolean isForceCropEdit() {
         return forceCropEdit;
+    }
+
+    public ArrayList<String> getSelectedList() {
+        return selectedList;
+    }
+
+    public ArrayList<String> getFilterList() {
+        return filterList;
+    }
+
+    @Override
+    public FunctionConfig clone() {
+        FunctionConfig o = null;
+        try {
+            o = (FunctionConfig) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return o;
     }
 }

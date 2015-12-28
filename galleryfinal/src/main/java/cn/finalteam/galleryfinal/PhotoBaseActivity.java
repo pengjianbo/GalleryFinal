@@ -44,7 +44,6 @@ import java.util.Date;
  */
 public abstract class PhotoBaseActivity extends Activity {
 
-    //protected static Map<String, PhotoInfo> mSelectPhotoMap = new HashMap<>();
     protected static String mPhotoTargetFolder;
 
     private Uri mTakePhotoUri;
@@ -56,7 +55,7 @@ public abstract class PhotoBaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if ( GalleryFinal.getGalleryConfig() == null ) {
+        if ( GalleryFinal.getFunctionConfig() == null ) {
             finish();
             return;
         }
@@ -71,7 +70,7 @@ public abstract class PhotoBaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if ( GalleryFinal.getGalleryConfig() == null ) {
+        if ( GalleryFinal.getFunctionConfig() == null ) {
             finish();
         }
     }
@@ -100,7 +99,7 @@ public abstract class PhotoBaseActivity extends Activity {
 
         File takePhotoFolder = null;
         if (StringUtils.isEmpty(mPhotoTargetFolder)) {
-            takePhotoFolder = GalleryFinal.getGalleryConfig().getTakePhotoFolder();
+            takePhotoFolder = GalleryFinal.getCoreConfig().getTakePhotoFolder();
         } else {
             takePhotoFolder = new File(mPhotoTargetFolder);
         }

@@ -35,6 +35,7 @@ public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
                 .load("file://" + path)
                 .placeholder(defaultDrawable)
                 .error(defaultDrawable)
+                .override(width, height)
                 .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
                 .skipMemoryCache(true)
                 //.centerCrop()

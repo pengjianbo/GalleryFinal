@@ -84,7 +84,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private ProgressDialog mProgressDialog;
     private boolean mRotating;
 
-    private GalleryConfig mGalleryConfig;
+    private FunctionConfig mFunctionConfig;
     private HashMap<String, PhotoInfo> mSelectPhotoMap;
     private Map<Integer, PhotoTempModel> mPhotoTempMap;
     private File mEditPhotoCacheFile;
@@ -147,7 +147,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     mPhotoEditListAdapter.notifyDataSetChanged();
                 }
 
-                if (mGalleryConfig.isForceCrop() && !mGalleryConfig.isForceCropEdit()) {
+                if (mFunctionConfig.isForceCrop() && !mFunctionConfig.isForceCropEdit()) {
                     resultAction();
                 }
             }
@@ -166,8 +166,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);
 
         mGalleryTheme = GalleryFinal.getGalleryTheme();
-        mGalleryConfig = GalleryFinal.getGalleryConfig();
-        if ( mGalleryConfig == null || mGalleryTheme == null) {
+        mFunctionConfig = GalleryFinal.getFunctionConfig();
+        if ( mFunctionConfig == null || mGalleryTheme == null) {
             toast(getString(R.string.please_reopen_gf));
             finish();
         } else {
@@ -182,7 +182,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mPhotoTempMap = new HashMap<>();
             mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
 
-            mEditPhotoCacheFile = GalleryFinal.getGalleryConfig().getEditPhotoCacheFolder();
+            mEditPhotoCacheFile = GalleryFinal.getCoreConfig().getEditPhotoCacheFolder();
 
             if (mPhotoList == null) {
                 mPhotoList = new ArrayList<>();
@@ -196,7 +196,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             setListener();
             setTheme();
 
-            mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mGalleryConfig, mScreenWidth);
+            mPhotoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList, mScreenWidth);
             mLvGallery.setAdapter(mPhotoEditListAdapter);
 
             try {
@@ -209,23 +209,23 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 e.printStackTrace();
             }
 
-            if (mGalleryConfig.isShowCamera()) {
+            if (mFunctionConfig.isCamera()) {
                 mIvTakePhoto.setVisibility(View.VISIBLE);
             }
 
-            if (mGalleryConfig.isCrop()) {
+            if (mFunctionConfig.isCrop()) {
                 mIvCrop.setVisibility(View.VISIBLE);
             }
 
-            if (mGalleryConfig.isRotate()) {
+            if (mFunctionConfig.isRotate()) {
                 mIvRotate.setVisibility(View.VISIBLE);
             }
 
-            if (!mGalleryConfig.isMutiSelect()) {
+            if (!mFunctionConfig.isMutiSelect()) {
                 mLlGallery.setVisibility(View.GONE);
             }
 
-            initCrop(mIvCropPhoto, mGalleryConfig.isCropSquare(), mGalleryConfig.getCropWidth(), mGalleryConfig.getCropHeight());
+            initCrop(mIvCropPhoto, mFunctionConfig.isCropSquare(), mFunctionConfig.getCropWidth(), mFunctionConfig.getCropHeight());
             if (mPhotoList.size() > 0 && !mTakePhotoAction) {
                 loadImage(mPhotoList.get(0));
             }
@@ -237,15 +237,15 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
             if (mCropPhotoAction) {
                 mIvCrop.performClick();
-                if ( !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera()) {
+                if ( !mFunctionConfig.isRotate() && !mFunctionConfig.isCamera()) {
                     mIvCrop.setVisibility(View.GONE);
                 }
             }
 
             //判断是否强制裁剪
-            if(mGalleryConfig.isForceCrop()) {
+            if(mFunctionConfig.isForceCrop()) {
                 mIvCrop.performClick();//进入裁剪状态
-                if(!mGalleryConfig.isForceCropEdit()) {//强制裁剪后是否可以编辑
+                if(!mFunctionConfig.isForceCropEdit()) {//强制裁剪后是否可以编辑
                     mIvCrop.setVisibility(View.GONE);
                 }
             }
@@ -311,7 +311,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
     @Override
     protected void takeResult(PhotoInfo info) {
-        if (!mGalleryConfig.isMutiSelect()) {
+        if (!mFunctionConfig.isMutiSelect()) {
             mPhotoList.clear();
             mSelectPhotoMap.clear();
         }
@@ -336,11 +336,11 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         if (photo != null) {
             path = photo.getPhotoPath();
         }
-        if (mGalleryConfig.isCrop()) {
+        if (mFunctionConfig.isCrop()) {
             setSourceUri(Uri.fromFile(new File(path)));
         }
 
-        mGalleryConfig.getImageLoader().displayImage(this, path, mIvSourcePhoto, mDefaultDrawable, mScreenWidth, mScreenHeight);
+        GalleryFinal.getCoreConfig().getImageLoader().displayImage(this, path, mIvSourcePhoto, mDefaultDrawable, mScreenWidth, mScreenHeight);
     }
 
     public void deleteIndex(int position, PhotoInfo dPhoto) {
@@ -414,7 +414,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 try {
                     String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
                     File toFile;
-                    if (mGalleryConfig.isCropReplaceSource()) {
+                    if (mFunctionConfig.isCropReplaceSource()) {
                         toFile = new File(photoInfo.getPhotoPath());
                     } else {
                         toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop." + ext);
@@ -454,14 +454,14 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         } else if (id == R.id.iv_rotate) {
             rotatePhoto();
         } else if (id == R.id.iv_take_photo) {
-            if (mGalleryConfig.isMutiSelect() && mGalleryConfig.getMaxSize() == mSelectPhotoMap.size()) {
+            if (mFunctionConfig.isMutiSelect() && mFunctionConfig.getMaxSize() == mSelectPhotoMap.size()) {
                 toast(getString(R.string.select_max_tips));
             } else {
                 takePhotoAction();
             }
         } else if (id == R.id.iv_back) {
-            if (mCropState && !(mCropPhotoAction && !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera())) {
-                if ((mGalleryConfig.isForceCrop() && mGalleryConfig.isForceCropEdit())) {
+            if (mCropState && !(mCropPhotoAction && !mFunctionConfig.isRotate() && !mFunctionConfig.isCamera())) {
+                if ((mFunctionConfig.isForceCrop() && mFunctionConfig.isForceCropEdit())) {
                     mIvCrop.performClick();
                     return;
                 }
@@ -502,7 +502,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 final String path = photoTempModel.getSourcePath();
 
                 File file;
-                if (mGalleryConfig.isRotateReplaceSource()) { //裁剪覆盖源文件
+                if (mFunctionConfig.isRotateReplaceSource()) { //裁剪覆盖源文件
                     file = new File(path);
                 } else {
                     file = new File(mEditPhotoCacheFile, Utils.getFileName(path) + "_rotate." + ext);
@@ -520,7 +520,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     @Override
                     protected Bitmap doInBackground(Void... params) {
                         int orientation;
-                        if ( mGalleryConfig.isRotateReplaceSource() ) {
+                        if ( mFunctionConfig.isRotateReplaceSource() ) {
                             orientation = 90;
                         } else {
                             orientation = photoTempModel.getOrientation() + 90;
@@ -550,7 +550,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                             
                             mTvEmptyView.setVisibility(View.GONE);
 
-                            if ( !mGalleryConfig.isRotateReplaceSource() ) {
+                            if ( !mFunctionConfig.isRotateReplaceSource() ) {
                                 int orientation = photoTempModel.getOrientation() + 90;
                                 if (orientation == 360) {
                                     orientation = 0;
@@ -580,31 +580,31 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mIvSourcePhoto.setVisibility(View.GONE);
             mIvCropPhoto.setVisibility(View.VISIBLE);
             mLlGallery.setVisibility(View.GONE);
-            if (mGalleryConfig.isCrop()) {
+            if (mFunctionConfig.isCrop()) {
                 mIvCrop.setVisibility(View.VISIBLE);
             }
-            if (mGalleryConfig.isRotate()) {
+            if (mFunctionConfig.isRotate()) {
                 mIvRotate.setVisibility(View.GONE);
             }
 
-            if (mGalleryConfig.isShowCamera()) {
+            if (mFunctionConfig.isCamera()) {
                 mIvTakePhoto.setVisibility(View.GONE);
             }
         } else {
             mIvSourcePhoto.setVisibility(View.VISIBLE);
             mIvCropPhoto.setVisibility(View.GONE);
-            if (mGalleryConfig.isCrop()) {
+            if (mFunctionConfig.isCrop()) {
                 mIvCrop.setVisibility(View.VISIBLE);
             }
-            if (mGalleryConfig.isRotate()) {
+            if (mFunctionConfig.isRotate()) {
                 mIvRotate.setVisibility(View.VISIBLE);
             }
 
-            if (mGalleryConfig.isShowCamera()) {
+            if (mFunctionConfig.isCamera()) {
                 mIvTakePhoto.setVisibility(View.VISIBLE);
             }
 
-            if (mGalleryConfig.isMutiSelect()) {
+            if (mFunctionConfig.isMutiSelect()) {
                 mLlGallery.setVisibility(View.VISIBLE);
             }
         }
@@ -619,8 +619,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mCropState && !(mCropPhotoAction && !mGalleryConfig.isRotate() && !mGalleryConfig.isShowCamera())) {
-                if ((mGalleryConfig.isForceCrop() && mGalleryConfig.isForceCropEdit())) {
+            if (mCropState && !(mCropPhotoAction && !mFunctionConfig.isRotate() && !mFunctionConfig.isCamera())) {
+                if ((mFunctionConfig.isForceCrop() && mFunctionConfig.isForceCropEdit())) {
                     mIvCrop.performClick();
                     return true;
                 }
