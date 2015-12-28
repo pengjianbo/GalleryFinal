@@ -77,7 +77,7 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                 .setProgressBarImage(new ProgressBarDrawable())
                 .build();
         final DraweeHolder<GenericDraweeHierarchy> draweeHolder = DraweeHolder.create(hierarchy, context);
-        imageView.setImageViewListener(new GFImageView.ImageViewListener() {
+        imageView.setOnImageViewListener(new GFImageView.OnImageViewListener() {
             @Override
             public void onDetach() {
                 draweeHolder.onDetach();
