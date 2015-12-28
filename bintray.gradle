@@ -1,0 +1,110 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+// read properties
+def projectName = project_name
+def projectGroupId = project_groupId
+def projectArtifactId = project_artifactId
+def projectVersionName = project_version
+def projectPackaging = project_packaging
+def projectSiteUrl = project_siteUrl
+def projectGitUrl = project_gitUrl
+def javadocName = javadoc_name
+
+// load properties
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def developerId = properties.getProperty("developer.id")
+def developerName = properties.getProperty("developer.name")
+def developerEmail = properties.getProperty("developer.email")
+def bintrayUser = properties.getProperty("bintray.user")
+def bintrayApikey = properties.getProperty("bintray.apikey")
+
+
+
+//在这里一定要定义group version
+group = projectGroupId
+version = projectVersionName
+
+// This generates POM.xml with proper parameters
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                name projectName
+                groupId projectGroupId
+                artifactId projectArtifactId
+                version projectVersionName
+                packaging projectPackaging
+                url projectSiteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection projectGitUrl
+                    developerConnection projectGitUrl
+                    url projectSiteUrl
+                }
+            }
+        }
+    }
+}
+
+// This generates sources.jar
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+//This generates javadocJar.jar
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += configurations.compile
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+        title javadocName
+    }
+}
+
+artifacts {
+//    archives javadocJar
+    archives sourcesJar
+}
+
+// bintray configuration
+bintray {
+    user = bintrayUser
+    key = bintrayApikey
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = projectName
+        websiteUrl = projectSiteUrl
+        vcsUrl = projectGitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}

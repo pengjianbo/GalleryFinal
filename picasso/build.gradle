@@ -23,4 +23,4 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(':fresco')
 }
-apply from: 'https://raw.githubusercontent.com/pengjianbo/ToolsFinal/master/bintray.gradle'
+apply from: "../bintray.gradle"

@@ -2,6 +2,7 @@ package cn.finalteam.galleryfinal.sample;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +20,10 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.GalleryTheme;
+import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.imageloader.fresco.FrescoImageLoader;
 import cn.finalteam.galleryfinal.imageloader.glide.GlideImageLoader;
 import cn.finalteam.galleryfinal.imageloader.picasso.PicassoImageLoader;
@@ -29,8 +31,11 @@ import cn.finalteam.galleryfinal.imageloader.uil.UILImageLoader;
 import cn.finalteam.galleryfinal.imageloader.xutils.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.sample.loader.XUtils2ImageLoader;
+import cn.finalteam.galleryfinal.utils.PhotoTools;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 import com.baoyz.actionsheet.ActionSheet;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -41,6 +46,11 @@ import java.util.List;
 import org.xutils.x;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final int REQUEST_CODE_CAMERA = 1000;
+    private final int REQUEST_CODE_GALLERY = 1001;
+    private final int REQUEST_CODE_CROP = 1002;
+    private final int REQUEST_CODE_EDIT = 1003;
 
     @Bind(R.id.rb_uil) RadioButton mRbUil;
     @Bind(R.id.rb_glide) RadioButton mRbGlide;
@@ -87,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mLvPhoto = (HorizontalListView) findViewById(R.id.lv_photo);
@@ -159,21 +170,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //配置主题，这个步骤可以放到application中
+                //公共配置都可以在application中配置，这里只是为了代码演示而写在此处
+                ThemeConfig themeConfig = null;
                 if (mRbThemeDefault.isChecked()) {
-                    GalleryFinal.init(GalleryTheme.DEFAULT);
+                    themeConfig = ThemeConfig.DEFAULT;
                 } else if (mRbThemeDark.isChecked()) {
-                    GalleryFinal.init(GalleryTheme.DARK);
+                    themeConfig = ThemeConfig.DARK;
                 } else if (mRbThemeCyan.isChecked()) {
-                    GalleryFinal.init(GalleryTheme.CYAN);
+                    themeConfig = ThemeConfig.CYAN;
                 } else if (mRbThemeOrange.isChecked()) {
-                    GalleryFinal.init(GalleryTheme.ORANGE);
+                    themeConfig = ThemeConfig.ORANGE;
                 } else if (mRbThemeGreen.isChecked()) {
-                    GalleryFinal.init(GalleryTheme.GREEN);
+                    themeConfig = ThemeConfig.GREEN;
                 } else if (mRbThemeTeal.isChecked()) {
-                    GalleryFinal.init(GalleryTheme.TEAL);
+                    themeConfig = ThemeConfig.TEAL;
                 } else if (mRbThemeCustom.isChecked()) {
-                    GalleryTheme theme = new GalleryTheme.Builder()
+                    ThemeConfig theme = new ThemeConfig.Builder()
                             .setTitleBarBgColor(Color.rgb(0xFF, 0x57, 0x22))
                             .setTitleBarTextColor(Color.BLACK)
                             .setTitleBarIconColor(Color.BLACK)
@@ -186,79 +198,88 @@ public class MainActivity extends AppCompatActivity {
                             .setIconCrop(R.mipmap.ic_action_crop)
                             .setIconCamera(R.mipmap.ic_action_camera)
                             .build();
-                    GalleryFinal.init(theme);
+                    themeConfig = theme;
                 }
 
-                FunctionConfig.Builder builder = new FunctionConfig.Builder(MainActivity.this);
+                FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
+                cn.finalteam.galleryfinal.ImageLoader imageLoader;
                 if (mRbUil.isChecked()) {
-                    builder.imageloader(new UILImageLoader());
+                    imageLoader = new UILImageLoader();
                 } else if (mRbXutils.isChecked()) {
-                    builder.imageloader(new XUtils2ImageLoader(MainActivity.this));
+                    imageLoader = new XUtils2ImageLoader(MainActivity.this);
                 } else if (mRbXutils3.isChecked()) {
-                    builder.imageloader(new XUtilsImageLoader());
+                    imageLoader = new XUtilsImageLoader();
                 } else if (mRbGlide.isChecked()) {
-                    builder.imageloader(new GlideImageLoader());
+                    imageLoader = new GlideImageLoader();
                 } else if (mRbFresco.isChecked()) {
-                    builder.imageloader(new FrescoImageLoader(MainActivity.this));
+                    imageLoader = new FrescoImageLoader(MainActivity.this);
                 } else {
-                    builder.imageloader(new PicassoImageLoader());
+                    imageLoader = new PicassoImageLoader();
                 }
 
+                boolean muti = false;
                 if (mRbSingleSelect.isChecked()) {
-                    builder.singleSelect();
+                    muti = false;
                 } else {
-                    builder.mutiSelect();
+                    muti = true;
                     if (TextUtils.isEmpty(mEtMaxSize.getText().toString())) {
                         Toast.makeText(getApplicationContext(), "请输入MaxSize", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     int maxSize = Integer.parseInt(mEtMaxSize.getText().toString());
-                    builder.mutiSelectMaxSize(maxSize);
+                    functionConfigBuilder.setMutiSelectMaxSize(maxSize);
                 }
+                final boolean mutiSelect = muti;
 
                 if (mCbEdit.isChecked()) {
-                    builder.enableEdit();
+                    functionConfigBuilder.setEnableEdit(true);
                 }
 
                 if (mCbRotate.isChecked()) {
-                    builder.enableRotate();
+                    functionConfigBuilder.setEnableRotate(true);
                     if (mCbRotateReplaceSource.isChecked()) {
-                        builder.rotateReplaceSource(true);
+                        functionConfigBuilder.setRotateReplaceSource(true);
                     }
                 }
 
                 if (mCbCrop.isChecked()) {
-                    builder.enableCrop();
+                    functionConfigBuilder.setEnableCrop(true);
                     if (!TextUtils.isEmpty(mEtCropWidth.getText().toString())) {
                         int width = Integer.parseInt(mEtCropWidth.getText().toString());
-                        builder.cropWidth(width);
+                        functionConfigBuilder.setCropWidth(width);
                     }
 
                     if (!TextUtils.isEmpty(mEtCropHeight.getText().toString())) {
                         int height = Integer.parseInt(mEtCropHeight.getText().toString());
-                        builder.cropHeight(height);
+                        functionConfigBuilder.setCropHeight(height);
                     }
 
                     if (mCbCropSquare.isChecked()) {
-                        builder.cropSquare();
+                        functionConfigBuilder.setCropSquare(true);
                     }
                     if (mCbCropReplaceSource.isChecked()) {
-                        builder.cropReplaceSource(true);
+                        functionConfigBuilder.setCropReplaceSource(true);
                     }
                     if (mCbOpenForceCrop.isChecked() && mRbSingleSelect.isChecked()) {
-                        builder.forceCrop(true);
+                        functionConfigBuilder.setForceCrop(true);
                         if (mCbOpenForceCropEdit.isChecked()) {
-                            builder.forceCropEdit(true);
+                            functionConfigBuilder.setForceCropEdit(true);
                         }
                     }
                 }
 
                 if (mCbShowCamera.isChecked()) {
-                    builder.showCamera();
+                    functionConfigBuilder.setEnableCamera(true);
                 }
 
-                builder.selected(mPhotoList);//添加过滤集合
-                final FunctionConfig config = builder.build();
+                functionConfigBuilder.setSelected(mPhotoList);//添加过滤集合
+                final FunctionConfig functionConfig = functionConfigBuilder.build();
+                CoreConfig coreConfig = new CoreConfig.Builder(MainActivity.this, imageLoader, themeConfig)
+                        .setDebug(BuildConfig.DEBUG)
+                        .setFunctionConfig(functionConfig)
+                        .build();
+                GalleryFinal.init(coreConfig);
+
                 ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
                         .setCancelButtonTitle("取消(Cancel)")
                         .setOtherButtonTitles("打开相册(Open Gallery)", "拍照(Camera)", "裁剪(Crop)", "编辑(Edit)")
@@ -274,21 +295,25 @@ public class MainActivity extends AppCompatActivity {
                                 String path = "/sdcard/pk1-2.jpg";
                                 switch (index) {
                                     case 0:
-                                        GalleryFinal.openGallery(config);
+                                        if (mutiSelect) {
+                                            GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
+                                        } else {
+                                            GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
+                                        }
                                         break;
                                     case 1:
-                                        GalleryFinal.openCamera(config);
+                                        GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
                                         break;
                                     case 2:
                                         if (new File(path).exists()) {
-                                            GalleryFinal.openCrop(config, path);
+                                            GalleryFinal.openCrop(REQUEST_CODE_CROP, functionConfig, path, mOnHanlderResultCallback);
                                         } else {
                                             Toast.makeText(MainActivity.this, "图片不存在", Toast.LENGTH_SHORT).show();
                                         }
                                         break;
                                     case 3:
                                         if (new File(path).exists()) {
-                                            GalleryFinal.openEdit(config, path);
+                                            GalleryFinal.openEdit(REQUEST_CODE_EDIT, functionConfig, path, mOnHanlderResultCallback);
                                         } else {
                                             Toast.makeText(MainActivity.this, "图片不存在", Toast.LENGTH_SHORT).show();
                                         }
@@ -302,23 +327,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initImageLoader(this);
+        initFresco();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GalleryFinal.GALLERY_REQUEST_CODE) {
-            if (resultCode == GalleryFinal.GALLERY_RESULT_SUCCESS) {
-                List<PhotoInfo> photoInfoList = (List<PhotoInfo>) data.getSerializableExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA);
-                if (photoInfoList != null) {
-                    mPhotoList.addAll(photoInfoList);
+    private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
+        @Override
+        public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+            if (resultList != null) {
+                    mPhotoList.addAll(resultList);
                     mChoosePhotoListAdapter.notifyDataSetChanged();
-                }
             }
         }
-    }
 
-    public static void initImageLoader(Context context) {
+        @Override
+        public void onHanlderFailure(int requestCode, String errorMsg) {
+            Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == GalleryFinal.GALLERY_REQUEST_CODE) {
+//            if (resultCode == GalleryFinal.GALLERY_RESULT_SUCCESS) {
+//                List<PhotoInfo> photoInfoList = (List<PhotoInfo>) data.getSerializableExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA);
+//                if (photoInfoList != null) {
+//                    mPhotoList.addAll(photoInfoList);
+//                    mChoosePhotoListAdapter.notifyDataSetChanged();
+//                }
+//            }
+//        }
+//    }
+
+    private void initImageLoader(Context context) {
         // This configuration tuning is custom. You can tune every option, you may tune some of them,
         // or you can create default configuration by
         //  ImageLoaderConfiguration.createDefault(this);
@@ -333,6 +374,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
+    }
+
+    private void initFresco() {
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setBitmapsConfig(Bitmap.Config.ARGB_8888)
+                .build();
+        Fresco.initialize(this, config);
     }
 
     @Override

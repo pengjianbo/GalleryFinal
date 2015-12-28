@@ -24,12 +24,12 @@ import android.graphics.drawable.Drawable;
  * Author:pengjianbo
  * Date:15/12/16 下午2:49
  */
-public class GalleryTheme {
+public class ThemeConfig {
 
     //默认主题
-    public static GalleryTheme DEFAULT = new GalleryTheme.Builder().build();
+    public static ThemeConfig DEFAULT = new ThemeConfig.Builder().build();
     //黑色主题
-    public static GalleryTheme DARK = new GalleryTheme.Builder()
+    public static ThemeConfig DARK = new ThemeConfig.Builder()
             .setTitleBarBgColor(Color.rgb(0x38, 0x42, 0x48))
             .setFabNornalColor(Color.rgb(0x38, 0x42, 0x48))
             .setFabPressedColor(Color.rgb(0x20, 0x25, 0x28))
@@ -37,7 +37,7 @@ public class GalleryTheme {
             .setCropControlColor(Color.rgb(0x38, 0x42, 0x48))
             .build();
     //蓝绿主题
-    public static GalleryTheme CYAN = new GalleryTheme.Builder()
+    public static ThemeConfig CYAN = new ThemeConfig.Builder()
             .setTitleBarBgColor(Color.rgb(0x01, 0x83, 0x93))
             .setFabNornalColor(Color.rgb(0x00, 0xac, 0xc1))
             .setFabPressedColor(Color.rgb(0x01, 0x83, 0x93))
@@ -45,7 +45,7 @@ public class GalleryTheme {
             .setCropControlColor(Color.rgb(0x00, 0xac, 0xc1))
             .build();
     //橙色主题
-    public static GalleryTheme ORANGE = new GalleryTheme.Builder()
+    public static ThemeConfig ORANGE = new ThemeConfig.Builder()
             .setTitleBarBgColor(Color.rgb(0xFF, 0x57, 0x22))
             .setFabNornalColor(Color.rgb(0xFF, 0x57, 0x22))
             .setFabPressedColor(Color.rgb(0xE6, 0x4A, 0x19))
@@ -53,7 +53,7 @@ public class GalleryTheme {
             .setCropControlColor(Color.rgb(0xFF, 0x57, 0x22))
             .build();
     //绿色主题
-    public static GalleryTheme GREEN = new GalleryTheme.Builder()
+    public static ThemeConfig GREEN = new ThemeConfig.Builder()
             .setTitleBarBgColor(Color.rgb(0x4C, 0xAF, 0x50))
             .setFabNornalColor(Color.rgb(0x4C, 0xAF, 0x50))
             .setFabPressedColor(Color.rgb(0x38, 0x8E, 0x3C))
@@ -61,7 +61,7 @@ public class GalleryTheme {
             .setCropControlColor(Color.rgb(0x4C, 0xAF, 0x50))
             .build();
     //青绿色主题
-    public static GalleryTheme TEAL = new GalleryTheme.Builder()
+    public static ThemeConfig TEAL = new ThemeConfig.Builder()
             .setTitleBarBgColor(Color.rgb(0x00, 0x96, 0x88))
             .setFabNornalColor(Color.rgb(0x00, 0x96, 0x88))
             .setFabPressedColor(Color.rgb(0x00, 0x79, 0x6B))
@@ -90,7 +90,7 @@ public class GalleryTheme {
 
     private Drawable bgEditTexture;
 
-    private GalleryTheme(Builder builder) {
+    private ThemeConfig(Builder builder) {
         this.titleBarTextColor = builder.titleBarTextColor;
         this.titleBarBgColor = builder.titleBarBgColor;
         this.titleBarIconColor = builder.titleBarIconColor;
@@ -222,8 +222,8 @@ public class GalleryTheme {
             return this;
         }
 
-        public GalleryTheme build() {
-            return new GalleryTheme(this);
+        public ThemeConfig build() {
+            return new ThemeConfig(this);
         }
     }
 

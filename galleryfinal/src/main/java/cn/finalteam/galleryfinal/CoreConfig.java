@@ -16,6 +16,7 @@
 
 package cn.finalteam.galleryfinal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import java.io.File;
@@ -27,11 +28,11 @@ import java.io.File;
  */
 public class CoreConfig {
     private boolean debug;
-    private Context context;
+    private Activity context;
     private ImageLoader imageLoader;
     private File takePhotoFolder;
     private File editPhotoCacheFolder;
-    private GalleryTheme galleryTheme;
+    private ThemeConfig themeConfig;
     private FunctionConfig mFunctionConfig;
 
     private CoreConfig(Builder builder) {
@@ -40,7 +41,7 @@ public class CoreConfig {
         this.imageLoader = builder.imageLoader;
         this.takePhotoFolder = builder.takePhotoFolder;
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
-        this.galleryTheme = builder.galleryTheme;
+        this.themeConfig = builder.themeConfig;
         this.mFunctionConfig = builder.mFunctionConfig;
 
         if ( takePhotoFolder == null ) {
@@ -53,18 +54,18 @@ public class CoreConfig {
     }
 
     public static class Builder {
-        private Context context;
-        private GalleryTheme galleryTheme;
+        private Activity context;
+        private ThemeConfig themeConfig;
         private boolean debug;
         private ImageLoader imageLoader;
         private File takePhotoFolder;//配置拍照缓存目录
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
         private FunctionConfig mFunctionConfig;
 
-        public Builder(Context context, ImageLoader imageLoader, GalleryTheme galleryTheme) {
+        public Builder(Activity context, ImageLoader imageLoader, ThemeConfig themeConfig) {
             this.context = context;
             this.imageLoader = imageLoader;
-            this.galleryTheme = galleryTheme;
+            this.themeConfig = themeConfig;
         }
 
         public Builder setDebug(boolean debug) {
@@ -96,7 +97,7 @@ public class CoreConfig {
         return debug;
     }
 
-    public Context getContext() {
+    public Activity getContext() {
         return context;
     }
 
@@ -112,8 +113,8 @@ public class CoreConfig {
         return editPhotoCacheFolder;
     }
 
-    public GalleryTheme getGalleryTheme() {
-        return galleryTheme;
+    public ThemeConfig getThemeConfig() {
+        return themeConfig;
     }
 
     public FunctionConfig getFunctionConfig() {

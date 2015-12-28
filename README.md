@@ -32,7 +32,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.3.1'
+compile 'cn.finalteam:galleryfinal:1.4.0'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -45,31 +45,31 @@ compile 'com.android.support:support-v4:23.1.1'
 * **UIL**
 
 ```gradle
-compile 'cn.finalteam:gf-loader-uil:1.3.1'
+compile 'cn.finalteam:gf-loader-uil:1.4.0'
 ```
 
 * **Glide**
 
 ```gradle
-compile 'cn.finalteam:gf-loader-glide:1.3.1'
+compile 'cn.finalteam:gf-loader-glide:1.4.0'
 ```
 
 * **Picasso**
 
 ```gradle
-compile 'cn.finalteam:gf-loader-picasso:1.3.1'
+compile 'cn.finalteam:gf-loader-picasso:1.4.0'
 ```
 
 * **fresco**
  
 ```gradle
-compile 'cn.finalteam:gf-loader-fresco:1.3.1'
+compile 'cn.finalteam:gf-loader-fresco:1.4.0'
 ```
 
 * **xUtils**
 
 ```gradle
-compile 'cn.finalteam:gf-loader-xutils:1.3.1'
+compile 'cn.finalteam:gf-loader-xutils:1.4.0'
 ```
 
 * **xUitls2**
@@ -232,15 +232,24 @@ setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
 
 5、如果你还想更深度的定制页面效果可以把资源文件名字定义成Gallery资源名已达到覆盖效果。如有不理解可以联系我。
 
-# 混淆配置
+
+# 权限
+```xml
+<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+```
+
+# 混淆配置   
 ```properties
 -keep class cn.finalteam.galleryfinal.widget.*{*;}
 -keep class cn.finalteam.galleryfinal.widget.crop.*{*;}
 -keep class cn.finalteam.galleryfinal.widget.zoonview.*{*;}
 ```
 
+
 # 更新日志
-## V1.3.1
+## V1.4.0
 * 对Fresco image loader的支持
 * 添加图片预览功能
 * 解决jpeg图片编辑提示bug

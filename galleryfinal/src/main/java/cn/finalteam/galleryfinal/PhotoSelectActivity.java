@@ -80,7 +80,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private PhotoListAdapter mPhotoListAdapter;
 
     private FunctionConfig mFunctionConfig;
-    private GalleryTheme mGalleryTheme;
+    private ThemeConfig mThemeConfig;
 
     //是否需要刷新相册
     private boolean mHasRefreshGallery = false;
@@ -113,15 +113,14 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gf_activity_photo_select);
-
         mFunctionConfig = GalleryFinal.getFunctionConfig();
-        mGalleryTheme = GalleryFinal.getGalleryTheme();
+        mThemeConfig = GalleryFinal.getGalleryTheme();
 
-        if ( mFunctionConfig == null || mGalleryTheme == null) {
-            toast(getString(R.string.please_reopen_gf));
-            finish();
+        if ( mFunctionConfig == null || mThemeConfig == null) {
+            resultFailure(getString(R.string.please_reopen_gf));
+            mFinishHanlder.sendEmptyMessageDelayed(0, 500);
         } else {
+            setContentView(R.layout.gf_activity_photo_select);
             mPhotoTargetFolder = null;
 
             findViews();
@@ -155,33 +154,33 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     }
 
     private void setTheme() {
-        mIvBack.setImageResource(mGalleryTheme.getIconBack());
-        if (mGalleryTheme.getIconBack() == R.drawable.ic_gf_back) {
-            mIvBack.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvBack.setImageResource(mThemeConfig.getIconBack());
+        if (mThemeConfig.getIconBack() == R.drawable.ic_gf_back) {
+            mIvBack.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        mIvFolderArrow.setImageResource(mGalleryTheme.getIconFolderArrow());
-        if (mGalleryTheme.getIconFolderArrow() == R.drawable.ic_gf_triangle_arrow) {
-            mIvFolderArrow.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvFolderArrow.setImageResource(mThemeConfig.getIconFolderArrow());
+        if (mThemeConfig.getIconFolderArrow() == R.drawable.ic_gf_triangle_arrow) {
+            mIvFolderArrow.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        mIvClear.setImageResource(mGalleryTheme.getIconClear());
-        if (mGalleryTheme.getIconClear() == R.drawable.ic_gf_clear) {
-            mIvClear.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvClear.setImageResource(mThemeConfig.getIconClear());
+        if (mThemeConfig.getIconClear() == R.drawable.ic_gf_clear) {
+            mIvClear.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        mIvTakePhoto.setImageResource(mGalleryTheme.getIconCamera());
-        if (mGalleryTheme.getIconCamera() == R.drawable.ic_gf_camera) {
-            mIvTakePhoto.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvTakePhoto.setImageResource(mThemeConfig.getIconCamera());
+        if (mThemeConfig.getIconCamera() == R.drawable.ic_gf_camera) {
+            mIvTakePhoto.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
-        mFabOk.setIcon(mGalleryTheme.getIconFab());
+        mFabOk.setIcon(mThemeConfig.getIconFab());
 
-        mTitlebar.setBackgroundColor(mGalleryTheme.getTitleBarBgColor());
-        mTvSubTitle.setTextColor(mGalleryTheme.getTitleBarTextColor());
-        mTvTitle.setTextColor(mGalleryTheme.getTitleBarTextColor());
-        mTvChooseCount.setTextColor(mGalleryTheme.getTitleBarTextColor());
-        mFabOk.setColorPressed(mGalleryTheme.getFabPressedColor());
-        mFabOk.setColorNormal(mGalleryTheme.getFabNornalColor());
+        mTitlebar.setBackgroundColor(mThemeConfig.getTitleBarBgColor());
+        mTvSubTitle.setTextColor(mThemeConfig.getTitleBarTextColor());
+        mTvTitle.setTextColor(mThemeConfig.getTitleBarTextColor());
+        mTvChooseCount.setTextColor(mThemeConfig.getTitleBarTextColor());
+        mFabOk.setColorPressed(mThemeConfig.getFabPressedColor());
+        mFabOk.setColorNormal(mThemeConfig.getFabNornalColor());
     }
 
     private void findViews() {
@@ -313,7 +312,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             } else {
                 ArrayList<PhotoInfo> list = new ArrayList<>();
                 list.add(photoInfo);
-                resultMuti(list);
+                resultData(list);
             }
 
             mHanlder.sendMessageDelayed(message, 100);
@@ -329,7 +328,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     protected void toPhotoEdit() {
         Intent intent = new Intent(this, PhotoEditActivity.class);
         intent.putExtra(PhotoEditActivity.SELECT_MAP, mSelectPhotoMap);
-        startActivityForResult(intent, GalleryFinal.EDIT_REQUEST_CODE);
+        startActivity(intent);
     }
 
     @Override
@@ -363,7 +362,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         } else if ( id == R.id.fab_ok ) {
             ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
             if (mSelectPhotoMap.size() == 0 || !mFunctionConfig.isEditPhoto()) {
-                resultMuti(photoList);
+                resultData(photoList);
             } else {
                 toPhotoEdit();
             }
@@ -423,7 +422,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             } else {
                 ArrayList<PhotoInfo> list = new ArrayList<>();
                 list.add(info);
-                resultMuti(list);
+                resultData(list);
             }
             return;
         }
@@ -445,9 +444,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         PhotoListAdapter.PhotoViewHolder holder = (PhotoListAdapter.PhotoViewHolder) view.getTag();
         if (holder != null) {
             if (checked) {
-                holder.mIvCheck.setBackgroundColor(mGalleryTheme.getCheckSelectedColor());
+                holder.mIvCheck.setBackgroundColor(mThemeConfig.getCheckSelectedColor());
             } else {
-                holder.mIvCheck.setBackgroundColor(mGalleryTheme.getCheckNornalColor());
+                holder.mIvCheck.setBackgroundColor(mThemeConfig.getCheckNornalColor());
             }
         } else {
             mPhotoListAdapter.notifyDataSetChanged();

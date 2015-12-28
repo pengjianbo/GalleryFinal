@@ -16,6 +16,7 @@
 
 package cn.finalteam.galleryfinal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.util.SparseArray;
 import android.widget.Toast;
@@ -35,23 +36,18 @@ import java.util.List;
  * Date:15/12/2 上午11:05
  */
 public class GalleryFinal {
-    public static final int GALLERY_RESULT_SUCCESS = 1000;
-    public static final int GALLERY_REQUEST_CODE = 1002;
-    public static final String GALLERY_RESULT_LIST_DATA = "gallery_result_list_data";
-
     static final int TAKE_REQUEST_CODE = 1001;
 
-    static final int EDIT_OK = 1003;
-    static final int EDIT_REQUEST_CODE = 1003;
-
+    private static FunctionConfig mCurrentFunctionConfig;
     private static FunctionConfig mGlobalFunctionConfig;
-    private static GalleryTheme mGalleryTheme;
+    private static ThemeConfig mThemeConfig;
     private static CoreConfig mCoreConfig;
-    private static SparseArray<OnHanlderResultCallback> mCallbackMap;
 
+    private static OnHanlderResultCallback mCallback;
+    private static int mRequestCode;
 
     public static void init(CoreConfig coreConfig) {
-        mGalleryTheme = coreConfig.getGalleryTheme();
+        mThemeConfig = coreConfig.getThemeConfig();
         mCoreConfig = coreConfig;
         mGlobalFunctionConfig = coreConfig.getFunctionConfig();
         Logger.init("galleryfinal", coreConfig.isDebug());
@@ -61,7 +57,6 @@ public class GalleryFinal {
         if ( mGlobalFunctionConfig != null ) {
             return mGlobalFunctionConfig.clone();
         }
-
         return null;
     }
 
@@ -70,16 +65,15 @@ public class GalleryFinal {
     }
 
     public static FunctionConfig getFunctionConfig() {
-        return mFunctionConfig;
+        return mCurrentFunctionConfig;
     }
 
-    public static GalleryTheme getGalleryTheme() {
-        if (mGalleryTheme== null) {
+    public static ThemeConfig getGalleryTheme() {
+        if (mThemeConfig == null) {
             //使用默认配置
-            mGalleryTheme = GalleryTheme.DEFAULT;
-            mCallbackMap = new SparseArray<>();
+            mThemeConfig = ThemeConfig.DEFAULT;
         }
-        return mGalleryTheme;
+        return mThemeConfig;
     }
 
     /**
@@ -90,7 +84,6 @@ public class GalleryFinal {
     public static void openGallerySingle(int requestCode, OnHanlderResultCallback callback) {
         FunctionConfig config = copyGlobalFuncationConfig();
         if (config != null) {
-            config.mutiSelect = false;
             openGallerySingle(requestCode, config, callback);
         } else {
             if(callback != null) {
@@ -98,7 +91,6 @@ public class GalleryFinal {
             }
             Logger.e("FunctionConfig null");
         }
-
     }
 
     /**
@@ -109,6 +101,7 @@ public class GalleryFinal {
      */
     public static void openGallerySingle(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
+            Logger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -126,9 +119,13 @@ public class GalleryFinal {
             Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
             return;
         }
-        mCallbackMap.put(requestCode, callback);
+        config.mutiSelect = false;
+        mRequestCode = requestCode;
+        mCallback = callback;
+        mCurrentFunctionConfig = config;
 
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoSelectActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mCoreConfig.getContext().startActivity(intent);
     }
 
@@ -140,7 +137,6 @@ public class GalleryFinal {
     public static void openGalleryMuti(int requestCode, OnHanlderResultCallback callback) {
         FunctionConfig config = copyGlobalFuncationConfig();
         if (config != null) {
-            config.mutiSelect = true;
             openGalleryMuti(requestCode, config, callback);
         } else {
             if(callback != null) {
@@ -148,7 +144,6 @@ public class GalleryFinal {
             }
             Logger.e("FunctionConfig null");
         }
-
     }
 
     /**
@@ -159,6 +154,7 @@ public class GalleryFinal {
      */
     public static void openGalleryMuti(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
+            Logger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -176,49 +172,138 @@ public class GalleryFinal {
             Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
             return;
         }
-        mCallbackMap.put(requestCode, callback);
+        mRequestCode = requestCode;
+        mCallback = callback;
+        mCurrentFunctionConfig = config;
+
+        config.mutiSelect = true;
 
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoSelectActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mCoreConfig.getContext().startActivity(intent);
+    }
+
+
+    /**
+     * 打开相机
+     * @param requestCode
+     * @param callback
+     */
+    public static void openCamera(int requestCode, OnHanlderResultCallback callback) {
+        FunctionConfig config = copyGlobalFuncationConfig();
+        if (config != null) {
+            openCamera(requestCode, config, callback);
+        } else {
+            if(callback != null) {
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            Logger.e("FunctionConfig null");
+        }
     }
 
     /**
      * 打开相机
      * @param config
+     * @param callback
      */
-    public static void openCamera(FunctionConfig config) {
-        if ( config == null ) {
+    public static void openCamera(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
+        if ( mCoreConfig.getImageLoader() == null ) {
+            Logger.e("Please init GalleryFinal.");
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
             return;
         }
+
+        if ( config == null && mGlobalFunctionConfig == null) {
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            return;
+        }
+
+        if (!DeviceUtils.existSDCard()) {
+            Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mRequestCode = requestCode;
+        mCallback = callback;
+
         config.mutiSelect = false;//拍照为单选
-        mFunctionConfig = config;
+        mCurrentFunctionConfig = config;
+
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoEditActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PhotoEditActivity.TAKE_PHOTO_ACTION, true);
         mCoreConfig.getContext().startActivity(intent);
     }
 
     /**
      * 打开裁剪
+     * @param requestCode
+     * @param photoPath
+     * @param callback
+     */
+    public static void openCrop(int requestCode, String photoPath, OnHanlderResultCallback callback) {
+        FunctionConfig config = copyGlobalFuncationConfig();
+        if (config != null) {
+            openCrop(requestCode, config, photoPath, callback);
+        } else {
+            if(callback != null) {
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            Logger.e("FunctionConfig null");
+        }
+    }
+
+    /**
+     * 打开裁剪
+     * @param requestCode
      * @param config
      * @param photoPath
+     * @param callback
      */
-    public static void openCrop(FunctionConfig config, String photoPath) {
+    public static void openCrop(int requestCode, FunctionConfig config, String photoPath, OnHanlderResultCallback callback) {
+        if ( mCoreConfig.getImageLoader() == null ) {
+            Logger.e("Please init GalleryFinal.");
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            return;
+        }
+
+        if ( config == null && mGlobalFunctionConfig == null) {
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            return;
+        }
+
+        if (!DeviceUtils.existSDCard()) {
+            Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
             Logger.d("config为空或文件不存在");
             return;
         }
+        mRequestCode = requestCode;
+        mCallback = callback;
+
         //必须设置这个三个选项
         config.mutiSelect = false;//拍照为单选
         config.editPhoto = true;
         config.crop = true;
 
-        mFunctionConfig = config;
+        mCurrentFunctionConfig = config;
         HashMap<String, PhotoInfo> map = new HashMap<>();
         PhotoInfo photoInfo = new PhotoInfo();
         photoInfo.setPhotoPath(photoPath);
         photoInfo.setPhotoId(Utils.getRandom(10000, 99999));
         map.put(photoPath, photoInfo);
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoEditActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PhotoEditActivity.CROP_PHOTO_ACTION, true);
         intent.putExtra(PhotoEditActivity.SELECT_MAP, map);
         mCoreConfig.getContext().startActivity(intent);
@@ -226,23 +311,67 @@ public class GalleryFinal {
 
     /**
      * 打开编辑
+     * @param requestCode
+     * @param photoPath
+     * @param callback
+     */
+    public static void openEdit(int requestCode, String photoPath, OnHanlderResultCallback callback) {
+        FunctionConfig config = copyGlobalFuncationConfig();
+        if (config != null) {
+            openEdit(requestCode, config, photoPath, callback);
+        } else {
+            if(callback != null) {
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            Logger.e("FunctionConfig null");
+        }
+    }
+
+    /**
+     * 打开编辑
+     * @param requestCode
      * @param config
      * @param photoPath
+     * @param callback
      */
-    public static void openEdit(FunctionConfig config, String photoPath) {
+    public static void openEdit(int requestCode, FunctionConfig config, String photoPath, OnHanlderResultCallback callback) {
+        if ( mCoreConfig.getImageLoader() == null ) {
+            Logger.e("Please init GalleryFinal.");
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            return;
+        }
+
+        if ( config == null && mGlobalFunctionConfig == null) {
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
+            }
+            return;
+        }
+
+        if (!DeviceUtils.existSDCard()) {
+            Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
             Logger.d("config为空或文件不存在");
             return;
         }
+        mRequestCode = requestCode;
+        mCallback = callback;
+
         config.mutiSelect = false;//拍照为单选
 
-        mFunctionConfig = config;
+        mCurrentFunctionConfig = config;
         HashMap<String, PhotoInfo> map = new HashMap<>();
         PhotoInfo photoInfo = new PhotoInfo();
         photoInfo.setPhotoPath(photoPath);
         photoInfo.setPhotoId(Utils.getRandom(10000, 99999));
         map.put(photoPath, photoInfo);
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoEditActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PhotoEditActivity.EDIT_PHOTO_ACTION, true);
         intent.putExtra(PhotoEditActivity.SELECT_MAP, map);
         mCoreConfig.getContext().startActivity(intent);
@@ -252,7 +381,7 @@ public class GalleryFinal {
      * 清楚缓存文件
      */
     public static void cleanCacheFile() {
-        if (mFunctionConfig != null && mCoreConfig.getEditPhotoCacheFolder() != null) {
+        if (mCurrentFunctionConfig != null && mCoreConfig.getEditPhotoCacheFolder() != null) {
             //清楚裁剪冗余图片
             new Thread() {
                 @Override
@@ -262,6 +391,14 @@ public class GalleryFinal {
                 }
             }.start();
         }
+    }
+
+    public static int getRequestCode() {
+        return mRequestCode;
+    }
+
+    public static OnHanlderResultCallback getCallback() {
+        return mCallback;
     }
 
     /**

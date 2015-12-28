@@ -23,4 +23,4 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile project(':galleryfinal')
 }
-apply from: 'https://raw.githubusercontent.com/pengjianbo/ToolsFinal/master/bintray.gradle'
+apply from: "../bintray.gradle"

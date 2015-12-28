@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.Window;
@@ -52,27 +54,23 @@ public abstract class PhotoBaseActivity extends Activity {
     protected int mScreenWidth = 720;
     protected int mScreenHeight = 1280;
 
+    protected Handler mFinishHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            finish();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if ( GalleryFinal.getFunctionConfig() == null ) {
-            finish();
-            return;
-        }
         super.onCreate(savedInstanceState);
         ActivityManager.getActivityManager().addActivity(this);
         mMediaScanner = new MediaScanner(this);
         DisplayMetrics dm = DeviceUtils.getScreenPix(this);
         mScreenWidth = dm.widthPixels;
         mScreenHeight = dm.heightPixels;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if ( GalleryFinal.getFunctionConfig() == null ) {
-            finish();
-        }
     }
 
     @Override
@@ -130,15 +128,8 @@ public abstract class PhotoBaseActivity extends Activity {
             } else {
                 toast(getString(R.string.take_photo_fail));
             }
-        } else if ( requestCode == GalleryFinal.EDIT_REQUEST_CODE) {
-            if ( resultCode == GalleryFinal.EDIT_OK ) {
-                ArrayList<PhotoInfo> photoInfoList = (ArrayList<PhotoInfo>) data.getSerializableExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA);
-                resultMuti(photoInfoList);
-            }
         }
     }
-
-
 
     /**
      * 更新相册
@@ -147,14 +138,24 @@ public abstract class PhotoBaseActivity extends Activity {
         mMediaScanner.scanFile(filePath, "image/jpeg");
     }
 
-    protected void resultMuti(ArrayList<PhotoInfo> resultList) {
-        Intent intent = getIntent();
-        if (intent == null) {
-            intent = new Intent();
+    protected void resultData(ArrayList<PhotoInfo> photoList) {
+        GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
+        int requestCode = GalleryFinal.getRequestCode();
+        if (callback != null) {
+            if ( photoList != null && photoList.size() > 0 ) {
+                callback.onHanlderSuccess(requestCode, photoList);
+            } else {
+                callback.onHanlderFailure(requestCode, "Photo list empty!");
+            }
         }
-        intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, resultList);
-        setResult(GalleryFinal.GALLERY_RESULT_SUCCESS, intent);
-        finish();
+    }
+
+    protected void resultFailure(String errormsg) {
+        GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
+        int requestCode = GalleryFinal.getRequestCode();
+        if ( callback != null ) {
+            callback.onHanlderFailure(requestCode, errormsg);
+        }
     }
 
     protected abstract void takeResult(PhotoInfo info);

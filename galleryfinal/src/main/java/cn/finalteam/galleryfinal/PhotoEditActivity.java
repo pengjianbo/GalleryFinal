@@ -89,7 +89,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private Map<Integer, PhotoTempModel> mPhotoTempMap;
     private File mEditPhotoCacheFile;
     private LinearLayout mTitlebar;
-    private GalleryTheme mGalleryTheme;
+    private ThemeConfig mThemeConfig;
     private Drawable mDefaultDrawable;
 
     private boolean mTakePhotoAction;//打开相机动作
@@ -129,7 +129,6 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
                     String path = (String) msg.obj;
                     //photoInfo.setThumbPath(path);
-
                     try {
                         Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
                         while (entries.hasNext()) {
@@ -151,7 +150,6 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     resultAction();
                 }
             }
-
             corpPageState(false);
             mCropState = false;
             mTvTitle.setText(R.string.photo_edit);
@@ -161,16 +159,15 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gf_activity_photo_edit);
-
-        mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);
-
-        mGalleryTheme = GalleryFinal.getGalleryTheme();
+        mThemeConfig = GalleryFinal.getGalleryTheme();
         mFunctionConfig = GalleryFinal.getFunctionConfig();
-        if ( mFunctionConfig == null || mGalleryTheme == null) {
-            toast(getString(R.string.please_reopen_gf));
-            finish();
+        if ( mFunctionConfig == null || mThemeConfig == null) {
+            resultFailure(getString(R.string.please_reopen_gf));
+            mFinishHanlder.sendEmptyMessageDelayed(0, 500);
         } else {
+            setContentView(R.layout.gf_activity_photo_edit);
+            mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);
+
             mSelectPhotoMap = (HashMap<String, PhotoInfo>) this.getIntent().getSerializableExtra(SELECT_MAP);
             mTakePhotoAction = this.getIntent().getBooleanExtra(TAKE_PHOTO_ACTION, false);
             mCropPhotoAction = this.getIntent().getBooleanExtra(CROP_PHOTO_ACTION, false);
@@ -253,36 +250,36 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     }
 
     private void setTheme() {
-        mIvBack.setImageResource(mGalleryTheme.getIconBack());
-        if (mGalleryTheme.getIconBack() == R.drawable.ic_gf_back) {
-            mIvBack.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvBack.setImageResource(mThemeConfig.getIconBack());
+        if (mThemeConfig.getIconBack() == R.drawable.ic_gf_back) {
+            mIvBack.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        mIvTakePhoto.setImageResource(mGalleryTheme.getIconCamera());
-        if (mGalleryTheme.getIconCamera() == R.drawable.ic_gf_camera) {
-            mIvTakePhoto.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvTakePhoto.setImageResource(mThemeConfig.getIconCamera());
+        if (mThemeConfig.getIconCamera() == R.drawable.ic_gf_camera) {
+            mIvTakePhoto.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        mIvCrop.setImageResource(mGalleryTheme.getIconCrop());
-        if (mGalleryTheme.getIconCrop() == R.drawable.ic_gf_crop) {
-            mIvCrop.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvCrop.setImageResource(mThemeConfig.getIconCrop());
+        if (mThemeConfig.getIconCrop() == R.drawable.ic_gf_crop) {
+            mIvCrop.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        mIvRotate.setImageResource(mGalleryTheme.getIconRotate());
-        if (mGalleryTheme.getIconRotate() == R.drawable.ic_gf_rotate) {
-            mIvRotate.setColorFilter(mGalleryTheme.getTitleBarIconColor());
+        mIvRotate.setImageResource(mThemeConfig.getIconRotate());
+        if (mThemeConfig.getIconRotate() == R.drawable.ic_gf_rotate) {
+            mIvRotate.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
-        if ( mGalleryTheme.getEditPhotoBgTexture() != null ) {
-            mIvSourcePhoto.setBackgroundDrawable(mGalleryTheme.getEditPhotoBgTexture());
-            mIvCropPhoto.setBackgroundDrawable(mGalleryTheme.getEditPhotoBgTexture());
+        if ( mThemeConfig.getEditPhotoBgTexture() != null ) {
+            mIvSourcePhoto.setBackgroundDrawable(mThemeConfig.getEditPhotoBgTexture());
+            mIvCropPhoto.setBackgroundDrawable(mThemeConfig.getEditPhotoBgTexture());
         }
 
-        mFabCrop.setIcon(mGalleryTheme.getIconFab());
-        mTitlebar.setBackgroundColor(mGalleryTheme.getTitleBarBgColor());
-        mTvTitle.setTextColor(mGalleryTheme.getTitleBarTextColor());
-        mFabCrop.setColorPressed(mGalleryTheme.getFabPressedColor());
-        mFabCrop.setColorNormal(mGalleryTheme.getFabNornalColor());
+        mFabCrop.setIcon(mThemeConfig.getIconFab());
+        mTitlebar.setBackgroundColor(mThemeConfig.getTitleBarBgColor());
+        mTvTitle.setTextColor(mThemeConfig.getTitleBarTextColor());
+        mFabCrop.setColorPressed(mThemeConfig.getFabPressedColor());
+        mFabCrop.setColorNormal(mThemeConfig.getFabNornalColor());
     }
 
     private void findViews() {
@@ -472,17 +469,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
     private void resultAction() {
         ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
-        if ( mTakePhotoAction || mCropPhotoAction || mEditPhotoAction) {
-            resultMuti(photoList);
-        } else {
-            Intent intent = getIntent();
-            if (intent == null) {
-                intent = new Intent();
-            }
-            intent.putExtra(GalleryFinal.GALLERY_RESULT_LIST_DATA, photoList);
-            setResult(GalleryFinal.EDIT_OK, intent);
-            finish();
-        }
+        resultData(photoList);
     }
 
     /**

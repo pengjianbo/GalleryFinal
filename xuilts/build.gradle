@@ -23,4 +23,4 @@ dependencies {
     compile 'org.xutils:xutils:3.1.22'
     compile project(':galleryfinal')
 }
-apply from: 'https://raw.githubusercontent.com/pengjianbo/ToolsFinal/master/bintray.gradle'
+apply from: "../bintray.gradle"

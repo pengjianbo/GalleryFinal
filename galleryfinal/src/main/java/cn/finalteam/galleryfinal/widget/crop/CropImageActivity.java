@@ -125,10 +125,10 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 rotateBitmap = new RotateBitmap(BitmapFactory.decodeStream(is, null, option), exifRotation);
             } catch (IOException e) {
                 Logger.e(e);
-                setCropSaveException(e);
+//                setCropSaveException(e);
             } catch (OutOfMemoryError e) {
                 Logger.e(e);
-                setCropSaveException(e);
+//                setCropSaveException(e);
             } finally {
                 CropUtil.closeSilently(is);
             }

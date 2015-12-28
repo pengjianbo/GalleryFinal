@@ -23,4 +23,4 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.8.1'
     compile project(':galleryfinal')
 }
-apply from: 'https://raw.githubusercontent.com/pengjianbo/ToolsFinal/master/bintray.gradle'
+apply from: "../bintray.gradle"
