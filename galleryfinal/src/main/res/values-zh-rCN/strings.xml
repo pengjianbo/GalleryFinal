@@ -32,5 +32,5 @@
     <string name="saving">正在保存照片…</string>
     <string name="please_reopen_gf">请重新打开图片浏览器</string>
     <string name="edit_letoff_photo_format">不支持的图片格式</string>
-
+    <string name="photo_list_empty">获取图片失败!</string>
 </resources>

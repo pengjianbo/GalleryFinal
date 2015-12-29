@@ -15,5 +15,6 @@
     <string name="take_photo_fail">Take photo failure</string>
     <string name="saving">Saving picture…</string>
     <string name="please_reopen_gf">Please reopen Gallery</string>
-    <string name="edit_letoff_photo_format">Do not support image format！</string>
+    <string name="edit_letoff_photo_format">Do not support image format!</string>
+    <string name="photo_list_empty">Failed to get the picture!</string>
 </resources>

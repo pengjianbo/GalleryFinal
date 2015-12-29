@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         mPhotoList = new ArrayList<>();
         mChoosePhotoListAdapter = new ChoosePhotoListAdapter(this, mPhotoList);
         mLvPhoto.setAdapter(mChoosePhotoListAdapter);
-        x.Ext.init(getApplication());
         mOpenGallery = (Button) findViewById(R.id.btn_open_gallery);
         mRbMutiSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -328,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
         });
         initImageLoader(this);
         initFresco();
+        x.Ext.init(getApplication());
     }
 
     private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {

@@ -162,8 +162,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mThemeConfig = GalleryFinal.getGalleryTheme();
         mFunctionConfig = GalleryFinal.getFunctionConfig();
         if ( mFunctionConfig == null || mThemeConfig == null) {
-            resultFailure(getString(R.string.please_reopen_gf));
-            mFinishHanlder.sendEmptyMessageDelayed(0, 500);
+            resultFailure(getString(R.string.please_reopen_gf), true);
         } else {
             setContentView(R.layout.gf_activity_photo_edit);
             mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);

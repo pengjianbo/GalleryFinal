@@ -58,7 +58,7 @@ public abstract class PhotoBaseActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            finish();
+            finishGalleryFinalPage();
         }
     };
 
@@ -145,17 +145,28 @@ public abstract class PhotoBaseActivity extends Activity {
             if ( photoList != null && photoList.size() > 0 ) {
                 callback.onHanlderSuccess(requestCode, photoList);
             } else {
-                callback.onHanlderFailure(requestCode, "Photo list empty!");
+                callback.onHanlderFailure(requestCode, getString(R.string.photo_list_empty));
             }
         }
+        finishGalleryFinalPage();
     }
 
-    protected void resultFailure(String errormsg) {
+    protected void resultFailure(String errormsg, boolean delayFinish) {
         GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
         int requestCode = GalleryFinal.getRequestCode();
         if ( callback != null ) {
             callback.onHanlderFailure(requestCode, errormsg);
         }
+        if(delayFinish) {
+            mFinishHanlder.sendEmptyMessageDelayed(0, 500);
+        } else {
+            finishGalleryFinalPage();
+        }
+    }
+
+    private void finishGalleryFinalPage() {
+        ActivityManager.getActivityManager().finishActivity(PhotoEditActivity.class);
+        ActivityManager.getActivityManager().finishActivity(PhotoSelectActivity.class);
     }
 
     protected abstract void takeResult(PhotoInfo info);
