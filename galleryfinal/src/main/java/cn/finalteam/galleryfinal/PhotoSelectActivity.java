@@ -359,11 +359,13 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
                 finish();
             }
         } else if ( id == R.id.fab_ok ) {
-            ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
-            if (mSelectPhotoMap.size() == 0 || !mFunctionConfig.isEditPhoto()) {
-                resultData(photoList);
-            } else {
-                toPhotoEdit();
+            if(mSelectPhotoMap.size() > 0) {
+                ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
+                if (!mFunctionConfig.isEditPhoto()) {
+                    resultData(photoList);
+                } else {
+                    toPhotoEdit();
+                }
             }
         } else if ( id == R.id.iv_clear ) {
             mSelectPhotoMap.clear();
