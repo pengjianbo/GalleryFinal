@@ -19,6 +19,9 @@
         <activity
             android:name=".PhotoEditActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".PhotoPreviewActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,7 +1,6 @@
 package cn.finalteam.galleryfinal.sample;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +17,21 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import com.baoyz.actionsheet.ActionSheet;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+
+import org.xutils.x;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.CoreConfig;
@@ -31,19 +45,7 @@ import cn.finalteam.galleryfinal.imageloader.uil.UILImageLoader;
 import cn.finalteam.galleryfinal.imageloader.xutils.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.sample.loader.XUtils2ImageLoader;
-import cn.finalteam.galleryfinal.utils.PhotoTools;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
-import com.baoyz.actionsheet.ActionSheet;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import org.xutils.x;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,40 +54,76 @@ public class MainActivity extends AppCompatActivity {
     private final int REQUEST_CODE_CROP = 1002;
     private final int REQUEST_CODE_EDIT = 1003;
 
-    @Bind(R.id.rb_uil) RadioButton mRbUil;
-    @Bind(R.id.rb_glide) RadioButton mRbGlide;
-    @Bind(R.id.rb_picasso) RadioButton mRbPicasso;
-    @Bind(R.id.rb_single_select) RadioButton mRbSingleSelect;
-    @Bind(R.id.rb_muti_select) RadioButton mRbMutiSelect;
-    @Bind(R.id.et_max_size) EditText mEtMaxSize;
-    @Bind(R.id.btn_open_gallery) Button mBtnOpenGallery;
-    @Bind(R.id.lv_photo) HorizontalListView mLvPhoto;
-    @Bind(R.id.cb_edit) CheckBox mCbEdit;
-    @Bind(R.id.cb_crop) CheckBox mCbCrop;
-    @Bind(R.id.cb_rotate) CheckBox mCbRotate;
-    @Bind(R.id.cb_show_camera) CheckBox mCbShowCamera;
-    @Bind(R.id.ll_max_size) LinearLayout mLlMaxSize;
-    @Bind(R.id.ll_edit) LinearLayout mLlEdit;
-    @Bind(R.id.rb_xutils) RadioButton mRbXutils;
-    @Bind(R.id.rb_xutils3) RadioButton mRbXutils3;
-    @Bind(R.id.et_crop_width) EditText mEtCropWidth;
-    @Bind(R.id.et_crop_height) EditText mEtCropHeight;
-    @Bind(R.id.ll_crop_size) LinearLayout mLlCropSize;
-    @Bind(R.id.cb_crop_square) CheckBox mCbCropSquare;
-    @Bind(R.id.rb_theme_default) RadioButton mRbThemeDefault;
-    @Bind(R.id.rb_theme_dark) RadioButton mRbThemeDark;
-    @Bind(R.id.rb_theme_cyan) RadioButton mRbThemeCyan;
-    @Bind(R.id.rb_theme_orange) RadioButton mRbThemeOrange;
-    @Bind(R.id.rb_theme_green) RadioButton mRbThemeGreen;
-    @Bind(R.id.rb_theme_teal) RadioButton mRbThemeTeal;
-    @Bind(R.id.rb_theme_custom) RadioButton mRbThemeCustom;
-    @Bind(R.id.cb_crop_replace_source) CheckBox mCbCropReplaceSource;
-    @Bind(R.id.cb_rotate_replace_source) CheckBox mCbRotateReplaceSource;
-    @Bind(R.id.cb_open_force_crop) CheckBox mCbOpenForceCrop;
-    @Bind(R.id.cb_open_force_crop_edit) CheckBox mCbOpenForceCropEdit;
-    @Bind(R.id.ll_force_crop) LinearLayout mLlForceCrop;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.rb_fresco) RadioButton mRbFresco;
+    @Bind(R.id.rb_uil)
+    RadioButton mRbUil;
+    @Bind(R.id.rb_glide)
+    RadioButton mRbGlide;
+    @Bind(R.id.rb_picasso)
+    RadioButton mRbPicasso;
+    @Bind(R.id.rb_single_select)
+    RadioButton mRbSingleSelect;
+    @Bind(R.id.rb_muti_select)
+    RadioButton mRbMutiSelect;
+    @Bind(R.id.et_max_size)
+    EditText mEtMaxSize;
+    @Bind(R.id.btn_open_gallery)
+    Button mBtnOpenGallery;
+    @Bind(R.id.lv_photo)
+    HorizontalListView mLvPhoto;
+    @Bind(R.id.cb_edit)
+    CheckBox mCbEdit;
+    @Bind(R.id.cb_crop)
+    CheckBox mCbCrop;
+    @Bind(R.id.cb_rotate)
+    CheckBox mCbRotate;
+    @Bind(R.id.cb_show_camera)
+    CheckBox mCbShowCamera;
+    @Bind(R.id.ll_max_size)
+    LinearLayout mLlMaxSize;
+    @Bind(R.id.ll_edit)
+    LinearLayout mLlEdit;
+    @Bind(R.id.rb_xutils)
+    RadioButton mRbXutils;
+    @Bind(R.id.rb_xutils3)
+    RadioButton mRbXutils3;
+    @Bind(R.id.et_crop_width)
+    EditText mEtCropWidth;
+    @Bind(R.id.et_crop_height)
+    EditText mEtCropHeight;
+    @Bind(R.id.ll_crop_size)
+    LinearLayout mLlCropSize;
+    @Bind(R.id.cb_crop_square)
+    CheckBox mCbCropSquare;
+    @Bind(R.id.rb_theme_default)
+    RadioButton mRbThemeDefault;
+    @Bind(R.id.rb_theme_dark)
+    RadioButton mRbThemeDark;
+    @Bind(R.id.rb_theme_cyan)
+    RadioButton mRbThemeCyan;
+    @Bind(R.id.rb_theme_orange)
+    RadioButton mRbThemeOrange;
+    @Bind(R.id.rb_theme_green)
+    RadioButton mRbThemeGreen;
+    @Bind(R.id.rb_theme_teal)
+    RadioButton mRbThemeTeal;
+    @Bind(R.id.rb_theme_custom)
+    RadioButton mRbThemeCustom;
+    @Bind(R.id.cb_crop_replace_source)
+    CheckBox mCbCropReplaceSource;
+    @Bind(R.id.cb_rotate_replace_source)
+    CheckBox mCbRotateReplaceSource;
+    @Bind(R.id.cb_open_force_crop)
+    CheckBox mCbOpenForceCrop;
+    @Bind(R.id.cb_open_force_crop_edit)
+    CheckBox mCbOpenForceCropEdit;
+    @Bind(R.id.ll_force_crop)
+    LinearLayout mLlForceCrop;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.rb_fresco)
+    RadioButton mRbFresco;
+    @Bind(R.id.cb_preview)
+    CheckBox mCbPreview;
 
     private List<PhotoInfo> mPhotoList;
     private ChoosePhotoListAdapter mChoosePhotoListAdapter;
@@ -270,7 +308,9 @@ public class MainActivity extends AppCompatActivity {
                 if (mCbShowCamera.isChecked()) {
                     functionConfigBuilder.setEnableCamera(true);
                 }
-
+                if (mCbPreview.isChecked()) {
+                    functionConfigBuilder.setEnablePreview(true);
+                }
                 functionConfigBuilder.setSelected(mPhotoList);//添加过滤集合
                 final FunctionConfig functionConfig = functionConfigBuilder.build();
                 CoreConfig coreConfig = new CoreConfig.Builder(MainActivity.this, imageLoader, themeConfig)
@@ -334,8 +374,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (resultList != null) {
-                    mPhotoList.addAll(resultList);
-                    mChoosePhotoListAdapter.notifyDataSetChanged();
+                mPhotoList.addAll(resultList);
+                mChoosePhotoListAdapter.notifyDataSetChanged();
             }
         }
 

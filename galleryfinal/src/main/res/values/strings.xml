@@ -17,4 +17,5 @@
     <string name="please_reopen_gf">Please reopen Gallery</string>
     <string name="edit_letoff_photo_format">Do not support image format!</string>
     <string name="photo_list_empty">Failed to get the picture!</string>
+    <string name="preview">Preview</string>
 </resources>

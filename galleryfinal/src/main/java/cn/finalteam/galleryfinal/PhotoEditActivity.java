@@ -71,6 +71,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private ImageView mIvTakePhoto;
     private ImageView mIvCrop;
     private ImageView mIvRotate;
+    private ImageView mIvPreView;
     private CropImageView mIvCropPhoto;
     private PhotoView mIvSourcePhoto;
     private TextView mTvEmptyView;
@@ -245,6 +246,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     mIvCrop.setVisibility(View.GONE);
                 }
             }
+
+            if(mFunctionConfig.isEnablePreview()){
+                mIvPreView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -262,6 +267,11 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mIvCrop.setImageResource(mThemeConfig.getIconCrop());
         if (mThemeConfig.getIconCrop() == R.drawable.ic_gf_crop) {
             mIvCrop.setColorFilter(mThemeConfig.getTitleBarIconColor());
+        }
+
+        mIvPreView.setImageResource(mThemeConfig.getIconPreview());
+        if (mThemeConfig.getIconPreview() == R.drawable.ic_gf_preview) {
+            mIvPreView.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
         mIvRotate.setImageResource(mThemeConfig.getIconRotate());
@@ -294,6 +304,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mIvRotate = (ImageView) findViewById(R.id.iv_rotate);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
         mTitlebar = (LinearLayout) findViewById(R.id.titlebar);
+        mIvPreView = (ImageView) findViewById(R.id.iv_preview);
     }
 
     private void setListener() {
@@ -303,6 +314,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         mFabCrop.setOnClickListener(this);
         mIvCrop.setOnClickListener(this);
         mIvRotate.setOnClickListener(this);
+        mIvPreView.setOnClickListener(this);
     }
 
     @Override
@@ -312,6 +324,9 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mSelectPhotoMap.clear();
         }
         mPhotoList.add(info);
+        if(mFunctionConfig.isEnablePreview()){
+            mIvPreView.setVisibility(View.VISIBLE);
+        }
         mSelectPhotoMap.put(info.getPhotoPath(), info);
         mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
         mPhotoEditListAdapter.notifyDataSetChanged();
@@ -363,6 +378,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mTvEmptyView.setVisibility(View.VISIBLE);
             mIvSourcePhoto.setVisibility(View.GONE);
             mIvCropPhoto.setVisibility(View.GONE);
+            mIvPreView.setVisibility(View.GONE);
         } else {
             if (position == 0) {
                 mSelectIndex = 0;
@@ -463,6 +479,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 }
             }
             finish();
+        } else if (id == R.id.iv_preview) {
+            Intent intent = new Intent(this, PhotoPreviewActivity.class);
+            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, new ArrayList<>(mSelectPhotoMap.values()));
+            startActivity(intent);
         }
     }
 
@@ -558,8 +578,6 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             }
         }
     }
-
-
 
     private void corpPageState(boolean crop) {
         if (crop) {

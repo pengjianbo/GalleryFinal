@@ -87,8 +87,10 @@ public class ThemeConfig {
     private int iconDelete;
     private int iconCheck;
     private int iconFab;
+    private int iconPreview;
 
     private Drawable bgEditTexture;
+    private Drawable bgPreveiw;
 
     private ThemeConfig(Builder builder) {
         this.titleBarTextColor = builder.titleBarTextColor;
@@ -109,6 +111,8 @@ public class ThemeConfig {
         this.iconCheck = builder.iconCheck;
         this.iconFab = builder.iconFab;
         this.bgEditTexture = builder.bgEditTexture;
+        this.iconPreview = builder.iconPreview;
+        this.bgPreveiw = builder.bgPreveiw;
     }
 
     public static class Builder {
@@ -130,7 +134,10 @@ public class ThemeConfig {
         private int iconDelete = R.drawable.ic_delete_photo;
         private int iconCheck = R.drawable.ic_folder_check;
         private int iconFab = R.drawable.ic_folder_check;
+        private int iconPreview = R.drawable.ic_gf_preview;
+
         private Drawable bgEditTexture;
+        private Drawable bgPreveiw;
 
         public Builder setTitleBarTextColor(int titleBarTextColor) {
             this.titleBarTextColor = titleBarTextColor;
@@ -222,6 +229,16 @@ public class ThemeConfig {
             return this;
         }
 
+        public Builder setIconPreview(int iconPreview) {
+            this.iconPreview = iconPreview;
+            return this;
+        }
+
+        public Builder setPreviewBg(Drawable bgPreveiw) {
+            this.bgPreveiw = bgPreveiw;
+            return this;
+        }
+
         public ThemeConfig build() {
             return new ThemeConfig(this);
         }
@@ -293,6 +310,14 @@ public class ThemeConfig {
 
     public int getIconFab() {
         return iconFab;
+    }
+
+    public int getIconPreview() {
+        return iconPreview;
+    }
+
+    public Drawable getPreviewBg() {
+        return bgPreveiw;
     }
 
     public Drawable getEditPhotoBgTexture() {

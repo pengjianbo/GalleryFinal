@@ -12,9 +12,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * ……
 
 ## Updating V1.4.0
-* activityforResult改为事件回调形式
-* 优化FunctionConfig配置方式
-* 增强各手机兼容性
+
 * ……
 
 
@@ -254,9 +252,11 @@ setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
 * 添加图片预览功能
 * 解决jpeg图片编辑提示bug
 * 解决GalleryTheme设置方法没有返回Builder的bug
-* 添加对Fragment onActivitForResult的支持
 * 主流Imageloader GalleryFinal配置实现
-
+* onActivityForResult改为事件回调形式
+* 优化FunctionConfig配置方式
+* 增强各手机兼容性
+* 对fresco/glide/picasso/uil/xutils添加gradle引入
 
 ## V1.3.0
 * 代码设置主题颜色

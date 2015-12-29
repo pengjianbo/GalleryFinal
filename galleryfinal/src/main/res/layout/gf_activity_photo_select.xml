@@ -94,7 +94,17 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_gf_clear"
-                android:layout_marginRight="15dp"
+                android:padding="6dp"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:id="@+id/iv_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_gf_preview"
+                android:padding="6dp"
                 android:visibility="gone"
                 />
 
@@ -104,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_gf_camera"
-                android:layout_marginRight="15dp"
+                android:padding="6dp"
                 android:visibility="gone"
                 />
 
@@ -112,7 +122,7 @@
                 android:id="@+id/tv_choose_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
+                android:padding="6dp"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:visibility="gone"

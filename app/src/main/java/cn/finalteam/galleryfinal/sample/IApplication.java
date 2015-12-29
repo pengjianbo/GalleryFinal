@@ -47,6 +47,7 @@ public class IApplication extends Application {
 //                .setEnableCrop(true)
 //                .setEnableRotate(true)
 //                .setCropSquare(true)
+//                .setEnablePreview(true)
 //                .build();
 //        CoreConfig coreConfig = new CoreConfig.Builder(this, new UILImageLoader(), theme)
 //                .setDebug(BuildConfig.DEBUG)

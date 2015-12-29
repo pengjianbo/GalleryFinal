@@ -64,6 +64,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private ImageView mIvTakePhoto;
     private ImageView mIvBack;
     private ImageView mIvClear;
+    private ImageView mIvPreView;
     private TextView mTvChooseCount;
     private TextView mTvSubTitle;
     private LinearLayout mLlTitle;
@@ -168,6 +169,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             mIvClear.setColorFilter(mThemeConfig.getTitleBarIconColor());
         }
 
+        mIvPreView.setImageResource(mThemeConfig.getIconPreview());
+        if (mThemeConfig.getIconPreview() == R.drawable.ic_gf_preview) {
+            mIvPreView.setColorFilter(mThemeConfig.getTitleBarIconColor());
+        }
+
         mIvTakePhoto.setImageResource(mThemeConfig.getIconCamera());
         if (mThemeConfig.getIconCamera() == R.drawable.ic_gf_camera) {
             mIvTakePhoto.setColorFilter(mThemeConfig.getTitleBarIconColor());
@@ -197,6 +203,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mTitlebar = (RelativeLayout) findViewById(R.id.titlebar);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
         mIvFolderArrow = (ImageView) findViewById(R.id.iv_folder_arrow);
+        mIvPreView = (ImageView) findViewById(R.id.iv_preview);
     }
 
     private void setListener() {
@@ -209,6 +216,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mGvPhotoList.setOnItemClickListener(this);
         mFabOk.setOnClickListener(this);
         mIvClear.setOnClickListener(this);
+        mIvPreView.setOnClickListener(this);
     }
 
     protected void deleteSelect(int photoId) {
@@ -371,6 +379,10 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             mSelectPhotoMap.clear();
             mPhotoListAdapter.notifyDataSetChanged();
             refreshSelectCount();
+        } else if ( id == R.id.iv_preview ) {
+            Intent intent = new Intent(this, PhotoPreviewActivity.class);
+            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, new ArrayList<>(mSelectPhotoMap.values()));
+            startActivity(intent);
         }
     }
 
@@ -458,8 +470,12 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoMap.size(), mFunctionConfig.getMaxSize()));
         if ( mSelectPhotoMap.size() > 0 && mFunctionConfig.isMutiSelect() ) {
             mIvClear.setVisibility(View.VISIBLE);
+            if(mFunctionConfig.isEnablePreview()){
+                mIvPreView.setVisibility(View.VISIBLE);
+            }
         } else {
             mIvClear.setVisibility(View.GONE);
+            mIvPreView.setVisibility(View.GONE);
         }
     }
 
