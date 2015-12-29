@@ -123,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
+                android:layout_marginRight="9dp"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:visibility="gone"
