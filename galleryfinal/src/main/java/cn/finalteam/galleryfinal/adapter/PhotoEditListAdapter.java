@@ -25,6 +25,8 @@ import cn.finalteam.galleryfinal.PhotoEditActivity;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
+import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
+
 import java.util.List;
 
 /**
@@ -32,7 +34,7 @@ import java.util.List;
  * Author:pengjianbo
  * Date:15/11/30 下午2:26
  */
-public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter.ViewHolder, PhotoInfo> {
+public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter.ViewHolder, PhotoInfo> {
 
     private PhotoEditActivity mActivity;
     private int mRowWidth;
@@ -52,7 +54,7 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String path = "";
-        PhotoInfo photoInfo = mList.get(position);
+        PhotoInfo photoInfo = getDatas().get(position);
         if (photoInfo != null) {
             path = photoInfo.getPhotoPath();
         }
@@ -68,7 +70,7 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
         holder.mIvDelete.setOnClickListener(new OnDeletePhotoClickListener(position));
     }
 
-    public class ViewHolder extends CommonBaseAdapter.ViewHolder {
+    public class ViewHolder extends ViewHolderAdapter.ViewHolder {
         GFImageView mIvPhoto;
         ImageView mIvDelete;
         public ViewHolder(View view) {
@@ -90,7 +92,7 @@ public class PhotoEditListAdapter extends CommonBaseAdapter<PhotoEditListAdapter
         public void onClick(View view) {
             PhotoInfo photoInfo = null;
             try {
-                photoInfo = mList.remove(position);
+                photoInfo = getDatas().remove(position);
             } catch (Exception e){
                 e.printStackTrace();
             }

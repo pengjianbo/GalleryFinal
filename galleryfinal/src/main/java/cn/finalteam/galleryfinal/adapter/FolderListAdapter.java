@@ -28,6 +28,7 @@ import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
+import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
 
 import java.util.List;
 
@@ -36,14 +37,17 @@ import java.util.List;
  * Author:pengjianbo
  * Date:15/10/10 下午5:09
  */
-public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.FolderViewHolder, PhotoFolderInfo> {
+public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.FolderViewHolder, PhotoFolderInfo> {
 
     private PhotoFolderInfo mSelectFolder;
     private FunctionConfig mFunctionConfig;
 
+    private Activity mActivity;
+
     public FolderListAdapter(Activity activity, List<PhotoFolderInfo> list, FunctionConfig FunctionConfig) {
         super(activity, list);
         this.mFunctionConfig = FunctionConfig;
+        this.mActivity = activity;
     }
 
     @Override
@@ -54,7 +58,7 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
 
     @Override
     public void onBindViewHolder(FolderViewHolder holder, int position) {
-        PhotoFolderInfo photoFolderInfo = mList.get(position);
+        PhotoFolderInfo photoFolderInfo = getDatas().get(position);
 
         String path = "";
         PhotoInfo photoInfo = photoFolderInfo.getCoverPhoto();
@@ -89,7 +93,7 @@ public class FolderListAdapter extends CommonBaseAdapter<FolderListAdapter.Folde
         return mSelectFolder;
     }
 
-    static class FolderViewHolder extends CommonBaseAdapter.ViewHolder {
+    static class FolderViewHolder extends ViewHolderAdapter.ViewHolder {
         GFImageView mIvCover;
         ImageView mIvFolderCheck;
         TextView mTvFolderName;

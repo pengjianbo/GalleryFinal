@@ -26,6 +26,8 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
+import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
+
 import java.util.List;
 import java.util.Map;
 
@@ -34,16 +36,20 @@ import java.util.Map;
  * Author:pengjianbo
  * Date:15/10/10 下午4:59
  */
-public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoViewHolder, PhotoInfo> {
+public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoViewHolder, PhotoInfo> {
 
     private Map<String, PhotoInfo> mSelectList;
     private int mScreenWidth;
     private int mRowWidth;
+
+    private Activity mActivity;
+
     public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth) {
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
         this.mRowWidth = mScreenWidth/3;
+        this.mActivity = activity;
     }
 
     @Override
@@ -55,7 +61,7 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        PhotoInfo photoInfo = mList.get(position);
+        PhotoInfo photoInfo = getDatas().get(position);
 
         String path = "";
         if (photoInfo != null) {
@@ -84,7 +90,7 @@ public class PhotoListAdapter extends CommonBaseAdapter<PhotoListAdapter.PhotoVi
         convertView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
     }
 
-    public static class PhotoViewHolder extends CommonBaseAdapter.ViewHolder {
+    public static class PhotoViewHolder extends ViewHolderAdapter.ViewHolder {
 
         public GFImageView mIvThumb;
         public ImageView mIvCheck;
