@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "cn.finalteam.galleryfinal.sample"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -29,9 +29,9 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':galleryfinal')
     //    compile 'cn.finalteam:galleryfinal:1.3.1'
@@ -41,5 +41,4 @@ dependencies {
     compile project(':glide')
     compile project(':picasso')
     compile project(':xuilts')
-
 }
