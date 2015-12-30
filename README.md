@@ -343,7 +343,7 @@ public class XUtils2ImageLoader implements cn.finalteam.galleryfinal.ImageLoader
 
 * ……
 
-3、启动GalleryFinal
+4、启动GalleryFinal
 
 在GalleryFinal 1.3.0版本中相册、拍照、裁剪和图片编辑功能可独立使用
 
@@ -466,6 +466,15 @@ setIconFab//设置Floating按钮icon
 setEditPhotoBgTexture//设置图片编辑页面图片margin外背景
 setIconPreview设置预览按钮icon
 setPreviewBg设置预览页背景
+```
+
+* **CoreConfig配置类**
+```java
+Builder(Context context, ImageLoader imageLoader, ThemeConfig themeConfig) //构建CoreConfig所需ImageLoader和ThemeConfig
+setDebug //debug开关
+setEditPhotoCacheFolder(File file)//配置编辑（裁剪和旋转）功能产生的cache文件保存目录，不做配置的话默认保存在/sdcard/GalleryFinal/edittemp/
+setTakePhotoFolder设置拍照保存目录，默认是/sdcard/DICM/GalleryFinal/
+setFunctionConfig //配置全局GalleryFinal功能
 ```
 
 5、如果你还想更深度的定制页面效果可以把资源文件名字定义成Gallery资源名已达到覆盖效果。如有不理解可以联系我。
