@@ -16,19 +16,19 @@
 
 package cn.finalteam.galleryfinal;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.util.SparseArray;
 import android.widget.Toast;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Desction:

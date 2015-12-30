@@ -28,7 +28,7 @@ import java.io.File;
  */
 public class CoreConfig {
     private boolean debug;
-    private Activity context;
+    private Context context;
     private ImageLoader imageLoader;
     private File takePhotoFolder;
     private File editPhotoCacheFolder;
@@ -54,7 +54,7 @@ public class CoreConfig {
     }
 
     public static class Builder {
-        private Activity context;
+        private Context context;
         private ThemeConfig themeConfig;
         private boolean debug;
         private ImageLoader imageLoader;
@@ -62,7 +62,7 @@ public class CoreConfig {
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
         private FunctionConfig mFunctionConfig;
 
-        public Builder(Activity context, ImageLoader imageLoader, ThemeConfig themeConfig) {
+        public Builder(Context context, ImageLoader imageLoader, ThemeConfig themeConfig) {
             this.context = context;
             this.imageLoader = imageLoader;
             this.themeConfig = themeConfig;
@@ -97,7 +97,7 @@ public class CoreConfig {
         return debug;
     }
 
-    public Activity getContext() {
+    public Context getContext() {
         return context;
     }
 

@@ -73,6 +73,9 @@ public class PhotoPreviewActivity extends PhotoBaseActivity implements ViewPager
 
         mTitleBar.setBackgroundColor(mThemeConfig.getTitleBarBgColor());
         mTvTitle.setTextColor(mThemeConfig.getTitleBarTextColor());
+        if(mThemeConfig.getPreviewBg() != null) {
+            mVpPager.setBackgroundDrawable(mThemeConfig.getPreviewBg());
+        }
     }
 
     @Override
