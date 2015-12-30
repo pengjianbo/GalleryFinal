@@ -38,9 +38,12 @@ public class IApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //建议在application中配置
         //设置主题
+//        ThemeConfig theme = ThemeConfig.CYAN
 //        ThemeConfig theme = new ThemeConfig.Builder()
 //                .build();
+//        //配置功能
 //        FunctionConfig functionConfig = new FunctionConfig.Builder()
 //                .setEnableCamera(true)
 //                .setEnableEdit(true)

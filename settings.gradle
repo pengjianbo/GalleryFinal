@@ -1,1 +1,1 @@
-include ':app', ':galleryfinal', ':uil', ':fresco', ':glide', ':picasso', ':xuilts'
+include ':app', ':galleryfinal'

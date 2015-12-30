@@ -38,13 +38,13 @@ import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
-import cn.finalteam.galleryfinal.imageloader.fresco.FrescoImageLoader;
-import cn.finalteam.galleryfinal.imageloader.glide.GlideImageLoader;
-import cn.finalteam.galleryfinal.imageloader.picasso.PicassoImageLoader;
-import cn.finalteam.galleryfinal.imageloader.uil.UILImageLoader;
-import cn.finalteam.galleryfinal.imageloader.xutils.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.sample.loader.FrescoImageLoader;
+import cn.finalteam.galleryfinal.sample.loader.GlideImageLoader;
+import cn.finalteam.galleryfinal.sample.loader.PicassoImageLoader;
+import cn.finalteam.galleryfinal.sample.loader.UILImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.XUtils2ImageLoader;
+import cn.finalteam.galleryfinal.sample.loader.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 
 public class MainActivity extends AppCompatActivity {
