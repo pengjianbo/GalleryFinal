@@ -17,16 +17,6 @@
 package cn.finalteam.galleryfinal.sample;
 
 import android.app.Application;
-import android.graphics.Bitmap;
-
-import cn.finalteam.galleryfinal.CoreConfig;
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.imageloader.uil.UILImageLoader;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ThemeConfig;
 
 /**
  * Desction:
