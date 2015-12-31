@@ -26,6 +26,12 @@ import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.widget.Toast;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.MediaScanner;
 import cn.finalteam.galleryfinal.utils.Utils;
@@ -35,16 +41,14 @@ import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Desction:
  * Author:pengjianbo
  * Date:15/10/10 下午5:46
  */
-public abstract class PhotoBaseActivity extends Activity {
+public abstract class PhotoBaseActivity extends Activity implements EasyPermissions.PermissionCallbacks{
 
     protected static String mPhotoTargetFolder;
 
@@ -89,7 +93,6 @@ public abstract class PhotoBaseActivity extends Activity {
      * 拍照
      */
     protected void takePhotoAction() {
-
         if (!DeviceUtils.existSDCard()) {
             toast("没有SD卡不能拍照呢~");
             return;
@@ -170,4 +173,18 @@ public abstract class PhotoBaseActivity extends Activity {
     }
 
     protected abstract void takeResult(PhotoInfo info);
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(List<String> list) {
+    }
+
+    @Override
+    public void onPermissionsDenied(List<String> list) {
+    }
 }

@@ -16,6 +16,7 @@
 
 package cn.finalteam.galleryfinal;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.StringUtils;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Desction:图片选择器
@@ -149,7 +153,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             }
 
             refreshSelectCount();
-            getPhotos();
+            requestGalleryPermission();
         }
     }
 
@@ -479,9 +483,29 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void onPermissionsGranted(List<String> list) {
+        getPhotos();
+    }
+
+    @Override
+    public void onPermissionsDenied(List<String> list) {
+    }
+
     /**
      * 获取所有图片
      */
+    @AfterPermissionGranted(GalleryFinal.PERMISSIONS_CODE_GALLERY)
+    private void requestGalleryPermission() {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            getPhotos();
+        } else {
+            // Ask for one permission
+            EasyPermissions.requestPermissions(this, getString(R.string.permissions_tips_gallery),
+                    GalleryFinal.PERMISSIONS_CODE_GALLERY, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
     private void getPhotos() {
         mTvEmptyView.setText(R.string.waiting);
         mGvPhotoList.setEnabled(false);
@@ -524,7 +548,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         super.onResume();
         if ( mHasRefreshGallery ) {
             mHasRefreshGallery = false;
-            getPhotos();
+            requestGalleryPermission();
         }
     }
 

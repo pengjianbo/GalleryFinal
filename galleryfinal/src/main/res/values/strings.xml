@@ -18,4 +18,5 @@
     <string name="edit_letoff_photo_format">Do not support image format!</string>
     <string name="photo_list_empty">Failed to get the picture!</string>
     <string name="preview">Preview</string>
+    <string name="permissions_tips_gallery">This app requesting access to your Gallery</string>
 </resources>

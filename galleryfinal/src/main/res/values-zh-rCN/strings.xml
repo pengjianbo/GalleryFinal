@@ -34,4 +34,5 @@
     <string name="edit_letoff_photo_format">不支持的图片格式</string>
     <string name="photo_list_empty">获取图片失败!</string>
     <string name="preview">预览</string>
+    <string name="permissions_tips_gallery">这个App请求访问你的相册</string>
 </resources>
