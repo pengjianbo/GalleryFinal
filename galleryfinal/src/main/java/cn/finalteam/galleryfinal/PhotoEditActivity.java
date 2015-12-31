@@ -199,7 +199,6 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             try {
                 File nomediaFile = new File(mEditPhotoCacheFile, ".nomedia");
                 if (!nomediaFile.exists()) {
-                    FileUtils.makeFolders(nomediaFile);
                     nomediaFile.createNewFile();
                 }
             } catch (IOException e) {

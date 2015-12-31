@@ -11,7 +11,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 系统Gallery App不美观
 * ……
 
-## Updating V1.4.1
+## Updating V1.4.2
 * 添加动画或特效
 * ……
 
@@ -31,7 +31,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.0'
+compile 'cn.finalteam:galleryfinal:1.4.1'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -496,6 +496,9 @@ setFunctionConfig //配置全局GalleryFinal功能
 
 
 # 更新日志
+# V1.4.1
+* 解决创建文件夹bug
+
 ## V1.4.0
 * 对Fresco image loader的支持
 * 添加图片预览功能

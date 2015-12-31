@@ -16,9 +16,9 @@
 
 package cn.finalteam.galleryfinal;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
+
 import java.io.File;
 
 /**
@@ -45,11 +45,17 @@ public class CoreConfig {
         this.mFunctionConfig = builder.mFunctionConfig;
 
         if ( takePhotoFolder == null ) {
-            takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal" + File.separator);
+            takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal/");
+        }
+        if(!takePhotoFolder.exists()) {
+            takePhotoFolder.mkdirs();
         }
 
         if ( editPhotoCacheFolder == null ) {
             editPhotoCacheFolder = new File(Environment.getExternalStorageDirectory() + "/GalleryFinal/edittemp/");
+        }
+        if (!editPhotoCacheFolder.exists()) {
+            editPhotoCacheFolder.mkdirs();
         }
     }
 
