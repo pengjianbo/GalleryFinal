@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -27,7 +28,6 @@ import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
 import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
-
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +71,10 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
         GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
-
+        holder.mView.setAnimation(null);
+        if (GalleryFinal.getCoreConfig().getAnimation() > 0) {
+            holder.mView.setAnimation(AnimationUtils.loadAnimation(mActivity, GalleryFinal.getCoreConfig().getAnimation()));
+        }
         holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if ( GalleryFinal.getFunctionConfig().isMutiSelect() ) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
@@ -94,9 +97,10 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
 
         public GFImageView mIvThumb;
         public ImageView mIvCheck;
-
+        View mView;
         public PhotoViewHolder(View view) {
             super(view);
+            mView = view;
             mIvThumb = (GFImageView) view.findViewById(R.id.iv_thumb);
             mIvCheck = (ImageView) view.findViewById(R.id.iv_check);
         }

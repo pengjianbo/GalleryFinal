@@ -19,4 +19,5 @@
     <string name="photo_list_empty">Failed to get the picture!</string>
     <string name="preview">Preview</string>
     <string name="permissions_tips_gallery">This app requesting access to your Gallery</string>
+    <string name="permissions_denied_tips">Unable to get pictures</string>
 </resources>

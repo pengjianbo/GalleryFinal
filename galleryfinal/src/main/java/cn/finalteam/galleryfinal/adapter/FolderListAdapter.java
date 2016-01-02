@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.finalteam.galleryfinal.FunctionConfig;
@@ -29,7 +30,6 @@ import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
 import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
-
 import java.util.List;
 
 /**
@@ -75,7 +75,9 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
             size = photoFolderInfo.getPhotoList().size();
         }
         holder.mTvPhotoCount.setText(mActivity.getString(R.string.folder_photo_size, size));
-
+        if (GalleryFinal.getCoreConfig().getAnimation() > 0) {
+            holder.mView.startAnimation(AnimationUtils.loadAnimation(mActivity, GalleryFinal.getCoreConfig().getAnimation()));
+        }
         holder.mIvFolderCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if (mSelectFolder == photoFolderInfo || (mSelectFolder == null && position == 0)) {
             holder.mIvFolderCheck.setVisibility(View.VISIBLE);
@@ -98,9 +100,10 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
         ImageView mIvFolderCheck;
         TextView mTvFolderName;
         TextView mTvPhotoCount;
-
+        View mView;
         public FolderViewHolder(View view) {
             super(view);
+            this.mView = view;
             mIvCover = (GFImageView) view.findViewById(R.id.iv_cover);
             mTvFolderName = (TextView) view.findViewById(R.id.tv_folder_name);
             mTvPhotoCount = (TextView) view.findViewById(R.id.tv_photo_count);

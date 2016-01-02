@@ -35,4 +35,5 @@
     <string name="photo_list_empty">获取图片失败!</string>
     <string name="preview">预览</string>
     <string name="permissions_tips_gallery">这个App请求访问你的相册</string>
+    <string name="permissions_denied_tips">无法获取图片</string>
 </resources>

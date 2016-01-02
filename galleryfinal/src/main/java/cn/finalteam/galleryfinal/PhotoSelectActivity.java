@@ -24,6 +24,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -31,15 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
 import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
@@ -49,6 +41,12 @@ import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.StringUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -348,7 +346,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         if ( id == R.id.ll_title || id == R.id.iv_folder_arrow) {
             if ( mLlFolderPanel.getVisibility() == View.VISIBLE ) {
                 mLlFolderPanel.setVisibility(View.GONE);
+                mLlFolderPanel.setAnimation(AnimationUtils.loadAnimation(this, R.anim.gf_flip_horizontal_out));
             } else {
+                mLlFolderPanel.setAnimation(AnimationUtils.loadAnimation(this, R.anim.gf_flip_horizontal_in));
                 mLlFolderPanel.setVisibility(View.VISIBLE);
             }
         } else if ( id == R.id.iv_take_photo ) {
@@ -490,6 +490,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     @Override
     public void onPermissionsDenied(List<String> list) {
+        mTvEmptyView.setText(R.string.permissions_denied_tips);
+        mIvTakePhoto.setVisibility(View.GONE);
     }
 
     /**
@@ -546,7 +548,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        if ( mHasRefreshGallery ) {
+        if ( mHasRefreshGallery) {
             mHasRefreshGallery = false;
             requestGalleryPermission();
         }

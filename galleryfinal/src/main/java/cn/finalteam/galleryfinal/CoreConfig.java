@@ -18,7 +18,6 @@ package cn.finalteam.galleryfinal;
 
 import android.content.Context;
 import android.os.Environment;
-
 import java.io.File;
 
 /**
@@ -34,6 +33,7 @@ public class CoreConfig {
     private File editPhotoCacheFolder;
     private ThemeConfig themeConfig;
     private FunctionConfig mFunctionConfig;
+    private int mAnimRes;
 
     private CoreConfig(Builder builder) {
         this.debug = builder.debug;
@@ -43,6 +43,7 @@ public class CoreConfig {
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.themeConfig = builder.themeConfig;
         this.mFunctionConfig = builder.mFunctionConfig;
+        this.mAnimRes = builder.mAnimRes;
 
         if ( takePhotoFolder == null ) {
             takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal/");
@@ -67,11 +68,13 @@ public class CoreConfig {
         private File takePhotoFolder;//配置拍照缓存目录
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
         private FunctionConfig mFunctionConfig;
+        private int mAnimRes;
 
         public Builder(Context context, ImageLoader imageLoader, ThemeConfig themeConfig) {
             this.context = context;
             this.imageLoader = imageLoader;
             this.themeConfig = themeConfig;
+            this.mAnimRes = R.anim.gf_flip_horizontal_in;
         }
 
         public Builder setDebug(boolean debug) {
@@ -91,6 +94,12 @@ public class CoreConfig {
 
         public Builder setFunctionConfig(FunctionConfig FunctionConfig) {
             this.mFunctionConfig = FunctionConfig;
+            return this;
+        }
+
+
+        public Builder setAnimation(int animRes) {
+            this.mAnimRes = animRes;
             return this;
         }
 
@@ -117,6 +126,10 @@ public class CoreConfig {
 
     public File getEditPhotoCacheFolder() {
         return editPhotoCacheFolder;
+    }
+
+    public int getAnimation() {
+        return mAnimRes;
     }
 
     public ThemeConfig getThemeConfig() {
