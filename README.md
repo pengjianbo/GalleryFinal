@@ -492,7 +492,7 @@ setFunctionConfig //配置全局GalleryFinal功能
 
 
 # 更新日志
-## V1.4.2
+## V1.4.3
 * 多选传递maxsize
 
 ## V1.4.2
