@@ -133,24 +133,26 @@ public class GalleryFinal {
     }
 
     /**
-     * 打开Gallery-单选
+     * 打开Gallery-
      * @param requestCode
+     * @param maxSize
      * @param callback
      */
-    public static void openGalleryMuti(int requestCode, OnHanlderResultCallback callback) {
+    public static void openGalleryMuti(int requestCode, int maxSize, OnHanlderResultCallback callback) {
         FunctionConfig config = copyGlobalFuncationConfig();
         if (config != null) {
+            config.maxSize = maxSize;
             openGalleryMuti(requestCode, config, callback);
         } else {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("FunctionConfig null");
+            Logger.e("Please init GalleryFinal.");
         }
     }
 
     /**
-     * 打开Gallery-单选
+     * 打开Gallery-多选
      * @param requestCode
      * @param config
      * @param callback
@@ -200,7 +202,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("FunctionConfig null");
+            Logger.e("Please init GalleryFinal.");
         }
     }
 
@@ -255,7 +257,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("FunctionConfig null");
+            Logger.e("Please init GalleryFinal.");
         }
     }
 
@@ -326,7 +328,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("FunctionConfig null");
+            Logger.e("Please init GalleryFinal.");
         }
     }
 

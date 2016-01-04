@@ -28,7 +28,7 @@ import java.util.Collection;
 public class FunctionConfig implements Cloneable{
 
     protected boolean mutiSelect;
-    private int maxSize;
+    protected int maxSize;
     protected boolean editPhoto;//编辑
     protected boolean crop;//裁剪
     private boolean rotate;//旋转

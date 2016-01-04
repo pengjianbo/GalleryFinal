@@ -27,7 +27,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.2'
+compile 'cn.finalteam:galleryfinal:1.4.3'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -492,6 +492,9 @@ setFunctionConfig //配置全局GalleryFinal功能
 
 
 # 更新日志
+## V1.4.2
+* 多选传递maxsize
+
 ## V1.4.2
 * 添加Android 6.0的支持
 * 添加动画或特效
