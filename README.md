@@ -104,7 +104,7 @@ public class UILImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
 
     @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
+    public void displayImage(Activity activity, String path, final GFImageView imageView, Drawable defaultDrawable, int width, int height) {
         Glide.with(activity)
                 .load("file://" + path)
                 .placeholder(defaultDrawable)
@@ -113,13 +113,29 @@ public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
                 .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
                 .skipMemoryCache(true)
                 //.centerCrop()
-                .into(imageView);
+                .into(new ImageViewTarget<GlideDrawable>(imageView) {
+                    @Override
+                    protected void setResource(GlideDrawable resource) {
+                        imageView.setImageDrawable(resource);
+                    }
+
+                    @Override
+                    public void setRequest(Request request) {
+                        imageView.setTag(R.id.adapter_item_tag_key,request);
+                    }
+
+                    @Override
+                    public Request getRequest() {
+                        return (Request) imageView.getTag(R.id.adapter_item_tag_key);
+                    }
+                });
     }
 
     @Override
     public void clearMemoryCache() {
     }
 }
+
 ```
 
 * **Picasso**
