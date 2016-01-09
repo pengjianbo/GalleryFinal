@@ -30,6 +30,9 @@ Demo apk二维码地址：
 compile 'cn.finalteam:galleryfinal:1.4.3'
 compile 'com.android.support:support-v4:23.1.1'
 ```
+# 1.4.4更新内容
+* 添加PauseOnScrollListener(对滑动ListView ImageLoader优化)
+* 添加关闭动画方法
 
 
 ## 具体使用
@@ -487,6 +490,8 @@ setDebug //debug开关
 setEditPhotoCacheFolder(File file)//配置编辑（裁剪和旋转）功能产生的cache文件保存目录，不做配置的话默认保存在/sdcard/GalleryFinal/edittemp/
 setTakePhotoFolder设置拍照保存目录，默认是/sdcard/DICM/GalleryFinal/
 setFunctionConfig //配置全局GalleryFinal功能
+setNoAnimcation//关闭动画
+setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListener,根据选择的ImageLoader来选择PauseOnScrollListener
 ```
 
 5、如果你还想更深度的定制页面效果可以把资源文件名字定义成Gallery资源名已达到覆盖效果。如有不理解可以联系我。
@@ -508,6 +513,10 @@ setFunctionConfig //配置全局GalleryFinal功能
 
 
 # 更新日志
+## V1.4.4
+* 添加PauseOnScrollListener(对滑动ListView ImageLoader优化)
+* 添加关闭动画方法
+
 ## V1.4.3
 * 多选传递maxsize
 

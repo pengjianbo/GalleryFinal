@@ -34,9 +34,9 @@ public class CoreConfig {
     private File takePhotoFolder;
     private File editPhotoCacheFolder;
     private ThemeConfig themeConfig;
-    private FunctionConfig mFunctionConfig;
-    private int mAnimRes;
-    private AbsListView.OnScrollListener mOnScrollListener;
+    private FunctionConfig functionConfig;
+    private int animRes;
+    private AbsListView.OnScrollListener onScrollListener;
 
     private CoreConfig(Builder builder) {
         this.debug = builder.debug;
@@ -45,13 +45,13 @@ public class CoreConfig {
         this.takePhotoFolder = builder.takePhotoFolder;
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.themeConfig = builder.themeConfig;
-        this.mFunctionConfig = builder.mFunctionConfig;
-        if(builder.mNoAnimcation) {
-            this.mAnimRes = -1;
+        this.functionConfig = builder.mFunctionConfig;
+        if(builder.noAnimcation) {
+            this.animRes = -1;
         } else {
-            this.mAnimRes = builder.mAnimRes;
+            this.animRes = builder.animRes;
         }
-        this.mOnScrollListener = builder.mOnScrollListener;
+        this.onScrollListener = builder.onScrollListener;
 
         if ( takePhotoFolder == null ) {
             takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal/");
@@ -76,15 +76,16 @@ public class CoreConfig {
         private File takePhotoFolder;//配置拍照缓存目录
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
         private FunctionConfig mFunctionConfig;
-        private int mAnimRes;
-        private AbsListView.OnScrollListener mOnScrollListener;
-        private boolean mNoAnimcation;
+        private FunctionConfig functionConfig;
+        private int animRes;
+        private boolean noAnimcation;
+        private AbsListView.OnScrollListener onScrollListener;
 
         public Builder(Context context, ImageLoader imageLoader, ThemeConfig themeConfig) {
             this.context = context;
             this.imageLoader = imageLoader;
             this.themeConfig = themeConfig;
-            this.mAnimRes = R.anim.gf_flip_horizontal_in;
+            this.animRes = R.anim.gf_flip_horizontal_in;
         }
 
         public Builder setDebug(boolean debug) {
@@ -108,7 +109,7 @@ public class CoreConfig {
         }
 
         public Builder setAnimation(int animRes) {
-            this.mAnimRes = animRes;
+            this.animRes = animRes;
             return this;
         }
 
@@ -117,7 +118,7 @@ public class CoreConfig {
          * @return
          */
         public Builder setNoAnimcation(boolean noAnimcation) {
-            mNoAnimcation = noAnimcation;
+            this.noAnimcation = noAnimcation;
             return this;
         }
 
@@ -127,7 +128,7 @@ public class CoreConfig {
          * @return
          */
         public Builder setPauseOnScrollListener(AbsListView.OnScrollListener listener) {
-            this.mOnScrollListener = listener;
+            this.onScrollListener = listener;
             return this;
         }
 
@@ -157,7 +158,7 @@ public class CoreConfig {
     }
 
     public int getAnimation() {
-        return mAnimRes;
+        return animRes;
     }
 
     public ThemeConfig getThemeConfig() {
@@ -165,10 +166,10 @@ public class CoreConfig {
     }
 
     public FunctionConfig getFunctionConfig() {
-        return mFunctionConfig;
+        return functionConfig;
     }
 
     AbsListView.OnScrollListener getPauseOnScrollListener() {
-        return mOnScrollListener;
+        return onScrollListener;
     }
 }
