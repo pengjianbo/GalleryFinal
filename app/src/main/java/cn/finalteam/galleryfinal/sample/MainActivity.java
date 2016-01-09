@@ -37,8 +37,13 @@ import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.PauseOnScrollListener;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.sample.listener.GlidePauseOnScrollListener;
+import cn.finalteam.galleryfinal.sample.listener.PicassoPauseOnScrollListener;
+import cn.finalteam.galleryfinal.sample.listener.UILPauseOnScrollListener;
+import cn.finalteam.galleryfinal.sample.listener.XUtils2PauseOnScrollListener;
 import cn.finalteam.galleryfinal.sample.loader.FrescoImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.GlideImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.PicassoImageLoader;
@@ -124,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
     RadioButton mRbFresco;
     @Bind(R.id.cb_preview)
     CheckBox mCbPreview;
+    @Bind(R.id.cb_no_animation)
+    CheckBox mCbNoAnimation;
 
     private List<PhotoInfo> mPhotoList;
     private ChoosePhotoListAdapter mChoosePhotoListAdapter;
@@ -209,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //公共配置都可以在application中配置，这里只是为了代码演示而写在此处
                 ThemeConfig themeConfig = null;
+
                 if (mRbThemeDefault.isChecked()) {
                     themeConfig = ThemeConfig.DEFAULT;
                 } else if (mRbThemeDark.isChecked()) {
@@ -240,18 +248,22 @@ public class MainActivity extends AppCompatActivity {
 
                 FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
                 cn.finalteam.galleryfinal.ImageLoader imageLoader;
+                PauseOnScrollListener pauseOnScrollListener = null;
                 if (mRbUil.isChecked()) {
                     imageLoader = new UILImageLoader();
+                    pauseOnScrollListener = new UILPauseOnScrollListener(false, true);
                 } else if (mRbXutils.isChecked()) {
                     imageLoader = new XUtils2ImageLoader(MainActivity.this);
                 } else if (mRbXutils3.isChecked()) {
                     imageLoader = new XUtilsImageLoader();
                 } else if (mRbGlide.isChecked()) {
                     imageLoader = new GlideImageLoader();
+                    pauseOnScrollListener = new GlidePauseOnScrollListener(false, true);
                 } else if (mRbFresco.isChecked()) {
                     imageLoader = new FrescoImageLoader(MainActivity.this);
                 } else {
                     imageLoader = new PicassoImageLoader();
+                    pauseOnScrollListener = new PicassoPauseOnScrollListener(false, true);
                 }
 
                 boolean muti = false;
@@ -311,11 +323,16 @@ public class MainActivity extends AppCompatActivity {
                 if (mCbPreview.isChecked()) {
                     functionConfigBuilder.setEnablePreview(true);
                 }
+
                 functionConfigBuilder.setSelected(mPhotoList);//添加过滤集合
                 final FunctionConfig functionConfig = functionConfigBuilder.build();
+
+
                 CoreConfig coreConfig = new CoreConfig.Builder(MainActivity.this, imageLoader, themeConfig)
                         .setDebug(BuildConfig.DEBUG)
                         .setFunctionConfig(functionConfig)
+                        .setPauseOnScrollListener(pauseOnScrollListener)
+                        .setNoAnimcation(mCbNoAnimation.isChecked())
                         .build();
                 GalleryFinal.init(coreConfig);
 

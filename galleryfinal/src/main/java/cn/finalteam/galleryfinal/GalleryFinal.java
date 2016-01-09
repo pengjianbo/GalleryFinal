@@ -38,7 +38,6 @@ import cn.finalteam.toolsfinal.StringUtils;
 public class GalleryFinal {
     static final int TAKE_REQUEST_CODE = 1001;
 
-    static final int PERMISSIONS_CODE_CAMERA = 2000;
     static final int PERMISSIONS_CODE_GALLERY = 2001;
 
     private static FunctionConfig mCurrentFunctionConfig;

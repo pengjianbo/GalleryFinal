@@ -18,6 +18,8 @@ package cn.finalteam.galleryfinal;
 
 import android.content.Context;
 import android.os.Environment;
+import android.widget.AbsListView;
+
 import java.io.File;
 
 /**
@@ -34,6 +36,7 @@ public class CoreConfig {
     private ThemeConfig themeConfig;
     private FunctionConfig mFunctionConfig;
     private int mAnimRes;
+    private AbsListView.OnScrollListener mOnScrollListener;
 
     private CoreConfig(Builder builder) {
         this.debug = builder.debug;
@@ -43,7 +46,12 @@ public class CoreConfig {
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.themeConfig = builder.themeConfig;
         this.mFunctionConfig = builder.mFunctionConfig;
-        this.mAnimRes = builder.mAnimRes;
+        if(builder.mNoAnimcation) {
+            this.mAnimRes = -1;
+        } else {
+            this.mAnimRes = builder.mAnimRes;
+        }
+        this.mOnScrollListener = builder.mOnScrollListener;
 
         if ( takePhotoFolder == null ) {
             takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "GalleryFinal/");
@@ -69,6 +77,8 @@ public class CoreConfig {
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
         private FunctionConfig mFunctionConfig;
         private int mAnimRes;
+        private AbsListView.OnScrollListener mOnScrollListener;
+        private boolean mNoAnimcation;
 
         public Builder(Context context, ImageLoader imageLoader, ThemeConfig themeConfig) {
             this.context = context;
@@ -97,9 +107,27 @@ public class CoreConfig {
             return this;
         }
 
-
         public Builder setAnimation(int animRes) {
             this.mAnimRes = animRes;
+            return this;
+        }
+
+        /**
+         *  禁止动画
+         * @return
+         */
+        public Builder setNoAnimcation(boolean noAnimcation) {
+            mNoAnimcation = noAnimcation;
+            return this;
+        }
+
+        /**
+         * 添加滑动事件用于优化图片加载，只有停止滑动了才去加载图片
+         * @param listener
+         * @return
+         */
+        public Builder setPauseOnScrollListener(AbsListView.OnScrollListener listener) {
+            this.mOnScrollListener = listener;
             return this;
         }
 
@@ -140,4 +168,7 @@ public class CoreConfig {
         return mFunctionConfig;
     }
 
+    AbsListView.OnScrollListener getPauseOnScrollListener() {
+        return mOnScrollListener;
+    }
 }

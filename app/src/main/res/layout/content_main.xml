@@ -417,12 +417,29 @@
         android:textStyle="bold"
         />
 
+
     <CheckBox
         android:id="@+id/cb_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="启动预览(Preview)"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="动画（Animation）"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        />
+
+    <CheckBox
+        android:id="@+id/cb_no_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关闭(No Animation)"
         />
 
     <Button

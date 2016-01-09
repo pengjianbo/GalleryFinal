@@ -177,7 +177,7 @@ abstract class ImageViewTouchBase extends ImageView {
             return;
         }
 
-        if (bitmap.getBitmap() != null) {
+        if (bitmap != null && bitmap.getBitmap() != null) {
             getProperBaseMatrix(bitmap, baseMatrix, true);
             setImageBitmap(bitmap.getBitmap(), bitmap.getRotation());
         } else {

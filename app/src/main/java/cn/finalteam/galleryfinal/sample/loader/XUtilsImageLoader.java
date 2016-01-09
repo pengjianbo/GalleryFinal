@@ -53,6 +53,7 @@ public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                 .setUseMemCache(false)
                 .build();
         x.image().bind(imageView, "file://" + path, options);
+
     }
 
     @Override

@@ -152,7 +152,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
             refreshSelectCount();
             requestGalleryPermission();
+
+            mGvPhotoList.setOnScrollListener(GalleryFinal.getCoreConfig().getPauseOnScrollListener());
         }
+
+        Global.mPhotoSelectActivity = this;
     }
 
     private void setTheme() {
