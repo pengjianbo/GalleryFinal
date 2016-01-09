@@ -11,7 +11,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 系统Gallery App不美观
 * ……
 
-**可以切换到develop分支查看最新的开发代码**
+###**注：现支持所有主流的ImageLoader，包括Glide/Fresco/Picasso/UIL等，如果你觉得还不满足，欢迎在issues上提问**
 
 ## 截图展示
 Demo apk二维码地址：
@@ -30,6 +30,8 @@ Demo apk二维码地址：
 compile 'cn.finalteam:galleryfinal:1.4.3'
 compile 'com.android.support:support-v4:23.1.1'
 ```
+
+
 # 1.4.4更新内容
 * 添加PauseOnScrollListener(对滑动ListView ImageLoader优化)
 * 添加关闭动画方法
@@ -39,6 +41,7 @@ compile 'com.android.support:support-v4:23.1.1'
 1、通过gradle把GalleryFinal添加到你的项目里
 
 2、在你的Application中添加配置GallerFinal
+
 ```java
 //设置主题
 //ThemeConfig.CYAN
