@@ -27,14 +27,17 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.4'
+compile 'cn.finalteam:galleryfinal:1.4.5'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
+# Next VERSION
+* 添加多选强制裁剪
+* ……
 
-# 1.4.4更新内容
-* 添加PauseOnScrollListener(对滑动ListView ImageLoader优化)
-* 添加关闭动画方法
+# 1.4.5更新内容
+* 解决拍照强制裁剪无效问题
+* 解决拍照时返回Intent偶尔为空问题
 
 
 ## 具体使用
@@ -516,6 +519,10 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
+## V1.4.5
+* 解决拍照强制裁剪无效问题
+* 解决拍照时返回Intent偶尔为空问题
+
 ## V1.4.4
 * 添加PauseOnScrollListener(对滑动ListView ImageLoader优化)
 * 添加关闭动画方法

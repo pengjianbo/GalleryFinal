@@ -230,20 +230,14 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 //打开相机
                 takePhotoAction();
             }
-
             if (mCropPhotoAction) {
                 mIvCrop.performClick();
                 if ( !mFunctionConfig.isRotate() && !mFunctionConfig.isCamera()) {
                     mIvCrop.setVisibility(View.GONE);
                 }
-            }
-
-            //判断是否强制裁剪
-            if(mFunctionConfig.isForceCrop()) {
-                mIvCrop.performClick();//进入裁剪状态
-                if(!mFunctionConfig.isForceCropEdit()) {//强制裁剪后是否可以编辑
-                    mIvCrop.setVisibility(View.GONE);
-                }
+            } else {
+                //判断是否强制裁剪
+                hasForceCrop();
             }
 
             if(mFunctionConfig.isEnablePreview()){
@@ -335,6 +329,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             activity.takeRefreshGallery(info, true);
         }
         loadImage(info);
+
+        hasForceCrop();
     }
 
     private void loadImage(PhotoInfo photo) {
@@ -488,6 +484,15 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private void resultAction() {
         ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
         resultData(photoList);
+    }
+
+    private void hasForceCrop() {
+        if(mFunctionConfig.isForceCrop()) {
+            mIvCrop.performClick();//进入裁剪状态
+            if(!mFunctionConfig.isForceCropEdit()) {//强制裁剪后是否可以编辑
+                mIvCrop.setVisibility(View.GONE);
+            }
+        }
     }
 
     /**

@@ -45,7 +45,7 @@ public class CoreConfig {
         this.takePhotoFolder = builder.takePhotoFolder;
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.themeConfig = builder.themeConfig;
-        this.functionConfig = builder.mFunctionConfig;
+        this.functionConfig = builder.functionConfig;
         if(builder.noAnimcation) {
             this.animRes = -1;
         } else {
@@ -75,7 +75,6 @@ public class CoreConfig {
         private ImageLoader imageLoader;
         private File takePhotoFolder;//配置拍照缓存目录
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
-        private FunctionConfig mFunctionConfig;
         private FunctionConfig functionConfig;
         private int animRes;
         private boolean noAnimcation;
@@ -103,8 +102,8 @@ public class CoreConfig {
             return this;
         }
 
-        public Builder setFunctionConfig(FunctionConfig FunctionConfig) {
-            this.mFunctionConfig = FunctionConfig;
+        public Builder setFunctionConfig(FunctionConfig functionConfig) {
+            this.functionConfig = functionConfig;
             return this;
         }
 
