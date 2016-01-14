@@ -421,7 +421,7 @@ setMutiSelect(boolean)//配置是否多选
 setMutiSelectMaxSize(int maxSize)//配置多选数量
 setEnableEdit(boolean)//开启编辑功能
 setEnableCrop(boolean)//开启裁剪功能
-setEnableRotate(boolean)//开启选择功能
+setEnableRotate(boolean)//开启旋转功能
 setEnableCamera(boolean)//开启相机功能
 setCropWidth(int width)//裁剪宽度
 setCropHeight(int height)//裁剪高度
@@ -476,7 +476,7 @@ setFabPressedColor//设置Floating按钮Pressed状态颜色
 setIconBack//设置返回按钮icon
 setIconCamera//设置相机icon
 setIconCrop//设置裁剪icon
-setIconRotate//设置选择icon
+setIconRotate//设置旋转icon
 setIconClear//设置清楚选择按钮icon（标题栏清除选择按钮）
 setIconFolderArrow//设置标题栏文件夹下拉arrow图标
 setIconDelete//设置多选编辑页删除按钮icon
