@@ -121,7 +121,7 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ( requestCode == GalleryFinal.TAKE_REQUEST_CODE ) {
-            if (data!=null && resultCode == RESULT_OK && mTakePhotoUri != null) {
+            if (resultCode == RESULT_OK && mTakePhotoUri != null) {
                 final String path = mTakePhotoUri.getPath();
                 final PhotoInfo info = new PhotoInfo();
                 info.setPhotoId(Utils.getRandom(10000, 99999));

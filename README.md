@@ -27,7 +27,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.5'
+compile 'cn.finalteam:galleryfinal:1.4.6'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -35,10 +35,8 @@ compile 'com.android.support:support-v4:23.1.1'
 * 添加多选强制裁剪
 * ……
 
-# 1.4.5更新内容
-* 解决拍照强制裁剪无效问题
-* 解决拍照时返回Intent偶尔为空问题
-
+# 1.4.6更新内容
+* 解决Moto手机拍照失败问题
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -519,6 +517,9 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
+# V1.4.6
+* 解决Moto手机拍照失败问题
+
 ## V1.4.5
 * 解决拍照强制裁剪无效问题
 * 解决拍照时返回Intent偶尔为空问题
