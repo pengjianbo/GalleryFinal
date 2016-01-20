@@ -11,7 +11,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 系统Gallery App不美观
 * ……
 
-###**注：现支持所有主流的ImageLoader，包括Glide/Fresco/Picasso/UIL等，如果你觉得还不满足，欢迎在issues上提问**
+###**注：1)、现支持所有主流的ImageLoader，包括Glide/Fresco/Picasso/UIL等，如果你觉得还不满足，欢迎在issues上提问。2)、本项目是基于SDK 23（6.0）系统编译的请开发者将minSdkVersion，targetSdkVersion改成23**
 
 ## 截图展示
 Demo apk二维码地址：
@@ -27,16 +27,18 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.6'
+compile 'cn.finalteam:galleryfinal:1.4.7'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
 # Next VERSION
 * 添加多选强制裁剪
+* 图片分页查看
 * ……
 
-# 1.4.6更新内容
-* 解决Moto手机拍照失败问题
+# 1.4.7更新内容
+* 优化图片选择器
+* 解决拍照时部分手机Activity重启导致数据丢失问题
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -517,7 +519,11 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
-# V1.4.6
+## V1.4.7
+* 优化图片选择器
+* 解决拍照时部分手机Activity重启导致数据丢失问题
+
+## V1.4.6
 * 解决Moto手机拍照失败问题
 
 ## V1.4.5

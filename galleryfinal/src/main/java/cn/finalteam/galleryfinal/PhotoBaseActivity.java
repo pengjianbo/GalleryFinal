@@ -58,6 +58,20 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
     protected int mScreenWidth = 720;
     protected int mScreenHeight = 1280;
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("takePhotoUri", mTakePhotoUri);
+        outState.putString("photoTargetFolder", mPhotoTargetFolder);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mTakePhotoUri = savedInstanceState.getParcelable("takePhotoUri");
+        mPhotoTargetFolder = savedInstanceState.getString("photoTargetFolder");
+    }
+
     protected Handler mFinishHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -75,13 +89,15 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
         DisplayMetrics dm = DeviceUtils.getScreenPix(this);
         mScreenWidth = dm.widthPixels;
         mScreenHeight = dm.heightPixels;
+
     }
 
     @Override
     protected void onDestroy() {
-        System.gc();
         super.onDestroy();
-        mMediaScanner.unScanFile();
+        if (mMediaScanner != null) {
+            mMediaScanner.unScanFile();
+        }
         ActivityManager.getActivityManager().finishActivity(this);
     }
 
@@ -138,7 +154,9 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
      * 更新相册
      */
     private void updateGallery(String filePath) {
-        mMediaScanner.scanFile(filePath, "image/jpeg");
+        if (mMediaScanner != null) {
+            mMediaScanner.scanFile(filePath, "image/jpeg");
+        }
     }
 
     protected void resultData(ArrayList<PhotoInfo> photoList) {

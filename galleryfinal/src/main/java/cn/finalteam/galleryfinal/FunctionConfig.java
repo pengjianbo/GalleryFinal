@@ -17,6 +17,8 @@
 package cn.finalteam.galleryfinal;
 
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 

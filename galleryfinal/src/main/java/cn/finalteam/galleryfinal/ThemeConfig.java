@@ -19,12 +19,14 @@ package cn.finalteam.galleryfinal;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
+
 /**
  * Desction:
  * Author:pengjianbo
  * Date:15/12/16 下午2:49
  */
-public class ThemeConfig {
+public class ThemeConfig implements Serializable{
 
     //默认主题
     public static ThemeConfig DEFAULT = new ThemeConfig.Builder().build();

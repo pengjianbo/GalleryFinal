@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.widget.AbsListView;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Desction:
