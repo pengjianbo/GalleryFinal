@@ -11,7 +11,7 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 系统Gallery App不美观
 * ……
 
-###**注：1)、现支持所有主流的ImageLoader，包括Glide/Fresco/Picasso/UIL等，如果你觉得还不满足，欢迎在issues上提问。2)、本项目是基于SDK 23（6.0）系统编译的请开发者将minSdkVersion，targetSdkVersion改成23**
+###**注：1)、现支持所有主流的ImageLoader，包括Glide/Fresco/Picasso/UIL等，如果你觉得还不满足，欢迎在issues上提问。2)、本项目是基于SDK 23（6.0）系统编译的请开发者将targetSdkVersion改成23**
 
 ## 截图展示
 Demo apk二维码地址：
