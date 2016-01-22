@@ -129,7 +129,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
 
         if ( GalleryFinal.getFunctionConfig() == null || GalleryFinal.getGalleryTheme() == null) {
-            resultFailure(getString(R.string.please_reopen_gf), true);
+            resultFailureDelayed(getString(R.string.please_reopen_gf), true);
         } else {
             setContentView(R.layout.gf_activity_photo_select);
             mPhotoTargetFolder = null;

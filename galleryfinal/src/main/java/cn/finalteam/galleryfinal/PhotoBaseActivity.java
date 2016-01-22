@@ -58,6 +58,8 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
     protected int mScreenWidth = 720;
     protected int mScreenHeight = 1280;
 
+    protected boolean mTakePhotoAction;//打开相机动作
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -110,7 +112,11 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
      */
     protected void takePhotoAction() {
         if (!DeviceUtils.existSDCard()) {
-            toast("没有SD卡不能拍照呢~");
+            String errormsg = getString(R.string.empty_sdcard);
+            toast(errormsg);
+            if (mTakePhotoAction) {
+                resultFailure(errormsg, true);
+            }
             return;
         }
 
@@ -130,6 +136,7 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
             captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakePhotoUri);
             startActivityForResult(captureIntent, GalleryFinal.TAKE_REQUEST_CODE);
         } else {
+            takePhotoFailure();
             Logger.e("create file failure");
         }
     }
@@ -139,14 +146,27 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
         if ( requestCode == GalleryFinal.TAKE_REQUEST_CODE ) {
             if (resultCode == RESULT_OK && mTakePhotoUri != null) {
                 final String path = mTakePhotoUri.getPath();
-                final PhotoInfo info = new PhotoInfo();
-                info.setPhotoId(Utils.getRandom(10000, 99999));
-                info.setPhotoPath(path);
-                updateGallery(path);
-                takeResult(info);
+                if (new File(path).exists()) {
+                    final PhotoInfo info = new PhotoInfo();
+                    info.setPhotoId(Utils.getRandom(10000, 99999));
+                    info.setPhotoPath(path);
+                    updateGallery(path);
+                    takeResult(info);
+                } else {
+                    takePhotoFailure();
+                }
             } else {
-                toast(getString(R.string.take_photo_fail));
+                takePhotoFailure();
             }
+        }
+    }
+
+    private void takePhotoFailure() {
+        String errormsg = getString(R.string.take_photo_fail);
+        if (mTakePhotoAction) {
+            resultFailure(errormsg, true);
+        } else {
+            toast(errormsg);
         }
     }
 
@@ -172,7 +192,7 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
         finishGalleryFinalPage();
     }
 
-    protected void resultFailure(String errormsg, boolean delayFinish) {
+    protected void resultFailureDelayed(String errormsg, boolean delayFinish) {
         GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
         int requestCode = GalleryFinal.getRequestCode();
         if ( callback != null ) {
@@ -185,9 +205,24 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
         }
     }
 
+    protected void resultFailure(String errormsg, boolean delayFinish) {
+        GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
+        int requestCode = GalleryFinal.getRequestCode();
+        if ( callback != null ) {
+            callback.onHanlderFailure(requestCode, errormsg);
+        }
+        if(delayFinish) {
+            finishGalleryFinalPage();
+        } else {
+            finishGalleryFinalPage();
+        }
+    }
+
     private void finishGalleryFinalPage() {
         ActivityManager.getActivityManager().finishActivity(PhotoEditActivity.class);
         ActivityManager.getActivityManager().finishActivity(PhotoSelectActivity.class);
+        Global.mPhotoSelectActivity = null;
+        System.gc();
     }
 
     protected abstract void takeResult(PhotoInfo info);

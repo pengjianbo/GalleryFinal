@@ -95,7 +95,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
     private Drawable mDefaultDrawable;
 
-    private boolean mTakePhotoAction;//打开相机动作
+
     private boolean mCropPhotoAction;//裁剪图片动作
     private boolean mEditPhotoAction;//编辑图片动作
 
@@ -196,7 +196,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if ( GalleryFinal.getFunctionConfig() == null || GalleryFinal.getGalleryTheme() == null) {
-            resultFailure(getString(R.string.please_reopen_gf), true);
+            resultFailureDelayed(getString(R.string.please_reopen_gf), true);
         } else {
             setContentView(R.layout.gf_activity_photo_edit);
             mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);

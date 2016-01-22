@@ -38,7 +38,7 @@ public class PhotoPreviewActivity extends PhotoBaseActivity implements ViewPager
         mThemeConfig = GalleryFinal.getGalleryTheme();
 
         if ( mThemeConfig == null) {
-            resultFailure(getString(R.string.please_reopen_gf), true);
+            resultFailureDelayed(getString(R.string.please_reopen_gf), true);
         } else {
             setContentView(R.layout.gf_activity_photo_preview);
             findViews();
