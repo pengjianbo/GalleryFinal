@@ -350,20 +350,24 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mSelectPhotoMap.clear();
         }
         mPhotoList.add(0, info);
-        if(GalleryFinal.getFunctionConfig().isEnablePreview()){
-            mIvPreView.setVisibility(View.VISIBLE);
-        }
-        mSelectPhotoMap.put(info.getPhotoPath(), info);
-        mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
-        mPhotoEditListAdapter.notifyDataSetChanged();
+        if (!GalleryFinal.getFunctionConfig().isEditPhoto() && mTakePhotoAction) {
+            resultAction();
+        } else {
+            if (GalleryFinal.getFunctionConfig().isEnablePreview()) {
+                mIvPreView.setVisibility(View.VISIBLE);
+            }
+            mSelectPhotoMap.put(info.getPhotoPath(), info);
+            mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
+            mPhotoEditListAdapter.notifyDataSetChanged();
 
-        PhotoSelectActivity activity = (PhotoSelectActivity) ActivityManager.getActivityManager().getActivity(PhotoSelectActivity.class.getName());
-        if (activity != null) {
-            activity.takeRefreshGallery(info, true);
-        }
-        loadImage(info);
+            PhotoSelectActivity activity = (PhotoSelectActivity) ActivityManager.getActivityManager().getActivity(PhotoSelectActivity.class.getName());
+            if (activity != null) {
+                activity.takeRefreshGallery(info, true);
+            }
+            loadImage(info);
 
-        hasForceCrop();
+            hasForceCrop();
+        }
     }
 
     private void loadImage(PhotoInfo photo) {
