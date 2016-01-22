@@ -11,6 +11,8 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
 * 系统Gallery App不美观
 * ……
 
+** [简书文章](http://www.jianshu.com/p/48ddd6756b7a) **
+
 ###**注：1)、现支持所有主流的ImageLoader，包括Glide/Fresco/Picasso/UIL等，如果你觉得还不满足，欢迎在issues上提问。2)、本项目是基于SDK 23（6.0）系统编译的请开发者将targetSdkVersion改成23**
 
 ## 截图展示
@@ -27,18 +29,18 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.7'
+compile 'cn.finalteam:galleryfinal:1.4.8'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
-# Next VERSION
+# Next Version
 * 添加多选强制裁剪
 * 图片分页查看
 * ……
 
-# 1.4.7更新内容
-* 优化图片选择器
-* 解决拍照时部分手机Activity重启导致数据丢失问题
+# 1.4.8更新内容
+* openCamera拍照失败直接返回失败结果给调用者
+* openCamera拍照成功不可编辑时直接返回结果
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -403,17 +405,17 @@ GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCal
 * 使用裁剪
 
 ```java
-GalleryFinal.openCrop(REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
+GalleryFinal.openCrop(REQUEST_CODE_CROP, mOnHanlderResultCallback);
 //带配置
-GalleryFinal.openCrop(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
+GalleryFinal.openCrop(REQUEST_CODE_CROP, functionConfig, mOnHanlderResultCallback);
 ```
 
 * 使用图片编辑
 
 ```java
-GalleryFinal.openEdit(REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
+GalleryFinal.openEdit(REQUEST_CODE_EDIT, mOnHanlderResultCallback);
 //带配置
-GalleryFinal.openEdit(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
+GalleryFinal.openEdit(REQUEST_CODE_EDIT, functionConfig, mOnHanlderResultCallback);
 ```
 
 * **FunctionConfig Builder类说明**
@@ -519,6 +521,10 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
+# V1.4.8
+* openCamera拍照失败直接返回失败结果给调用者
+* openCamera拍照成功不可编辑时直接返回结果
+
 ## V1.4.7
 * 优化图片选择器
 * 解决拍照时部分手机Activity重启导致数据丢失问题
