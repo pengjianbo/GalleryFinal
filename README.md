@@ -29,7 +29,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.8'
+compile 'cn.finalteam:galleryfinal:1.4.8.1'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -38,9 +38,8 @@ compile 'com.android.support:support-v4:23.1.1'
 * 图片分页查看
 * ……
 
-# 1.4.8更新内容
-* openCamera拍照失败直接返回失败结果给调用者
-* openCamera拍照成功不可编辑时直接返回结果
+# 1.4.8.1更新内容
+* 解决openCamera拍照不可编辑时无返回图片的bug
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -521,7 +520,10 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
-# V1.4.8
+## V1.4.8.1
+* 解决openCamera拍照不可编辑时无返回图片的bug
+
+## V1.4.8
 * openCamera拍照失败直接返回失败结果给调用者
 * openCamera拍照成功不可编辑时直接返回结果
 
