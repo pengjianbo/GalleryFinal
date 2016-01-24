@@ -32,25 +32,23 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
+import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
+import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.permission.AfterPermissionGranted;
+import cn.finalteam.galleryfinal.permission.EasyPermissions;
+import cn.finalteam.galleryfinal.utils.PhotoTools;
+import cn.finalteam.galleryfinal.widget.FloatingActionButton;
+import cn.finalteam.toolsfinal.DeviceUtils;
+import cn.finalteam.toolsfinal.FileUtils;
+import cn.finalteam.toolsfinal.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
-import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
-import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.galleryfinal.utils.PhotoTools;
-import cn.finalteam.galleryfinal.widget.FloatingActionButton;
-import cn.finalteam.toolsfinal.DeviceUtils;
-import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.StringUtils;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Desction:图片选择器

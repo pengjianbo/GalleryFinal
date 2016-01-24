@@ -26,13 +26,8 @@ import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.widget.Toast;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.permission.EasyPermissions;
 import cn.finalteam.galleryfinal.utils.MediaScanner;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.ActivityManager;
@@ -41,7 +36,10 @@ import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
-import pub.devrel.easypermissions.EasyPermissions;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Desction:
