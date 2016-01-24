@@ -172,10 +172,18 @@ public class GalleryFinal {
             return;
         }
 
+        if ((config.getMaxSize() <= 0) && config.getSelectedList() != null && config.getSelectedList().size() >= config.getMaxSize()) {
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.select_max_tips));
+            }
+            return;
+        }
+
         if (!DeviceUtils.existSDCard()) {
             Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
             return;
         }
+
         mRequestCode = requestCode;
         mCallback = callback;
         mCurrentFunctionConfig = config;
@@ -230,6 +238,7 @@ public class GalleryFinal {
             Toast.makeText(mCoreConfig.getContext(), R.string.empty_sdcard, Toast.LENGTH_SHORT).show();
             return;
         }
+
         mRequestCode = requestCode;
         mCallback = callback;
 

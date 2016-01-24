@@ -17,21 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
-
-import com.baoyz.actionsheet.ActionSheet;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-
-import org.xutils.x;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.CoreConfig;
@@ -43,7 +28,6 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.sample.listener.GlidePauseOnScrollListener;
 import cn.finalteam.galleryfinal.sample.listener.PicassoPauseOnScrollListener;
 import cn.finalteam.galleryfinal.sample.listener.UILPauseOnScrollListener;
-import cn.finalteam.galleryfinal.sample.listener.XUtils2PauseOnScrollListener;
 import cn.finalteam.galleryfinal.sample.loader.FrescoImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.GlideImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.PicassoImageLoader;
@@ -51,6 +35,17 @@ import cn.finalteam.galleryfinal.sample.loader.UILImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.XUtils2ImageLoader;
 import cn.finalteam.galleryfinal.sample.loader.XUtilsImageLoader;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
+import com.baoyz.actionsheet.ActionSheet;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import org.xutils.x;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -276,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     int maxSize = Integer.parseInt(mEtMaxSize.getText().toString());
-                    functionConfigBuilder.setMutiSelectMaxSize(maxSize);
+                    functionConfigBuilder.setMutiSelectMaxSize(maxSize - mPhotoList.size());
                 }
                 final boolean mutiSelect = muti;
 
