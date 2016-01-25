@@ -172,7 +172,14 @@ public class GalleryFinal {
             return;
         }
 
-        if ((config.getMaxSize() <= 0) && config.getSelectedList() != null && config.getSelectedList().size() >= config.getMaxSize()) {
+        if ( config.getMaxSize() <= 0) {
+            if(callback != null){
+                callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.maxsize_zero_tip));
+            }
+            return;
+        }
+
+        if (config.getSelectedList() != null && config.getSelectedList().size() > config.getMaxSize()) {
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.select_max_tips));
             }

@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     int maxSize = Integer.parseInt(mEtMaxSize.getText().toString());
-                    functionConfigBuilder.setMutiSelectMaxSize(maxSize - mPhotoList.size());
+                    functionConfigBuilder.setMutiSelectMaxSize(maxSize);
                 }
                 final boolean mutiSelect = muti;
 

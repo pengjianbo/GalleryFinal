@@ -29,7 +29,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.8.2'
+compile 'cn.finalteam:galleryfinal:1.4.8.3'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -40,9 +40,8 @@ compile 'com.android.support:support-v4:23.1.1'
 * 添加配置-配置图片压缩到指定大小后返回调用者
 * ……
 
-# 1.4.8.2更新内容
-* 优化6.0权限兼容性问题
-* 添加打开相册maxsize判断
+# 1.4.8.3更新内容
+* 修改打开相册maxsize判断逻辑
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -523,6 +522,9 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
+## V1.4.8.3
+* 修改打开相册maxsize判断逻辑
+
 ## V1.4.8.2
 * 优化6.0权限兼容性问题
 * 添加打开相册maxsize判断
