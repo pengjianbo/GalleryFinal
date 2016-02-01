@@ -30,9 +30,18 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import cn.finalteam.galleryfinal.adapter.PhotoEditListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.model.PhotoTempModel;
+import cn.finalteam.galleryfinal.utils.ILogger;
 import cn.finalteam.galleryfinal.utils.RecycleViewBitmapUtils;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
@@ -41,16 +50,9 @@ import cn.finalteam.galleryfinal.widget.crop.CropImageActivity;
 import cn.finalteam.galleryfinal.widget.crop.CropImageView;
 import cn.finalteam.galleryfinal.widget.zoonview.PhotoView;
 import cn.finalteam.toolsfinal.ActivityManager;
-import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import cn.finalteam.toolsfinal.io.FileUtils;
+import cn.finalteam.toolsfinal.io.FilenameUtils;
 
 /**
  * Desction:图片裁剪
@@ -456,7 +458,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                 System.gc();
                 PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
                 try {
-                    String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
+                    String ext = FilenameUtils.getExtension(photoInfo.getPhotoPath());
                     File toFile;
                     if (GalleryFinal.getFunctionConfig().isCropReplaceSource()) {
                         toFile = new File(photoInfo.getPhotoPath());
@@ -464,10 +466,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                         toFile = new File(mEditPhotoCacheFile, Utils.getFileName(photoInfo.getPhotoPath()) + "_crop." + ext);
                     }
 
-                    FileUtils.makeFolders(toFile);
+                    FileUtils.mkdirs(toFile.getParentFile());
                     onSaveClicked(toFile);//保存裁剪
                 } catch (Exception e) {
-                    Logger.e(e);
+                    ILogger.e(e);
                 }
             } else { //完成选择
                 resultAction();
@@ -476,7 +478,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
             if (mPhotoList.size() > 0) {
                 PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
-                String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
+                String ext = FilenameUtils.getExtension(photoInfo.getPhotoPath());
                 if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
                     toast(getString(R.string.edit_letoff_photo_format));
                 } else {
@@ -538,7 +540,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private void rotatePhoto() {
         if (mPhotoList.size() > 0 && mPhotoList.get(mSelectIndex) != null && !mRotating) {
             final PhotoInfo photoInfo = mPhotoList.get(mSelectIndex);
-            final String ext = FileUtils.getFileExtension(photoInfo.getPhotoPath());
+            final String ext = FilenameUtils.getExtension(photoInfo.getPhotoPath());
             if (StringUtils.isEmpty(ext) || !(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
                 toast(getString(R.string.edit_letoff_photo_format));
                 return;

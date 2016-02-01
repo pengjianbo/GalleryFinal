@@ -41,8 +41,10 @@ import cn.finalteam.galleryfinal.permission.EasyPermissions;
 import cn.finalteam.galleryfinal.utils.PhotoTools;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.toolsfinal.DeviceUtils;
-import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.StringUtils;
+import cn.finalteam.toolsfinal.io.FileUtils;
+import cn.finalteam.toolsfinal.io.FilenameUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -443,7 +445,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
             mSelectPhotoMap.clear();
             mSelectPhotoMap.put(info.getPhotoPath(), info);
-            String ext = FileUtils.getFileExtension(info.getPhotoPath());
+            String ext = FilenameUtils.getExtension(info.getPhotoPath());
             if (GalleryFinal.getFunctionConfig().isEditPhoto() && (ext.equalsIgnoreCase("png")
                     || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
                 toPhotoEdit();

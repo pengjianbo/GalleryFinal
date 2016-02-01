@@ -20,15 +20,17 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.galleryfinal.utils.ILogger;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.DeviceUtils;
-import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
+import cn.finalteam.toolsfinal.io.FileUtils;
 
 /**
  * Desction:
@@ -52,7 +54,6 @@ public class GalleryFinal {
         mThemeConfig = coreConfig.getThemeConfig();
         mCoreConfig = coreConfig;
         mGlobalFunctionConfig = coreConfig.getFunctionConfig();
-        Logger.init("galleryfinal", coreConfig.isDebug());
     }
 
     public static FunctionConfig copyGlobalFuncationConfig() {
@@ -91,7 +92,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("FunctionConfig null");
+            ILogger.e("FunctionConfig null");
         }
     }
 
@@ -103,7 +104,7 @@ public class GalleryFinal {
      */
     public static void openGallerySingle(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -146,7 +147,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -158,7 +159,7 @@ public class GalleryFinal {
      */
     public static void openGalleryMuti(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -216,7 +217,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -227,7 +228,7 @@ public class GalleryFinal {
      */
     public static void openCamera(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -272,7 +273,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -285,7 +286,7 @@ public class GalleryFinal {
      */
     public static void openCrop(int requestCode, FunctionConfig config, String photoPath, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -305,7 +306,7 @@ public class GalleryFinal {
         }
 
         if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
-            Logger.d("config为空或文件不存在");
+            ILogger.d("config为空或文件不存在");
             return;
         }
         mRequestCode = requestCode;
@@ -343,7 +344,7 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -356,7 +357,7 @@ public class GalleryFinal {
      */
     public static void openEdit(int requestCode, FunctionConfig config, String photoPath, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            Logger.e("Please init GalleryFinal.");
+            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -376,7 +377,7 @@ public class GalleryFinal {
         }
 
         if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
-            Logger.d("config为空或文件不存在");
+            ILogger.d("config为空或文件不存在");
             return;
         }
         mRequestCode = requestCode;
@@ -407,7 +408,11 @@ public class GalleryFinal {
                 @Override
                 public void run() {
                     super.run();
-                    FileUtils.deleteFile(mCoreConfig.getEditPhotoCacheFolder());
+                    try {
+                        FileUtils.deleteDirectory(mCoreConfig.getEditPhotoCacheFolder());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }.start();
         }

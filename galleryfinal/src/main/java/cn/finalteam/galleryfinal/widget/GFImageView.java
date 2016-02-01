@@ -1,6 +1,7 @@
 package cn.finalteam.galleryfinal.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -34,22 +35,23 @@ public class GFImageView extends ImageView {
         public void onDetach();
         public void onAttach();
         public boolean verifyDrawable(Drawable dr) ;
+        public void onDraw(Canvas canvas);
     }
 
     @Override
     protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         if(mOnImageViewListener != null) {
             mOnImageViewListener.onDetach();
         }
-        super.onDetachedFromWindow();
     }
 
     @Override
     protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         if(mOnImageViewListener != null) {
             mOnImageViewListener.onAttach();
         }
-        super.onAttachedToWindow();
     }
 
     @Override
@@ -75,6 +77,14 @@ public class GFImageView extends ImageView {
         super.onFinishTemporaryDetach();
         if(mOnImageViewListener != null) {
             mOnImageViewListener.onAttach();
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if(mOnImageViewListener != null) {
+            mOnImageViewListener.onDraw(canvas);
         }
     }
 }

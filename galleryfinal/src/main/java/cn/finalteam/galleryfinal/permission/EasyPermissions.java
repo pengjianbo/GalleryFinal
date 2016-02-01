@@ -25,11 +25,12 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import cn.finalteam.toolsfinal.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.finalteam.galleryfinal.utils.ILogger;
 
 /**
  * Desction:Utility to request and check System permissions for apps targeting Android M (API >= 23).
@@ -239,9 +240,9 @@ public class EasyPermissions {
                         }
                         method.invoke(object);
                     } catch (IllegalAccessException e) {
-                        Logger.e(TAG, "runDefaultMethod:IllegalAccessException", e);
+                        ILogger.e(TAG, "runDefaultMethod:IllegalAccessException", e);
                     } catch (InvocationTargetException e) {
-                        Logger.e(TAG, "runDefaultMethod:InvocationTargetException", e);
+                        ILogger.e(TAG, "runDefaultMethod:InvocationTargetException", e);
                     }
                 }
             }

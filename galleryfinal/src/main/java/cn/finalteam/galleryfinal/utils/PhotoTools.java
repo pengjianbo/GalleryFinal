@@ -23,7 +23,6 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.toolsfinal.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,7 +111,7 @@ public class PhotoTools {
                 }
             }
         } catch (Exception ex) {
-            Logger.e(ex);
+            ILogger.e(ex);
         } finally {
             if (cursor != null) {
                 cursor.close();

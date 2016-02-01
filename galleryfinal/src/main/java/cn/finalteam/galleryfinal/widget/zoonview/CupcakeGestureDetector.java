@@ -19,7 +19,8 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
-import cn.finalteam.toolsfinal.Logger;
+
+import cn.finalteam.galleryfinal.utils.ILogger;
 
 public class CupcakeGestureDetector implements GestureDetector {
 
@@ -69,7 +70,7 @@ public class CupcakeGestureDetector implements GestureDetector {
                 if (null != mVelocityTracker) {
                     mVelocityTracker.addMovement(ev);
                 } else {
-                    Logger.d("Velocity tracker is null");
+                    ILogger.d("Velocity tracker is null");
                 }
 
                 mLastTouchX = getActiveX(ev);

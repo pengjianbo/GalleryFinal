@@ -29,7 +29,6 @@ import java.io.Serializable;
  * Date:15/12/27 下午1:41
  */
 public class CoreConfig {
-    private boolean debug;
     private Context context;
     private ImageLoader imageLoader;
     private File takePhotoFolder;
@@ -40,7 +39,6 @@ public class CoreConfig {
     private AbsListView.OnScrollListener onScrollListener;
 
     private CoreConfig(Builder builder) {
-        this.debug = builder.debug;
         this.context = builder.context;
         this.imageLoader = builder.imageLoader;
         this.takePhotoFolder = builder.takePhotoFolder;
@@ -135,10 +133,6 @@ public class CoreConfig {
         public CoreConfig build() {
             return new CoreConfig(this);
         }
-    }
-
-    public boolean isDebug() {
-        return debug;
     }
 
     public Context getContext() {

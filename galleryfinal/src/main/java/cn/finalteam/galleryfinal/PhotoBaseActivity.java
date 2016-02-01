@@ -28,14 +28,15 @@ import android.view.Window;
 import android.widget.Toast;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.permission.EasyPermissions;
+import cn.finalteam.galleryfinal.utils.ILogger;
 import cn.finalteam.galleryfinal.utils.MediaScanner;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.ActivityManager;
 import cn.finalteam.toolsfinal.DateUtils;
 import cn.finalteam.toolsfinal.DeviceUtils;
-import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
+import cn.finalteam.toolsfinal.io.FileUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,10 +125,10 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
         } else {
             takePhotoFolder = new File(mPhotoTargetFolder);
         }
-
+        boolean suc = FileUtils.mkdirs(takePhotoFolder);
         File toFile = new File(takePhotoFolder, "IMG" + DateUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg");
-        boolean suc = FileUtils.makeFolders(toFile);
-        Logger.d("create folder=" + toFile.getAbsolutePath());
+
+        ILogger.d("create folder=" + toFile.getAbsolutePath());
         if (suc) {
             mTakePhotoUri = Uri.fromFile(toFile);
             Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -135,7 +136,7 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
             startActivityForResult(captureIntent, GalleryFinal.TAKE_REQUEST_CODE);
         } else {
             takePhotoFailure();
-            Logger.e("create file failure");
+            ILogger.e("create file failure");
         }
     }
 

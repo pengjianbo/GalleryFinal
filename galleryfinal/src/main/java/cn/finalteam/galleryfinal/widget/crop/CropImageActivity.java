@@ -32,8 +32,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.R;
-import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.Logger;
+import cn.finalteam.galleryfinal.utils.ILogger;
+import cn.finalteam.toolsfinal.io.FileUtils;
+import cn.finalteam.toolsfinal.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,10 +126,10 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 option.inSampleSize = sampleSize;
                 rotateBitmap = new RotateBitmap(BitmapFactory.decodeStream(is, null, option), exifRotation);
             } catch (IOException e) {
-                Logger.e(e);
+                ILogger.e(e);
 //                setCropSaveException(e);
             } catch (OutOfMemoryError e) {
-                Logger.e(e);
+                ILogger.e(e);
 //                setCropSaveException(e);
             } finally {
                 CropUtil.closeSilently(is);
@@ -356,10 +358,10 @@ public abstract class CropImageActivity extends MonitoredActivity {
             }
 
         } catch (IOException e) {
-            Logger.e(e);
+            ILogger.e(e);
             setCropSaveException(e);
         } catch (OutOfMemoryError e) {
-            Logger.e(e);
+            ILogger.e(e);
             setCropSaveException(e);
         } finally {
             CropUtil.closeSilently(is);
@@ -381,7 +383,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
             try {
                 outputStream = getContentResolver().openOutputStream(Uri.fromFile(saveFile));
                 if (outputStream != null) {
-                    String ext = FileUtils.getFileExtension(saveFile.getAbsolutePath());
+                    String ext = FilenameUtils.getExtension(saveFile.getAbsolutePath());
                     Bitmap.CompressFormat format;
                     if ( ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") ) {
                         format = Bitmap.CompressFormat.JPEG;
@@ -393,7 +395,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 }
             } catch (IOException e) {
                 setCropSaveException(e);
-                Logger.e(e);
+                ILogger.e(e);
             } finally {
                 CropUtil.closeSilently(outputStream);
             }

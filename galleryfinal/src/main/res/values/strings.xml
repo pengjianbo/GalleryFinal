@@ -15,7 +15,7 @@
     <string name="take_photo_fail">Take photo failure</string>
     <string name="saving">Saving picture…</string>
     <string name="please_reopen_gf">Please reopen Gallery</string>
-    <string name="edit_letoff_photo_format">Do not support image format!</string>
+    <string name="edit_letoff_photo_format">The image format does not support this operation!</string>
     <string name="photo_list_empty">Failed to get the picture!</string>
     <string name="preview">Preview</string>
     <string name="permissions_tips_gallery">This app requesting access to your Gallery</string>

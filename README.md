@@ -29,7 +29,7 @@ Demo apk二维码地址：
 通过Gradle抓取:
 
 ```gradle
-compile 'cn.finalteam:galleryfinal:1.4.8.3'
+compile 'cn.finalteam:galleryfinal:1.4.8.4'
 compile 'com.android.support:support-v4:23.1.1'
 ```
 
@@ -38,10 +38,11 @@ compile 'com.android.support:support-v4:23.1.1'
 * 图片分页查看
 * 拍照自动纠正图片(自动旋转)
 * 添加配置-配置图片压缩到指定大小后返回调用者
+* 精简配置
 * ……
 
-# 1.4.8.3更新内容
-* 修改打开相册maxsize判断逻辑
+# 1.4.8.4更新内容
+* 解决fresco gif图片不显示问题
 
 ## 具体使用
 1、通过gradle把GalleryFinal添加到你的项目里
@@ -77,280 +78,23 @@ GalleryFinal.init(coreConfig);
 
 3、选择图片加载器
 
-* **UIL**
+* **UIL实现**
+[使用UniversalImageLoader点这里](https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/UILImageLoader.java)
 
-```java
-public class UILImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
+* **Glide实现**
+[使用Glide点这里](https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/GlideImageLoader.java)
 
-    private Bitmap.Config mImageConfig;
+* **Picasso实现**
+[使用picasso点这里](https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/PicassoImageLoader.java)
 
-    public UILImageLoader() {
-        this(Bitmap.Config.RGB_565);
-    }
+* **fresco实现**
+[使用fresco点这里](https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/FrescoImageLoader.java)
 
-    public UILImageLoader(Bitmap.Config config) {
-        this.mImageConfig = config;
-    }
+* **xUtils3实现**
+[使用xUtils点这里](https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/XUtilsImageLoader.java)
 
-    @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheOnDisk(false)
-                .cacheInMemory(false)
-                .bitmapConfig(mImageConfig)
-                .build();
-        ImageSize imageSize = new ImageSize(width, height);
-        ImageLoader.getInstance().displayImage("file://" + path, new ImageViewAware(imageView), options, imageSize, null, null);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-
-    }
-}
-```
-
-* **Glide**
-
-```java
-public class GlideImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-
-    @Override
-    public void displayImage(Activity activity, String path, final GFImageView imageView, Drawable defaultDrawable, int width, int height) {
-        Glide.with(activity)
-                .load("file://" + path)
-                .placeholder(defaultDrawable)
-                .error(defaultDrawable)
-                .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
-                .skipMemoryCache(true)
-                //.centerCrop()
-                .into(new ImageViewTarget<GlideDrawable>(imageView) {
-                    @Override
-                    protected void setResource(GlideDrawable resource) {
-                        imageView.setImageDrawable(resource);
-                    }
-
-                    @Override
-                    public void setRequest(Request request) {
-                        imageView.setTag(R.id.adapter_item_tag_key,request);
-                    }
-
-                    @Override
-                    public Request getRequest() {
-                        return (Request) imageView.getTag(R.id.adapter_item_tag_key);
-                    }
-                });
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
-
-```
-
-* **Picasso**
-
-```java
-public class PicassoImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-
-    private Bitmap.Config mConfig;
-
-    public PicassoImageLoader() {
-        this(Bitmap.Config.RGB_565);
-    }
-
-    public PicassoImageLoader(Bitmap.Config config) {
-        this.mConfig = config;
-    }
-
-    @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
-        Picasso.with(activity)
-                .load(new File(path))
-                .placeholder(defaultDrawable)
-                .error(defaultDrawable)
-                .config(mConfig)
-                .resize(width, height)
-                .centerInside()
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(imageView);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
-```
-
-* **fresco**
- 
-```java
-public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-
-    private Context context;
-
-    public FrescoImageLoader(Context context) {
-        this(context, Bitmap.Config.RGB_565);
-    }
-
-    public FrescoImageLoader(Context context, Bitmap.Config config) {
-        this.context = context;
-        ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(context)
-                .setBitmapsConfig(config)
-                .build();
-        Fresco.initialize(context, imagePipelineConfig);
-    }
-
-    @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
-        Resources resources = context.getResources();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(resources)
-                .setFadeDuration(300)
-                .setPlaceholderImage(defaultDrawable)
-                .setFailureImage(defaultDrawable)
-                .setProgressBarImage(new ProgressBarDrawable())
-                .build();
-        final DraweeHolder<GenericDraweeHierarchy> draweeHolder = DraweeHolder.create(hierarchy, context);
-        imageView.setOnImageViewListener(new GFImageView.OnImageViewListener() {
-            @Override
-            public void onDetach() {
-                draweeHolder.onDetach();
-            }
-
-            @Override
-            public void onAttach() {
-                draweeHolder.onAttach();
-            }
-
-            @Override
-            public boolean verifyDrawable(Drawable dr) {
-                if (dr == draweeHolder.getHierarchy().getTopLevelDrawable()) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        Uri uri = new Uri.Builder()
-                .scheme(UriUtil.LOCAL_FILE_SCHEME)
-                .path(path)
-                .build();
-        displayImage(uri, new ResizeOptions(width, height), imageView, draweeHolder);
-    }
-
-    /**
-     * 加载远程图片
-     *
-     * @param url
-     * @param imageSize
-     */
-    private void displayImage(Uri url, ResizeOptions imageSize, final ImageView imageView, final DraweeHolder<GenericDraweeHierarchy> draweeHolder) {
-        ImageRequest imageRequest = ImageRequestBuilder
-                .newBuilderWithSource(url)
-                .setResizeOptions(imageSize)//图片目标大小
-                .build();
-        ImagePipeline imagePipeline = Fresco.getImagePipeline();
-
-        final DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, this);
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setOldController(draweeHolder.getController())
-                .setImageRequest(imageRequest)
-                .setControllerListener(new BaseControllerListener<ImageInfo>() {
-                    @Override
-                    public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
-                        CloseableReference<CloseableImage> imageReference = null;
-                        try {
-                            imageReference = dataSource.getResult();
-                            if (imageReference != null) {
-                                CloseableImage image = imageReference.get();
-                                if (image != null && image instanceof CloseableStaticBitmap) {
-                                    CloseableStaticBitmap closeableStaticBitmap = (CloseableStaticBitmap) image;
-                                    Bitmap bitmap = closeableStaticBitmap.getUnderlyingBitmap();
-                                    if (bitmap != null && imageView != null) {
-                                        imageView.setImageBitmap(bitmap);
-                                    }
-                                }
-                            }
-                        } finally {
-                            dataSource.close();
-                            CloseableReference.closeSafely(imageReference);
-                        }
-                    }
-                })
-                .setTapToRetryEnabled(true)
-                .build();
-        draweeHolder.setController(controller);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-
-    }
-}
-```
-
-* **xUtils3**
-
-```java
-public class XUtilsImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-
-    private Bitmap.Config mImageConfig;
-
-    public XUtilsImageLoader() {
-        this(Bitmap.Config.RGB_565);
-    }
-
-    public XUtilsImageLoader(Bitmap.Config config) {
-        this.mImageConfig = config;
-    }
-
-    @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
-        ImageOptions options = new ImageOptions.Builder()
-                .setLoadingDrawable(defaultDrawable)
-                .setFailureDrawable(defaultDrawable)
-                .setConfig(mImageConfig)
-                .setSize(width, height)
-                .setCrop(true)
-                .setUseMemCache(false)
-                .build();
-        x.image().bind(imageView, "file://" + path, options);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
-
-```
-
-* **xUitls2**
-
-```java
-public class XUtils2ImageLoader implements cn.finalteam.galleryfinal.ImageLoader {
-
-    private BitmapUtils bitmapUtils;
-
-    public XUtils2ImageLoader(Context context) {
-        bitmapUtils = new BitmapUtils(context);
-    }
-
-    @Override
-    public void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height) {
-        BitmapDisplayConfig config = new BitmapDisplayConfig();
-        config.setLoadFailedDrawable(defaultDrawable);
-        config.setLoadingDrawable(defaultDrawable);
-        config.setBitmapConfig(Bitmap.Config.RGB_565);
-        config.setBitmapMaxSize(new BitmapSize(width, height));
-        bitmapUtils.display(imageView, "file://" + path, config);
-    }
-
-    @Override
-    public void clearMemoryCache() {
-    }
-}
-```
+* **xUitls2实现**
+[使用xUtils2点这里](https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/XUtils2ImageLoader.java)
 
 
 * **自定义**
@@ -522,6 +266,9 @@ setPauseOnScrollListener//设置imageloader滑动加载图片优化OnScrollListe
 
 
 # 更新日志
+## V1.4.8.4
+* 解决fresco gif图片不显示问题
+
 ## V1.4.8.3
 * 修改打开相册maxsize判断逻辑
 
@@ -653,3 +400,6 @@ License
     limitations under the License.
     
     
+
+
+  [1]: https://github.com/pengjianbo/GalleryFinal/blob/master/app/src/main/java/cn/finalteam/galleryfinal/sample/loader/UILImageLoader.java
