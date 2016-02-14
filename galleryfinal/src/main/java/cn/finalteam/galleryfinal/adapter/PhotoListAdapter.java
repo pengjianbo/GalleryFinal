@@ -38,13 +38,13 @@ import java.util.Map;
  */
 public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoViewHolder, PhotoInfo> {
 
-    private Map<String, PhotoInfo> mSelectList;
+    private List<PhotoInfo> mSelectList;
     private int mScreenWidth;
     private int mRowWidth;
 
     private Activity mActivity;
 
-    public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth) {
+    public PhotoListAdapter(Activity activity, List<PhotoInfo> list, List<PhotoInfo> selectList, int screenWidth) {
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
@@ -78,7 +78,7 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if ( GalleryFinal.getFunctionConfig().isMutiSelect() ) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
-            if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
+            if (mSelectList.contains(photoInfo)) {
                 holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
             } else {
                 holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckNornalColor());

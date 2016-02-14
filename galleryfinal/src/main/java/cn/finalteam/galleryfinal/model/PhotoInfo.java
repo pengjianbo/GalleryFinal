@@ -16,6 +16,8 @@
 
 package cn.finalteam.galleryfinal.model;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
 /**
@@ -72,4 +74,18 @@ public class PhotoInfo implements Serializable {
     //public void setThumbPath(String thumbPath) {
     //    this.thumbPath = thumbPath;
     //}
+
+
+    @Override
+    public boolean equals(Object o) {
+        if ( o == null || !(o instanceof PhotoInfo)) {
+            return false;
+        }
+        PhotoInfo info = (PhotoInfo) o;
+        if (info == null) {
+            return false;
+        }
+
+        return TextUtils.equals(info.getPhotoPath(), getPhotoPath());
+    }
 }

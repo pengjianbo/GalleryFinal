@@ -36,7 +36,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import cn.finalteam.galleryfinal.adapter.PhotoEditListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -91,8 +93,8 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private ProgressDialog mProgressDialog;
     private boolean mRotating;
 
-    private HashMap<String, PhotoInfo> mSelectPhotoMap;
-    private HashMap<Integer, PhotoTempModel> mPhotoTempMap;
+    private ArrayList<PhotoInfo> mSelectPhotoMap;
+    private LinkedHashMap<Integer, PhotoTempModel> mPhotoTempMap;
     private File mEditPhotoCacheFile;
 
     private Drawable mDefaultDrawable;
@@ -121,9 +123,9 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mSelectPhotoMap = (HashMap<String, PhotoInfo>) savedInstanceState.getSerializable("selectPhotoMap");
+        mSelectPhotoMap = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
         mEditPhotoCacheFile = (File) savedInstanceState.getSerializable("editPhotoCacheFile");
-        mPhotoTempMap = (HashMap<Integer, PhotoTempModel>) savedInstanceState.getSerializable("photoTempMap");
+        mPhotoTempMap = new LinkedHashMap<>((HashMap<Integer, PhotoTempModel>) getIntent().getSerializableExtra("results"));
 
         mSelectIndex = savedInstanceState.getInt("selectIndex");
         mCropState = savedInstanceState.getBoolean("cropState");
@@ -168,12 +170,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     String path = (String) msg.obj;
                     //photoInfo.setThumbPath(path);
                     try {
-                        Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
-                        while (entries.hasNext()) {
-                            Map.Entry<String, PhotoInfo> entry = entries.next();
-                            if (entry.getValue() != null && entry.getValue().getPhotoId() == photoInfo.getPhotoId()) {
-                                PhotoInfo pi = entry.getValue();
-                                pi.setPhotoPath(path);
+                        for(Iterator<PhotoInfo> iterator = mSelectPhotoMap.iterator();iterator.hasNext();){
+                            PhotoInfo info = iterator.next();
+                            if (info != null && info.getPhotoId() == photoInfo.getPhotoId()) {
+                                info.setPhotoPath(path);
                             }
                         }
                     } catch (Exception e) {
@@ -203,16 +203,16 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             setContentView(R.layout.gf_activity_photo_edit);
             mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);
 
-            mSelectPhotoMap = (HashMap<String, PhotoInfo>) this.getIntent().getSerializableExtra(SELECT_MAP);
+            mSelectPhotoMap = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra(SELECT_MAP);
             mTakePhotoAction = this.getIntent().getBooleanExtra(TAKE_PHOTO_ACTION, false);
             mCropPhotoAction = this.getIntent().getBooleanExtra(CROP_PHOTO_ACTION, false);
             mEditPhotoAction = this.getIntent().getBooleanExtra(EDIT_PHOTO_ACTION, false);
 
             if (mSelectPhotoMap == null) {
-                mSelectPhotoMap = new HashMap<>();
+                mSelectPhotoMap = new ArrayList<>();
             }
-            mPhotoTempMap = new HashMap<>();
-            mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
+            mPhotoTempMap = new LinkedHashMap<>();
+            mPhotoList = new ArrayList<>(mSelectPhotoMap);
 
             mEditPhotoCacheFile = GalleryFinal.getCoreConfig().getEditPhotoCacheFolder();
 
@@ -352,7 +352,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             mSelectPhotoMap.clear();
         }
         mPhotoList.add(0, info);
-        mSelectPhotoMap.put(info.getPhotoPath(), info);
+        mSelectPhotoMap.add(info);
         mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
         if (!GalleryFinal.getFunctionConfig().isEditPhoto() && mTakePhotoAction) {
             resultAction();
@@ -396,11 +396,11 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             }
 
             try {
-                Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
-                while (entries.hasNext()) {
-                    Map.Entry<String, PhotoInfo> entry = entries.next();
-                    if (entry.getValue() != null && entry.getValue().getPhotoId() == dPhoto.getPhotoId()) {
-                        entries.remove();
+                for(Iterator<PhotoInfo> iterator = mSelectPhotoMap.iterator();iterator.hasNext();){
+                    PhotoInfo info = iterator.next();
+                    if (info != null && info.getPhotoId() == dPhoto.getPhotoId()) {
+                        iterator.remove();
+                        break;
                     }
                 }
             } catch (Exception e){}
@@ -515,14 +515,13 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             finish();
         } else if (id == R.id.iv_preview) {
             Intent intent = new Intent(this, PhotoPreviewActivity.class);
-            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, new ArrayList<>(mSelectPhotoMap.values()));
+            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, mSelectPhotoMap);
             startActivity(intent);
         }
     }
 
     private void resultAction() {
-        ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
-        resultData(photoList);
+        resultData(mSelectPhotoMap);
     }
 
     private void hasForceCrop() {

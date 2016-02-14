@@ -32,6 +32,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
 import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
@@ -42,15 +51,7 @@ import cn.finalteam.galleryfinal.utils.PhotoTools;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.StringUtils;
-import cn.finalteam.toolsfinal.io.FileUtils;
 import cn.finalteam.toolsfinal.io.FilenameUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Desction:图片选择器
@@ -86,7 +87,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     //是否需要刷新相册
     private boolean mHasRefreshGallery = false;
-    private HashMap<String, PhotoInfo> mSelectPhotoMap = new HashMap<>();
+    private ArrayList<PhotoInfo> mSelectPhotoMap = new ArrayList<>();
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -97,7 +98,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mSelectPhotoMap = (HashMap<String, PhotoInfo>) savedInstanceState.getSerializable("selectPhotoMap");
+        mSelectPhotoMap = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
     }
 
     private Handler mHanlder = new Handler() {
@@ -236,11 +237,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     protected void deleteSelect(int photoId) {
         try {
-            Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
-            while (entries.hasNext()) {
-                Map.Entry<String, PhotoInfo> entry = entries.next();
-                if (entry.getValue() != null && entry.getValue().getPhotoId() == photoId) {
-                    entries.remove();
+            for(Iterator<PhotoInfo> iterator = mSelectPhotoMap.iterator();iterator.hasNext();){
+                PhotoInfo info = iterator.next();
+                if (info != null && info.getPhotoId() == photoId) {
+                    iterator.remove();
+                    break;
                 }
             }
         } catch (Exception e){}
@@ -260,7 +261,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         Message message = mHanlder.obtainMessage();
         message.obj = photoInfo;
         message.what = HANLDER_TAKE_PHOTO_EVENT;
-        mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
+        mSelectPhotoMap.add(photoInfo);
         mHanlder.sendMessageDelayed(message, 100);
     }
 
@@ -326,7 +327,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
         if ( !GalleryFinal.getFunctionConfig().isMutiSelect() ) { //单选
             mSelectPhotoMap.clear();
-            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
+            mSelectPhotoMap.add(photoInfo);
 
             if ( GalleryFinal.getFunctionConfig().isEditPhoto() ) {//裁剪
                 mHasRefreshGallery = true;
@@ -339,7 +340,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
             mHanlder.sendMessageDelayed(message, 100);
         } else {//多选
-            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
+            mSelectPhotoMap.add(photoInfo);
             mHanlder.sendMessageDelayed(message, 100);
         }
     }
@@ -385,9 +386,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             }
         } else if ( id == R.id.fab_ok ) {
             if(mSelectPhotoMap.size() > 0) {
-                ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
                 if (!GalleryFinal.getFunctionConfig().isEditPhoto()) {
-                    resultData(photoList);
+                    resultData(mSelectPhotoMap);
                 } else {
                     toPhotoEdit();
                 }
@@ -398,7 +398,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             refreshSelectCount();
         } else if ( id == R.id.iv_preview ) {
             Intent intent = new Intent(this, PhotoPreviewActivity.class);
-            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, new ArrayList<>(mSelectPhotoMap.values()));
+            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, mSelectPhotoMap);
             startActivity(intent);
         }
     }
@@ -444,7 +444,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         PhotoInfo info = mCurPhotoList.get(position);
         if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
             mSelectPhotoMap.clear();
-            mSelectPhotoMap.put(info.getPhotoPath(), info);
+            mSelectPhotoMap.add(info);
             String ext = FilenameUtils.getExtension(info.getPhotoPath());
             if (GalleryFinal.getFunctionConfig().isEditPhoto() && (ext.equalsIgnoreCase("png")
                     || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
@@ -457,12 +457,12 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             return;
         }
         boolean checked = false;
-        if (mSelectPhotoMap.get(info.getPhotoPath()) == null) {
+        if (!mSelectPhotoMap.contains(info)) {
             if (GalleryFinal.getFunctionConfig().isMutiSelect() && mSelectPhotoMap.size() == GalleryFinal.getFunctionConfig().getMaxSize()) {
                 toast(getString(R.string.select_max_tips));
                 return;
             } else {
-                mSelectPhotoMap.put(info.getPhotoPath(), info);
+                mSelectPhotoMap.add(info);
                 checked = true;
             }
         } else {
