@@ -21,9 +21,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.utils.ILogger;
@@ -318,11 +317,11 @@ public class GalleryFinal {
         config.crop = true;
 
         mCurrentFunctionConfig = config;
-        HashMap<String, PhotoInfo> map = new HashMap<>();
+        ArrayList<PhotoInfo> map = new ArrayList<>();
         PhotoInfo photoInfo = new PhotoInfo();
         photoInfo.setPhotoPath(photoPath);
         photoInfo.setPhotoId(Utils.getRandom(10000, 99999));
-        map.put(photoPath, photoInfo);
+        map.add(photoInfo);
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoEditActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PhotoEditActivity.CROP_PHOTO_ACTION, true);
@@ -386,11 +385,11 @@ public class GalleryFinal {
         config.mutiSelect = false;//拍照为单选
 
         mCurrentFunctionConfig = config;
-        HashMap<String, PhotoInfo> map = new HashMap<>();
+        ArrayList<PhotoInfo> map = new ArrayList<>();
         PhotoInfo photoInfo = new PhotoInfo();
         photoInfo.setPhotoPath(photoPath);
         photoInfo.setPhotoId(Utils.getRandom(10000, 99999));
-        map.put(photoPath, photoInfo);
+        map.add(photoInfo);
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoEditActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PhotoEditActivity.EDIT_PHOTO_ACTION, true);

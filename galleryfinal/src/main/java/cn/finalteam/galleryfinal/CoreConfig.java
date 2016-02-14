@@ -70,7 +70,6 @@ public class CoreConfig {
     public static class Builder {
         private Context context;
         private ThemeConfig themeConfig;
-        private boolean debug;
         private ImageLoader imageLoader;
         private File takePhotoFolder;//配置拍照缓存目录
         private File editPhotoCacheFolder;//配置编辑图片产生的文件缓存目录
@@ -84,11 +83,6 @@ public class CoreConfig {
             this.imageLoader = imageLoader;
             this.themeConfig = themeConfig;
             this.animRes = R.anim.gf_flip_horizontal_in;
-        }
-
-        public Builder setDebug(boolean debug) {
-            this.debug = debug;
-            return this;
         }
 
         public Builder setTakePhotoFolder(File takePhotoFolder) {

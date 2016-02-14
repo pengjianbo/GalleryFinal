@@ -324,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 CoreConfig coreConfig = new CoreConfig.Builder(MainActivity.this, imageLoader, themeConfig)
-                        .setDebug(BuildConfig.DEBUG)
                         .setFunctionConfig(functionConfig)
                         .setPauseOnScrollListener(pauseOnScrollListener)
                         .setNoAnimcation(mCbNoAnimation.isChecked())
