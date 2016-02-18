@@ -35,11 +35,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.finalteam.galleryfinal.adapter.FolderListAdapter;
 import cn.finalteam.galleryfinal.adapter.PhotoListAdapter;
@@ -87,18 +84,18 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     //是否需要刷新相册
     private boolean mHasRefreshGallery = false;
-    private ArrayList<PhotoInfo> mSelectPhotoMap = new ArrayList<>();
+    private ArrayList<PhotoInfo> mSelectPhotoList = new ArrayList<>();
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("selectPhotoMap", mSelectPhotoMap);
+        outState.putSerializable("selectPhotoMap", mSelectPhotoList);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mSelectPhotoMap = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
+        mSelectPhotoList = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
     }
 
     private Handler mHanlder = new Handler() {
@@ -143,7 +140,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             mLvFolderList.setAdapter(mFolderListAdapter);
 
             mCurPhotoList = new ArrayList<>();
-            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth);
+            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoList, mScreenWidth);
             mGvPhotoList.setAdapter(mPhotoListAdapter);
 
             if (GalleryFinal.getFunctionConfig().isMutiSelect()) {
@@ -237,7 +234,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     protected void deleteSelect(int photoId) {
         try {
-            for(Iterator<PhotoInfo> iterator = mSelectPhotoMap.iterator();iterator.hasNext();){
+            for(Iterator<PhotoInfo> iterator = mSelectPhotoList.iterator();iterator.hasNext();){
                 PhotoInfo info = iterator.next();
                 if (info != null && info.getPhotoId() == photoId) {
                     iterator.remove();
@@ -261,7 +258,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         Message message = mHanlder.obtainMessage();
         message.obj = photoInfo;
         message.what = HANLDER_TAKE_PHOTO_EVENT;
-        mSelectPhotoMap.add(photoInfo);
+        mSelectPhotoList.add(photoInfo);
         mHanlder.sendMessageDelayed(message, 100);
     }
 
@@ -326,8 +323,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         message.what = HANLDER_TAKE_PHOTO_EVENT;
 
         if ( !GalleryFinal.getFunctionConfig().isMutiSelect() ) { //单选
-            mSelectPhotoMap.clear();
-            mSelectPhotoMap.add(photoInfo);
+            mSelectPhotoList.clear();
+            mSelectPhotoList.add(photoInfo);
 
             if ( GalleryFinal.getFunctionConfig().isEditPhoto() ) {//裁剪
                 mHasRefreshGallery = true;
@@ -340,7 +337,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
             mHanlder.sendMessageDelayed(message, 100);
         } else {//多选
-            mSelectPhotoMap.add(photoInfo);
+            mSelectPhotoList.add(photoInfo);
             mHanlder.sendMessageDelayed(message, 100);
         }
     }
@@ -350,7 +347,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
      */
     protected void toPhotoEdit() {
         Intent intent = new Intent(this, PhotoEditActivity.class);
-        intent.putExtra(PhotoEditActivity.SELECT_MAP, mSelectPhotoMap);
+        intent.putExtra(PhotoEditActivity.SELECT_MAP, mSelectPhotoList);
         startActivity(intent);
     }
 
@@ -367,7 +364,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             }
         } else if ( id == R.id.iv_take_photo ) {
             //判断是否达到多选最大数量
-            if (GalleryFinal.getFunctionConfig().isMutiSelect() && mSelectPhotoMap.size() == GalleryFinal.getFunctionConfig().getMaxSize()) {
+            if (GalleryFinal.getFunctionConfig().isMutiSelect() && mSelectPhotoList.size() == GalleryFinal.getFunctionConfig().getMaxSize()) {
                 toast(getString(R.string.select_max_tips));
                 return;
             }
@@ -385,20 +382,20 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
                 finish();
             }
         } else if ( id == R.id.fab_ok ) {
-            if(mSelectPhotoMap.size() > 0) {
+            if(mSelectPhotoList.size() > 0) {
                 if (!GalleryFinal.getFunctionConfig().isEditPhoto()) {
-                    resultData(mSelectPhotoMap);
+                    resultData(mSelectPhotoList);
                 } else {
                     toPhotoEdit();
                 }
             }
         } else if ( id == R.id.iv_clear ) {
-            mSelectPhotoMap.clear();
+            mSelectPhotoList.clear();
             mPhotoListAdapter.notifyDataSetChanged();
             refreshSelectCount();
         } else if ( id == R.id.iv_preview ) {
             Intent intent = new Intent(this, PhotoPreviewActivity.class);
-            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, mSelectPhotoMap);
+            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, mSelectPhotoList);
             startActivity(intent);
         }
     }
@@ -443,8 +440,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private void photoItemClick(View view, int position) {
         PhotoInfo info = mCurPhotoList.get(position);
         if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
-            mSelectPhotoMap.clear();
-            mSelectPhotoMap.add(info);
+            mSelectPhotoList.clear();
+            mSelectPhotoList.add(info);
             String ext = FilenameUtils.getExtension(info.getPhotoPath());
             if (GalleryFinal.getFunctionConfig().isEditPhoto() && (ext.equalsIgnoreCase("png")
                     || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
@@ -457,16 +454,24 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             return;
         }
         boolean checked = false;
-        if (!mSelectPhotoMap.contains(info)) {
-            if (GalleryFinal.getFunctionConfig().isMutiSelect() && mSelectPhotoMap.size() == GalleryFinal.getFunctionConfig().getMaxSize()) {
+        if (!mSelectPhotoList.contains(info)) {
+            if (GalleryFinal.getFunctionConfig().isMutiSelect() && mSelectPhotoList.size() == GalleryFinal.getFunctionConfig().getMaxSize()) {
                 toast(getString(R.string.select_max_tips));
                 return;
             } else {
-                mSelectPhotoMap.add(info);
+                mSelectPhotoList.add(info);
                 checked = true;
             }
         } else {
-            mSelectPhotoMap.remove(info.getPhotoPath());
+            try {
+                for(Iterator<PhotoInfo> iterator = mSelectPhotoList.iterator();iterator.hasNext();){
+                    PhotoInfo pi = iterator.next();
+                    if (pi != null && TextUtils.equals(pi.getPhotoPath(), info.getPhotoPath())) {
+                        iterator.remove();
+                        break;
+                    }
+                }
+            } catch (Exception e){}
             checked = false;
         }
         refreshSelectCount();
@@ -484,14 +489,16 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     }
 
     public void refreshSelectCount() {
-        mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoMap.size(), GalleryFinal.getFunctionConfig().getMaxSize()));
-        if ( mSelectPhotoMap.size() > 0 && GalleryFinal.getFunctionConfig().isMutiSelect() ) {
+        mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoList.size(), GalleryFinal.getFunctionConfig().getMaxSize()));
+        if ( mSelectPhotoList.size() > 0 && GalleryFinal.getFunctionConfig().isMutiSelect() ) {
             mIvClear.setVisibility(View.VISIBLE);
-            if(GalleryFinal.getFunctionConfig().isEnablePreview()){
-                mIvPreView.setVisibility(View.VISIBLE);
-            }
         } else {
             mIvClear.setVisibility(View.GONE);
+        }
+
+        if(GalleryFinal.getFunctionConfig().isEnablePreview()){
+            mIvPreView.setVisibility(View.VISIBLE);
+        } else {
             mIvPreView.setVisibility(View.GONE);
         }
     }
@@ -532,7 +539,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
                 super.run();
 
                 mAllPhotoFolderList.clear();
-                List<PhotoFolderInfo> allFolderList = PhotoTools.getAllPhotoFolder(PhotoSelectActivity.this, mSelectPhotoMap);
+                List<PhotoFolderInfo> allFolderList = PhotoTools.getAllPhotoFolder(PhotoSelectActivity.this, mSelectPhotoList);
                 mAllPhotoFolderList.addAll(allFolderList);
 
                 mCurPhotoList.clear();
@@ -580,7 +587,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
         mPhotoTargetFolder = null;
-        mSelectPhotoMap.clear();
+        mSelectPhotoList.clear();
         System.gc();
     }
 }

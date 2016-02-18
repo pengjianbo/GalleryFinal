@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import cn.finalteam.galleryfinal.adapter.PhotoEditListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -93,7 +92,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     private ProgressDialog mProgressDialog;
     private boolean mRotating;
 
-    private ArrayList<PhotoInfo> mSelectPhotoMap;
+    private ArrayList<PhotoInfo> mSelectPhotoList;
     private LinkedHashMap<Integer, PhotoTempModel> mPhotoTempMap;
     private File mEditPhotoCacheFile;
 
@@ -106,7 +105,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("selectPhotoMap", mSelectPhotoMap);
+        outState.putSerializable("selectPhotoMap", mSelectPhotoList);
         outState.putSerializable("editPhotoCacheFile", mEditPhotoCacheFile);
         outState.putSerializable("photoTempMap", mPhotoTempMap);
 
@@ -123,7 +122,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mSelectPhotoMap = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
+        mSelectPhotoList = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
         mEditPhotoCacheFile = (File) savedInstanceState.getSerializable("editPhotoCacheFile");
         mPhotoTempMap = new LinkedHashMap<>((HashMap<Integer, PhotoTempModel>) getIntent().getSerializableExtra("results"));
 
@@ -170,7 +169,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     String path = (String) msg.obj;
                     //photoInfo.setThumbPath(path);
                     try {
-                        for(Iterator<PhotoInfo> iterator = mSelectPhotoMap.iterator();iterator.hasNext();){
+                        for(Iterator<PhotoInfo> iterator = mSelectPhotoList.iterator();iterator.hasNext();){
                             PhotoInfo info = iterator.next();
                             if (info != null && info.getPhotoId() == photoInfo.getPhotoId()) {
                                 info.setPhotoPath(path);
@@ -203,16 +202,16 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             setContentView(R.layout.gf_activity_photo_edit);
             mDefaultDrawable = getResources().getDrawable(R.drawable.ic_gf_default_photo);
 
-            mSelectPhotoMap = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra(SELECT_MAP);
+            mSelectPhotoList = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra(SELECT_MAP);
             mTakePhotoAction = this.getIntent().getBooleanExtra(TAKE_PHOTO_ACTION, false);
             mCropPhotoAction = this.getIntent().getBooleanExtra(CROP_PHOTO_ACTION, false);
             mEditPhotoAction = this.getIntent().getBooleanExtra(EDIT_PHOTO_ACTION, false);
 
-            if (mSelectPhotoMap == null) {
-                mSelectPhotoMap = new ArrayList<>();
+            if (mSelectPhotoList == null) {
+                mSelectPhotoList = new ArrayList<>();
             }
             mPhotoTempMap = new LinkedHashMap<>();
-            mPhotoList = new ArrayList<>(mSelectPhotoMap);
+            mPhotoList = new ArrayList<>(mSelectPhotoList);
 
             mEditPhotoCacheFile = GalleryFinal.getCoreConfig().getEditPhotoCacheFolder();
 
@@ -349,10 +348,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
     protected void takeResult(PhotoInfo info) {
         if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
             mPhotoList.clear();
-            mSelectPhotoMap.clear();
+            mSelectPhotoList.clear();
         }
         mPhotoList.add(0, info);
-        mSelectPhotoMap.add(info);
+        mSelectPhotoList.add(info);
         mPhotoTempMap.put(info.getPhotoId(), new PhotoTempModel(info.getPhotoPath()));
         if (!GalleryFinal.getFunctionConfig().isEditPhoto() && mTakePhotoAction) {
             resultAction();
@@ -396,7 +395,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             }
 
             try {
-                for(Iterator<PhotoInfo> iterator = mSelectPhotoMap.iterator();iterator.hasNext();){
+                for(Iterator<PhotoInfo> iterator = mSelectPhotoList.iterator();iterator.hasNext();){
                     PhotoInfo info = iterator.next();
                     if (info != null && info.getPhotoId() == dPhoto.getPhotoId()) {
                         iterator.remove();
@@ -500,7 +499,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         } else if (id == R.id.iv_rotate) {
             rotatePhoto();
         } else if (id == R.id.iv_take_photo) {
-            if (GalleryFinal.getFunctionConfig().isMutiSelect() && GalleryFinal.getFunctionConfig().getMaxSize() == mSelectPhotoMap.size()) {
+            if (GalleryFinal.getFunctionConfig().isMutiSelect() && GalleryFinal.getFunctionConfig().getMaxSize() == mSelectPhotoList.size()) {
                 toast(getString(R.string.select_max_tips));
             } else {
                 takePhotoAction();
@@ -515,13 +514,13 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             finish();
         } else if (id == R.id.iv_preview) {
             Intent intent = new Intent(this, PhotoPreviewActivity.class);
-            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, mSelectPhotoMap);
+            intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, mSelectPhotoList);
             startActivity(intent);
         }
     }
 
     private void resultAction() {
-        resultData(mSelectPhotoMap);
+        resultData(mSelectPhotoList);
     }
 
     private void hasForceCrop() {
