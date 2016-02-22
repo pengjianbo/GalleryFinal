@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.galleryfinal.utils.ILogger;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.toolsfinal.DeviceUtils;
 import cn.finalteam.toolsfinal.StringUtils;
@@ -91,7 +90,6 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            ILogger.e("FunctionConfig null");
         }
     }
 
@@ -103,7 +101,6 @@ public class GalleryFinal {
      */
     public static void openGallerySingle(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -146,7 +143,6 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -158,7 +154,6 @@ public class GalleryFinal {
      */
     public static void openGalleryMuti(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -216,7 +211,6 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -227,7 +221,6 @@ public class GalleryFinal {
      */
     public static void openCamera(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -272,7 +265,6 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -285,7 +277,6 @@ public class GalleryFinal {
      */
     public static void openCrop(int requestCode, FunctionConfig config, String photoPath, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -305,7 +296,6 @@ public class GalleryFinal {
         }
 
         if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
-            ILogger.d("config为空或文件不存在");
             return;
         }
         mRequestCode = requestCode;
@@ -343,7 +333,6 @@ public class GalleryFinal {
             if(callback != null) {
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
-            ILogger.e("Please init GalleryFinal.");
         }
     }
 
@@ -356,7 +345,6 @@ public class GalleryFinal {
      */
     public static void openEdit(int requestCode, FunctionConfig config, String photoPath, OnHanlderResultCallback callback) {
         if ( mCoreConfig.getImageLoader() == null ) {
-            ILogger.e("Please init GalleryFinal.");
             if(callback != null){
                 callback.onHanlderFailure(requestCode, mCoreConfig.getContext().getString(R.string.open_gallery_fail));
             }
@@ -376,7 +364,6 @@ public class GalleryFinal {
         }
 
         if ( config == null || StringUtils.isEmpty(photoPath) || !new File(photoPath).exists()) {
-            ILogger.d("config为空或文件不存在");
             return;
         }
         mRequestCode = requestCode;

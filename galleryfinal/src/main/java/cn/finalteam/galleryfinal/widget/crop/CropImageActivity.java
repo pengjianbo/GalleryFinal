@@ -30,17 +30,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.R;
-import cn.finalteam.galleryfinal.utils.ILogger;
-import cn.finalteam.toolsfinal.io.FileUtils;
-import cn.finalteam.toolsfinal.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.CountDownLatch;
+
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.R;
+import cn.finalteam.toolsfinal.io.FilenameUtils;
 
 /*
  * Modified from original in AOSP.
@@ -126,10 +125,8 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 option.inSampleSize = sampleSize;
                 rotateBitmap = new RotateBitmap(BitmapFactory.decodeStream(is, null, option), exifRotation);
             } catch (IOException e) {
-                ILogger.e(e);
 //                setCropSaveException(e);
             } catch (OutOfMemoryError e) {
-                ILogger.e(e);
 //                setCropSaveException(e);
             } finally {
                 CropUtil.closeSilently(is);
@@ -358,10 +355,8 @@ public abstract class CropImageActivity extends MonitoredActivity {
             }
 
         } catch (IOException e) {
-            ILogger.e(e);
             setCropSaveException(e);
         } catch (OutOfMemoryError e) {
-            ILogger.e(e);
             setCropSaveException(e);
         } finally {
             CropUtil.closeSilently(is);
@@ -395,7 +390,6 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 }
             } catch (IOException e) {
                 setCropSaveException(e);
-                ILogger.e(e);
             } finally {
                 CropUtil.closeSilently(outputStream);
             }

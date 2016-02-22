@@ -19,15 +19,16 @@ package cn.finalteam.galleryfinal.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.R;
-import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.R;
+import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 
 /**
  * Desction:
@@ -111,7 +112,6 @@ public class PhotoTools {
                 }
             }
         } catch (Exception ex) {
-            ILogger.e(ex);
         } finally {
             if (cursor != null) {
                 cursor.close();

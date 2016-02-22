@@ -42,7 +42,6 @@ import java.util.Map;
 import cn.finalteam.galleryfinal.adapter.PhotoEditListAdapter;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.model.PhotoTempModel;
-import cn.finalteam.galleryfinal.utils.ILogger;
 import cn.finalteam.galleryfinal.utils.RecycleViewBitmapUtils;
 import cn.finalteam.galleryfinal.utils.Utils;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
@@ -468,7 +467,6 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     FileUtils.mkdirs(toFile.getParentFile());
                     onSaveClicked(toFile);//保存裁剪
                 } catch (Exception e) {
-                    ILogger.e(e);
                 }
             } else { //完成选择
                 resultAction();
