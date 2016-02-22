@@ -2,16 +2,20 @@ package cn.finalteam.galleryfinal;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.finalteam.galleryfinal.adapter.PhotoPreviewAdapter;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFViewPager;
+import cn.finalteam.toolsfinal.ActivityManager;
 
 /**
  * Desction:
@@ -97,10 +101,37 @@ public class PhotoPreviewActivity extends PhotoBaseActivity implements ViewPager
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            backActivity();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void backActivity() {
+        HashMap<Integer, PhotoInfo> unSelectList = mPhotoPreviewAdapter.getUnSelectList();
+        for (Map.Entry<Integer, PhotoInfo> entry : unSelectList.entrySet()) {
+            PhotoInfo photoInfo = entry.getValue();
+            Integer position = entry.getKey();
+            PhotoSelectActivity selectActivity = (PhotoSelectActivity) ActivityManager.getActivityManager().getActivity(PhotoSelectActivity.class.getName());
+            if (selectActivity != null) {
+                selectActivity.deleteSelect(photoInfo.getPhotoId());
+            }
+            PhotoEditActivity editActivity = (PhotoEditActivity) ActivityManager.getActivityManager().getActivity(PhotoEditActivity.class.getName());
+            if (editActivity != null) {
+                editActivity.deleteIndexByPreView(position, photoInfo);
+            }
+        }
+
+        finish();
+    }
+
     private View.OnClickListener mBackListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            finish();
+            backActivity();
         }
     };
 

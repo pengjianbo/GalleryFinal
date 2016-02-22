@@ -386,6 +386,15 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         GalleryFinal.getCoreConfig().getImageLoader().displayImage(this, path, mIvSourcePhoto, mDefaultDrawable, mScreenWidth, mScreenHeight);
     }
 
+    public void deleteIndexByPreView(int position, PhotoInfo dPhoto) {
+        try {
+            mPhotoList.remove(position);
+            mPhotoEditListAdapter.notifyDataSetChanged();
+        } catch (Exception e){}
+
+        deleteIndex(position, dPhoto);
+    }
+
     public void deleteIndex(int position, PhotoInfo dPhoto) {
         if (dPhoto != null) {
             PhotoSelectActivity activity = (PhotoSelectActivity) ActivityManager.getActivityManager().getActivity(PhotoSelectActivity.class.getName());

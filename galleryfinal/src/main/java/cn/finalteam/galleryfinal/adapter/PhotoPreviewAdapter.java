@@ -5,7 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -23,11 +25,13 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
 
     private Activity mActivity;
     private DisplayMetrics mDisplayMetrics;
+    private HashMap<Integer, PhotoInfo> mUnSelectList;
 
     public PhotoPreviewAdapter(Activity activity, List<PhotoInfo> list) {
         super(activity, list);
         this.mActivity = activity;
         this.mDisplayMetrics = DeviceUtils.getScreenPix(mActivity);
+        this.mUnSelectList = new HashMap<>();
     }
 
     @Override
@@ -37,22 +41,48 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
     }
 
     @Override
-    public void onBindViewHolder(PreviewViewHolder holder, int position) {
-        PhotoInfo photoInfo = getDatas().get(position);
+    public void onBindViewHolder(final PreviewViewHolder holder, final int position) {
+        final PhotoInfo photoInfo = getDatas().get(position);
         String path = "";
         if (photoInfo != null) {
             path = photoInfo.getPhotoPath();
         }
-        holder.mImageView.setImageResource(R.drawable.ic_gf_default_photo);
+        holder.mIvImage.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mImageView, defaultDrawable, mDisplayMetrics.widthPixels/2, mDisplayMetrics.heightPixels/2);
+        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvImage, defaultDrawable, mDisplayMetrics.widthPixels/2, mDisplayMetrics.heightPixels/2);
+        if (!mUnSelectList.containsValue(photoInfo)) {
+            holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
+        } else {
+            holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckNornalColor());
+        }
+
+        holder.mIvCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mUnSelectList.containsValue(photoInfo)) {
+                    mUnSelectList.remove(position);
+                    holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
+                } else {
+                    mUnSelectList.put(position, photoInfo);
+                    holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckNornalColor());
+                }
+            }
+        });
+    }
+
+    public HashMap<Integer, PhotoInfo> getUnSelectList() {
+        return mUnSelectList;
     }
 
     static class PreviewViewHolder extends ViewHolderRecyclingPagerAdapter.ViewHolder{
-        PhotoView mImageView;
+        PhotoView mIvImage;
+        ImageView mIvCheck;
+
         public PreviewViewHolder(View view) {
             super(view);
-            mImageView = (PhotoView) view;
+            mIvImage = (PhotoView) view.findViewById(R.id.pv_image);
+            mIvCheck = (ImageView) view.findViewById(R.id.iv_check);
         }
+
     }
 }

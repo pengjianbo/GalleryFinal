@@ -18,8 +18,6 @@ package cn.finalteam.galleryfinal;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +44,6 @@ import cn.finalteam.galleryfinal.model.PhotoFolderInfo;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.permission.AfterPermissionGranted;
 import cn.finalteam.galleryfinal.permission.EasyPermissions;
-import cn.finalteam.galleryfinal.ucrop.UCrop;
 import cn.finalteam.galleryfinal.utils.PhotoTools;
 import cn.finalteam.galleryfinal.widget.FloatingActionButton;
 import cn.finalteam.toolsfinal.DeviceUtils;
@@ -349,17 +346,17 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
      * 执行裁剪
      */
     protected void toPhotoEdit() {
-//        Intent intent = new Intent(this, PhotoEditActivity.class);
-//        intent.putExtra(PhotoEditActivity.SELECT_MAP, mSelectPhotoList);
-//        startActivity(intent);
-        Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "test.jpeg"));
-        UCrop uCrop = UCrop.of(Uri.fromFile(new File(mSelectPhotoList.get(0).getPhotoPath())), mDestinationUri);
-        uCrop = uCrop.useSourceImageAspectRatio();
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        options.setCompressionQuality(75);
-        uCrop.withOptions(options);
-        uCrop.start(PhotoSelectActivity.this);
+        Intent intent = new Intent(this, PhotoEditActivity.class);
+        intent.putExtra(PhotoEditActivity.SELECT_MAP, mSelectPhotoList);
+        startActivity(intent);
+//        Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "test.jpeg"));
+//        UCrop uCrop = UCrop.of(Uri.fromFile(new File(mSelectPhotoList.get(0).getPhotoPath())), mDestinationUri);
+//        uCrop = uCrop.useSourceImageAspectRatio();
+//        UCrop.Options options = new UCrop.Options();
+//        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+//        options.setCompressionQuality(75);
+//        uCrop.withOptions(options);
+//        uCrop.start(PhotoSelectActivity.this);
     }
 
     @Override
