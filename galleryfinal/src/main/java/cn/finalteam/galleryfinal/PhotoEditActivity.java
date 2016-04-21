@@ -123,7 +123,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         super.onRestoreInstanceState(savedInstanceState);
         mSelectPhotoList = (ArrayList<PhotoInfo>) getIntent().getSerializableExtra("selectPhotoMap");
         mEditPhotoCacheFile = (File) savedInstanceState.getSerializable("editPhotoCacheFile");
-        mPhotoTempMap = new LinkedHashMap<>((HashMap<Integer, PhotoTempModel>) getIntent().getSerializableExtra("results"));
+        mPhotoTempMap = new LinkedHashMap<>((HashMap<Integer, PhotoTempModel>) getIntent().getSerializableExtra("photoTempMap"));
 
         mSelectIndex = savedInstanceState.getInt("selectIndex");
         mCropState = savedInstanceState.getBoolean("cropState");
